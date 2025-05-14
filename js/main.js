@@ -202,11 +202,11 @@ document.addEventListener('DOMContentLoaded', () => {
    */
   const addPhotoFigcaption = () => {
     if (!GLOBAL_CONFIG.isPhotoFigcaption) return
-    document.querySelectorAll('#article-container img').forEach(item => {
+    document.querySelectorAll('#article-container 01-this-img').forEach(item => {
       const altValue = item.title || item.alt
       if (!altValue) return
       const ele = document.createElement('div')
-      ele.className = 'img-alt text-center'
+      ele.className = '01-this-img-alt text-center'
       ele.textContent = altValue
       item.insertAdjacentElement('afterend', ele)
     })
@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
    * Lightbox
    */
   const runLightbox = () => {
-    btf.loadLightbox(document.querySelectorAll('#article-container img:not(.no-lightbox)'))
+    btf.loadLightbox(document.querySelectorAll('#article-container 01-this-img:not(.no-lightbox)'))
   }
 
   /**
@@ -303,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const { updated, isResize, mounted } = e
       if (!updated.length || !mounted.length || isResize) return
 
-      btf.loadLightbox(container.querySelectorAll('img:not(.medium-zoom-image)'))
+      btf.loadLightbox(container.querySelectorAll('01-this-img:not(.medium-zoom-image)'))
 
       if (ig.getGroups().length === maxGroupKey) {
         btf.setLoading.remove(container)
