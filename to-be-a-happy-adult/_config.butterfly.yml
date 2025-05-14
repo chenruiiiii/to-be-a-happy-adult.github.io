@@ -11,7 +11,7 @@
 
 nav:
   # Navigation bar logo image
-  logo: /01-this-img/avatar.jpg
+  logo: /img/avatar.jpg
   display_title: true
   # Whether to fix navigation bar
   fixed: false
@@ -80,46 +80,46 @@ social:
 # Image Settings
 # --------------------------------------
 
-favicon: /01-this-img/favicon.ico
+favicon: /img/favicon.ico
 
 avatar:
-  img: /01-this-img/avatar.jpg
+  img: /img/avatar.jpg
   effect: true # 头像是否旋转展示
 
 # 是否禁用所有跳转页的顶部图片
 disable_top_img: false
 
 # 所有页面的默认顶部图
-default_top_img: /01-this-img/index_bac.jpg
+default_top_img: /img/index_bac.jpg
 
 # 首页图
-index_img: /01-this-img/index_bac.jpg
+index_img: /img/index_bac.jpg
 
 # 归档（时间线）页面顶部图
-archive_img: /01-this-img/index_bac.jpg
+archive_img: /img/index_bac.jpg
 
 # Note: tag page, not tags page
-tag_img: /01-this-img/index_bac.jpg
+tag_img: /img/index_bac.jpg
 
 # The banner image of tag page, you can set the banner image for each tag
 # Format:
 #  - tag name: xxxxx
-tag_per_img: /01-this-img/index_bac.jpg
+tag_per_img: /img/index_bac.jpg
 
 # Note: category page, not categories page
-category_img: /01-this-img/index_bac.jpg
+category_img: /img/index_bac.jpg
 
 # The banner image of category page, you can set the banner image for each category
 # Format:
 #  - category name: xxxxx
-category_per_img: /01-this-img/index_bac.jpg
+category_per_img: /img/index_bac.jpg
 
 # The background image of footer
 footer_img: true
 
 # Website Background
 # Can set it to color or image url
-background: /01-this-img/index_bac.jpg
+background: /img/index_bac.jpg
 
 cover:
   # Disable the cover or not
@@ -132,14 +132,14 @@ cover:
 
 # Replace Broken Images
 error_img:
-  flink: /01-this-img/404.jpg
-  post_page: /01-this-img/404.jpg
+  flink: /img/404.jpg
+  post_page: /img/404.jpg
 
 # A simple 404 page
 error_404:
   enable: false
   subtitle: 'Page Not Found'
-  background: /01-this-img/404.jpg
+  background: /img/404.jpg
 
 post_meta:
   # Home Page
@@ -237,10 +237,10 @@ reward:
   enable: false
   text: 打赏一下吧~
   QR_code:
-     - img: /01-this-img/wechat_trade.jpg
+     - img: /img/wechat_trade.jpg
        link:
        text: 微信
-     - img: /01-this-img/alipay_trade.jpg
+     - img: /img/alipay_trade.jpg
        link:
        text: 支付宝
 
