@@ -84,7 +84,7 @@ favicon: /img/favicon.ico
 
 avatar:
   img: /img/avatar.jpg
-  effect: true # 头像是否旋转展示
+  effect: false # 头像是否旋转展示
 
 # 是否禁用所有跳转页的顶部图片
 disable_top_img: false
@@ -177,7 +177,7 @@ index_top_img_height:
 subtitle:
   enable: false
   # Typewriter Effect
-  effect: true
+  effect: false
   # Customize typed.js
   # https://github.com/mattboldt/typed.js/#customization
   typed_option:
