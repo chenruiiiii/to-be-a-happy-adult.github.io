@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>to-be-a-happy-adult</title>
+  
+  <subtitle>记录前端学习过程</subtitle>
+  <link href="http://to-be-a-happy-adult.xyz/atom.xml" rel="self"/>
+  
+  <link href="http://to-be-a-happy-adult.xyz/"/>
+  <updated>2025-05-15T10:30:49.519Z</updated>
+  <id>http://to-be-a-happy-adult.xyz/</id>
+  
+  <author>
+    <name>chenruiiiii</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>this的指向规则</title>
+    <link href="http://to-be-a-happy-adult.xyz/posts/d8cbe511.html"/>
+    <id>http://to-be-a-happy-adult.xyz/posts/d8cbe511.html</id>
+    <published>2025-05-14T10:30:24.000Z</published>
+    <updated>2025-05-15T10:30:49.519Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;&lt;code&gt;this&lt;/code&gt; 到底指向谁? 箭头函数中的&lt;code&gt;this&lt;/code&gt;还能使用吗? 如果能使用又要怎么使用呢? 与普通函数的&lt;code&gt;this&lt;/code&gt;指向一致吗?&lt;/p&gt;
+&lt;h2 id=&quot;this到底指向谁？&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="分类" scheme="http://to-be-a-happy-adult.xyz/categories/%E5%88%86%E7%B1%BB/"/>
+    
+    
+    <category term="js高级" scheme="http://to-be-a-happy-adult.xyz/tags/js%E9%AB%98%E7%BA%A7/"/>
+    
+  </entry>
+  
+</feed>
