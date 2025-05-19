@@ -6,7 +6,7 @@
   <link href="http://to-be-a-happy-adult.xyz/atom.xml" rel="self"/>
   
   <link href="http://to-be-a-happy-adult.xyz/"/>
-  <updated>2025-05-19T03:58:58.525Z</updated>
+  <updated>2025-05-19T14:19:37.168Z</updated>
   <id>http://to-be-a-happy-adult.xyz/</id>
   
   <author>
@@ -21,15 +21,15 @@
     <link href="http://to-be-a-happy-adult.xyz/posts/2373884b.html"/>
     <id>http://to-be-a-happy-adult.xyz/posts/2373884b.html</id>
     <published>2025-05-19T01:43:26.130Z</published>
-    <updated>2025-05-19T03:58:58.525Z</updated>
+    <updated>2025-05-19T14:19:37.168Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;p&gt;注：整个JS高级专栏依托于coderwhy老师的课程，相关图片、代码均来自于其课程。&lt;/p&gt;
-&lt;h1 id=&quot;网页的解析过程&quot;&gt;&lt;a href=&quot;#网页的解析过程&quot; class=&quot;headerlink&quot;</summary>
+    <summary type="html">&lt;p&gt;从输入路径开始，浏览器是怎样一步步渲染出页面的呢？&lt;/p&gt;
+&lt;h1 id=&quot;网页的解析过程&quot;&gt;&lt;a href=&quot;#网页的解析过程&quot; class=&quot;headerlink&quot; title=&quot;网页的解析过程&quot;&gt;&lt;/a&gt;网页的解析过程&lt;/h1&gt;&lt;p&gt;输入地址 —&amp;gt; DNS解析</summary>
         
       
     

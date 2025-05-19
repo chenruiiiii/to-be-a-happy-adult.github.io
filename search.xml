@@ -3,7 +3,7 @@
   <entry>
     <title>02- 浏览器运行原理</title>
     <url>/posts/2373884b.html</url>
-    <content><![CDATA[<p>注：整个JS高级专栏依托于coderwhy老师的课程，相关图片、代码均来自于其课程。</p>
+    <content><![CDATA[<p>从输入路径开始，浏览器是怎样一步步渲染出页面的呢？</p>
 <h1 id="网页的解析过程"><a href="#网页的解析过程" class="headerlink" title="网页的解析过程"></a>网页的解析过程</h1><p>输入地址 —&gt; DNS解析 —&gt; 服务器响应 —&gt; 浏览器响应<br>一个网页URL从输入到浏览器中，到显示经历怎样的过程呢？<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image1.png" alt="在这里插入图片描述"></p>
 <h2 id="浏览器内核"><a href="#浏览器内核" class="headerlink" title="浏览器内核"></a>浏览器内核</h2><p>常见的浏览器内核：<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image2.png" alt="在这里插入图片描述"><br>我们常说的<code>浏览器内核</code>指的是浏览器的<code>排版引擎</code>，也称之为<code>页面渲染引擎</code>或<code>样板引擎</code>。</p>
 <h1 id="浏览器渲染流程"><a href="#浏览器渲染流程" class="headerlink" title="浏览器渲染流程"></a>浏览器渲染流程</h1><p>详细内容可看我的另一篇博客：<br><a href="https://blog.csdn.net/2302_79523175/article/details/140614526?spm=1011.2415.3001.5331">浏览器渲染原理</a><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image3.png" alt="在这里插入图片描述"></p>
@@ -118,8 +118,9 @@
 <p><strong>总结：</strong></p>
 <ol>
 <li><code>defer</code>通常需要在文档解析后操作<code>DOM</code>的<code>javascript</code>代码，并且对多个<code>script</code>文件有顺序要求；</li>
-<li><code>async</code>通常用于独立的脚本，对其他脚本，甚至<code>DOM</code>没有依赖的：</li>
+<li><code>async</code>通常用于独立的脚本，对其他脚本，甚至<code>DOM</code>没有依赖的。</li>
 </ol>
+<p>注：整个JS高级专栏依托于coderwhy老师的课程，相关图片、代码均来自于其课程。</p>
 ]]></content>
       <categories>
         <category>分类</category>
