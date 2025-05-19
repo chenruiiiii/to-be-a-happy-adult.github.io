@@ -6,7 +6,7 @@
   <link href="http://to-be-a-happy-adult.xyz/atom.xml" rel="self"/>
   
   <link href="http://to-be-a-happy-adult.xyz/"/>
-  <updated>2025-05-19T01:49:55.115Z</updated>
+  <updated>2025-05-19T01:51:43.308Z</updated>
   <id>http://to-be-a-happy-adult.xyz/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title></title>
-    <link href="http://to-be-a-happy-adult.xyz/posts/0.html"/>
-    <id>http://to-be-a-happy-adult.xyz/posts/0.html</id>
+    <title>02- 浏览器的渲染原理</title>
+    <link href="http://to-be-a-happy-adult.xyz/posts/2373884b.html"/>
+    <id>http://to-be-a-happy-adult.xyz/posts/2373884b.html</id>
     <published>2025-05-19T01:43:26.130Z</published>
-    <updated>2025-05-19T01:49:55.115Z</updated>
+    <updated>2025-05-19T01:51:43.308Z</updated>
     
     
       
@@ -35,6 +35,10 @@
     
     
     
+    <category term="分类" scheme="http://to-be-a-happy-adult.xyz/categories/%E5%88%86%E7%B1%BB/"/>
+    
+    
+    <category term="js高级" scheme="http://to-be-a-happy-adult.xyz/tags/js%E9%AB%98%E7%BA%A7/"/>
     
   </entry>
   

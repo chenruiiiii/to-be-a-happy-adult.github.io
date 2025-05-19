@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title></title>
-    <url>/posts/0.html</url>
+    <title>02- 浏览器的渲染原理</title>
+    <url>/posts/2373884b.html</url>
     <content><![CDATA[<p>@[toc]<br>注：整个JS高级专栏依托于coderwhy老师的课程，相关图片、代码均来自于其课程。</p>
 <h1 id="1-网页的解析过程"><a href="#1-网页的解析过程" class="headerlink" title="1. 网页的解析过程"></a>1. 网页的解析过程</h1><p>输入地址 —&gt; DNS解析 —&gt; 服务器响应 —&gt; 浏览器响应<br>一个网页URL从输入到浏览器中，到显示经历怎样的过程呢？<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image1.png" alt="在这里插入图片描述"></p>
 <h2 id="浏览器内核"><a href="#浏览器内核" class="headerlink" title="浏览器内核"></a>浏览器内核</h2><p>常见的浏览器内核：<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image2.png" alt="在这里插入图片描述"><br>我们常说的<code>浏览器内核</code>指的是浏览器的<code>排版引擎</code>，也称之为<code>页面渲染引擎</code>或<code>样板引擎</code>。</p>
@@ -121,6 +121,12 @@
 <li><code>async</code>通常用于独立的脚本，对其他脚本，甚至<code>DOM</code>没有依赖的：</li>
 </ol>
 ]]></content>
+      <categories>
+        <category>分类</category>
+      </categories>
+      <tags>
+        <tag>js高级</tag>
+      </tags>
   </entry>
   <entry>
     <title>01- this的指向规则</title>
