@@ -6,6 +6,7 @@
 title: to-be-a-happy-adult
 subtitle: 记录前端学习过程
 description: ''
+comments: true
 keywords:
 author: 'chenruiiiii'
 language: zh-CN
@@ -15,11 +16,22 @@ timezone: ''
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
 url: http://to-be-a-happy-adult.xyz
 root: /
-permalink: posts/:abbrlink/
+permalink: posts/:abbrlink.html
 permalink_defaults:
 pretty_urls:
   trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
   trailing_html: true # Set to false to remove trailing '.html' from permalinks
+
+
+# 文章字数统计
+postInfo:
+  date: true
+  update: false
+  wordCount: true # 设置文章字数统计为 true.
+  totalCount: true # 设置站点文章总字数统计为 true.
+  min2read: true # 阅读时长.
+  readCount: true # 阅读次数.
+
 
 # abbrlink config
 abbrlink:
@@ -36,7 +48,13 @@ abbrlink:
   auto_date: false #enable auto date, it can auto fill the date by time today
   force: false #enable force mode,in this mode, the plugin will ignore the cache, and calc the abbrlink for every post even it already had abbrlink. This only updates abbrlink rather than other front variables.
 
-
+# 文章字数统计
+symbols_count_time:
+  symbols: true                # 文章字数统计
+  time: true                   # 文章阅读时长
+  total_symbols: true          # 站点总字数统计
+  total_time: true             # 站点总阅读时长
+  exclude_codeblock: false     # 排除代码字数统计
 
 # Directory
 source_dir: source #源文件夹，这个文件夹用来存放内容。
@@ -47,6 +65,26 @@ category_dir: categories #分类文件夹
 code_dir: downloads/code #nclude code 文件夹
 i18n_dir: :lang #国际化（i18n）文件夹
 skip_render: #跳过指定文件的渲染，您可使用 glob 表达式来匹配路径。
+
+# music
+# 是否在首页显示音乐
+music:
+  enable: true
+  title:            # 非吸底模式有效
+    enable: true
+    show: 听听音乐
+    server: kugou   # require music platform: netease, tencent, kugou, xiami, baidu
+    type: playlist    # require song, playlist, album, search, artist
+    id: 2958352938     # require song id / playlist id / album id / search keyword
+    fixed: false      # 开启吸底模式
+    autoplay: false   # 是否自动播放
+    theme: '#42b983'
+    loop: 'all'       # 音频循环播放, 可选值: 'all', 'one', 'none'
+    order: 'random'   # 音频循环顺序, 可选值: 'list', 'random'
+    preload: 'auto'   # 预加载，可选值: 'none', 'metadata', 'auto'
+    volume: 0.7       # 默认音量，请注意播放器会记忆用户设置，用户手动设置音量后默认音量即失效
+    listFolded: true  # 列表默认折叠
+
 
 # Writing
 new_post_name: :title.md # 新建文章默认文件名
@@ -63,15 +101,21 @@ relative_link: false
 future: true
 syntax_highlighter: highlight.js
 highlight:
-  line_number: true
+  line_number: false
   auto_detect: false
   tab_replace: ''
   wrap: true
   hljs: false
 prismjs:
   preprocess: true
-  line_number: true
+  line_number: false
   tab_replace: ''
+
+# ALgolia搜索插件配置
+algolia:
+  applicationID: 'OF5Y2H5PFW'
+  apiKey: '9b85ec093ac43cbd6998accaead5b01b'
+  indexName: '...'
 
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
@@ -116,6 +160,18 @@ ignore:
 ## Themes: https://hexo.io/themes/
 theme: butterfly
 
+gitalk:
+  enable: true
+  client_id: Ov23li9seGOCgxQ2bHbc
+  client_secret: af36a8b002e48cc7e6ca77b17f6ef6b360833d9f
+  labels: 'gitalk comments'
+  repo: to-be-a-happy-adult  # 此处是仓库名称 不是地址
+  owner: chenruiiiii
+  admin: chenruiiiii
+  option:
+  distractionFreeMode: false
+  perPage: 10 # Pagination size, with maximum 100.
+
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
@@ -126,16 +182,28 @@ deploy:
 
 ##hexo-generator-search搜索插件配置
 search:
+  enable: true
   path: search.xml
   field: post
   format: html
   limit: 10000
+  content: true
+  template: ./search.xml
 
 ## rss配置
 feed:
+  enable: true
   type: atom
   path: atom.xml
   limit: 20
+  hub:
+  content:
+  content_limit: 140
+  content_limit_delim: " "
+  order_by: -date
 
 ## rss位置
 rss: /atom.xml
+
+# Minifier插件  可以压缩 HTML, CSS, JS and Image
+all_minifier: true
