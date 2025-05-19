@@ -1,6 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title></title>
+    <url>/posts/0.html</url>
+    <content><![CDATA[<p>@[toc]<br>注：整个JS高级专栏依托于coderwhy老师的课程，相关图片、代码均来自于其课程。</p>
+<h1 id="1-网页的解析过程"><a href="#1-网页的解析过程" class="headerlink" title="1. 网页的解析过程"></a>1. 网页的解析过程</h1><p>输入地址 —&gt; DNS解析 —&gt; 服务器响应 —&gt; 浏览器响应<br>一个网页URL从输入到浏览器中，到显示经历怎样的过程呢？<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image1.png" alt="在这里插入图片描述"></p>
+<h2 id="浏览器内核"><a href="#浏览器内核" class="headerlink" title="浏览器内核"></a>浏览器内核</h2><p>常见的浏览器内核：<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image2.png" alt="在这里插入图片描述"><br>我们常说的<code>浏览器内核</code>指的是浏览器的<code>排版引擎</code>，也称之为<code>页面渲染引擎</code>或<code>样板引擎</code>。</p>
+<h1 id="2-浏览器渲染流程"><a href="#2-浏览器渲染流程" class="headerlink" title="2. 浏览器渲染流程"></a>2. 浏览器渲染流程</h1><p>详细内容可看我的另一篇博客：<br><a href="https://blog.csdn.net/2302_79523175/article/details/140614526?spm=1011.2415.3001.5331">浏览器渲染原理</a><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image3.png" alt="在这里插入图片描述"></p>
+<h2 id="2-1-解析html"><a href="#2-1-解析html" class="headerlink" title="2.1 解析html"></a>2.1 解析html</h2><p>因为默认情况下服务器会给浏览器返回index..html文件，所以解析HTML是所有步骤的开始：<br>解析HTML，会构建DOM Tree:<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image4.png" alt="在这里插入图片描述"></p>
+<h2 id="2-2-生成css规则"><a href="#2-2-生成css规则" class="headerlink" title="2.2 生成css规则"></a>2.2 生成css规则</h2><p>浏览器在解析html时遇到 css 的<code>&lt;link&gt;</code>时会开启另外一个线程对css文件进行下载，这也就不会影响到dom tree的生成；<br>下载完css文件后就会对其进行解析，生成对应的<code>cssom</code>树。<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image5.png" alt="在这里插入图片描述"></p>
+<h2 id="2-3-构建render-tree"><a href="#2-3-构建render-tree" class="headerlink" title="2.3 构建render tree"></a>2.3 构建render tree</h2><p>当有了<code>DOM Tree</code>和<code>CSSOM Tree</code>两部分之后，就可以结合来生成<code>Render Tree</code>了。<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image6.png" alt="在这里插入图片描述"></p>
+<p>注意❗️</p>
+<ol>
+<li><code>link</code>元素不会阻塞<code>DOM Tree</code>的构建，但是会阻塞<code>Render Tree</code>的构建，因为构建<code>Render Tree</code>需要对应的<code>CSSOM Tree</code>；</li>
+<li><strong><code>DOM Tree</code>和<code>Render Tree</code>并不是一一对应的</strong>，有些dom可能设置了<code>display: none;</code>，不会在<code>Render Tree</code>中出现。</li>
+</ol>
+<h2 id="2-4-布局-Layout"><a href="#2-4-布局-Layout" class="headerlink" title="2.4 布局(Layout)"></a>2.4 布局(Layout)</h2><p>布局是确定呈现树中所有节点的宽度、高度和位置信息</p>
+<p><code>Render Tree</code>形成之后，就可以对dom的style进行计算：</p>
+<ol>
+<li><code>em</code>、<code>rem</code>或<code>%</code>等转换成<code>px</code>；</li>
+<li>…</li>
+</ol>
+<h2 id="2-5-绘制-Paint"><a href="#2-5-绘制-Paint" class="headerlink" title="2.5 绘制(Paint)"></a>2.5 绘制(Paint)</h2><ul>
+<li>在绘制阶段，浏览器将布局阶段计算的每个frame转为屏幕上实际的像素点；</li>
+<li>包括将元素的可见部分进行绘制，比如文本、颜色、边框、阴影、替换元素（比如img）<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image7.png" alt="在这里插入图片描述"></li>
+</ul>
+<h1 id="3-回流和重绘"><a href="#3-回流和重绘" class="headerlink" title="3. 回流和重绘"></a>3. 回流和重绘</h1><h2 id="3-1-回流reflow"><a href="#3-1-回流reflow" class="headerlink" title="3.1 回流reflow"></a>3.1 回流reflow</h2><h3 id="（1）理解："><a href="#（1）理解：" class="headerlink" title="（1）理解："></a>（1）理解：</h3><ul>
+<li>第一次确定节点的位置和大小叫做布局(Layout)；</li>
+<li>之后对于节点大小以及位置等的计算叫做回流。</li>
+</ul>
+<h3 id="（2）出现情况"><a href="#（2）出现情况" class="headerlink" title="（2）出现情况"></a>（2）出现情况</h3><ol>
+<li><code>DOM</code>结构发生改变（添加新节点或者移除节点）；</li>
+<li>布局改变（修改了width、height、padding等值）；</li>
+<li>窗口resize（修改了窗口的尺寸）；</li>
+<li>调用<code>getComputedStyle</code>方法获取尺寸、位置信息；</li>
+</ol>
+<h2 id="3-2-重绘repaint"><a href="#3-2-重绘repaint" class="headerlink" title="3.2 重绘repaint"></a>3.2 重绘repaint</h2><h3 id="（1）理解：-1"><a href="#（1）理解：-1" class="headerlink" title="（1）理解："></a>（1）理解：</h3><ul>
+<li>第一次渲染内容叫做绘制(Paint)；</li>
+<li>之后重新渲染叫做重绘（repaint）。</li>
+</ul>
+<h3 id="（2）出现情况-1"><a href="#（2）出现情况-1" class="headerlink" title="（2）出现情况"></a>（2）出现情况</h3><ol>
+<li>修改背景色、边框颜色、文字颜色、模糊样式等</li>
+<li><code>回流</code>一定引起<code>重绘</code>，所以回流是很<strong>消耗性能</strong>的事情。</li>
+</ol>
+<p><strong>所以在开发中要尽量避免回流</strong>：</p>
+<ol>
+<li>修改样式时尽量一次性修改<ul>
+<li>比如通过<code>cssText</code>修改，通过添加<code>class</code>修改。</li>
+</ul>
+</li>
+<li>尽量避免频繁的操作DOM<ul>
+<li>我们可以在一个<code>DocumentFragment</code>(了解即可)或者是父元素中将要操作的DOM操作完成，在一次性的操作。</li>
+</ul>
+</li>
+<li>尽量避免通过<code>getComputedStyle</code>获取尺寸、位置等信息</li>
+<li>对某些元素使用<code>position</code>的<code>absolute</code>或<code>fixed</code><ul>
+<li>这种操作并不是不会引起回流，而是相对来说开销较小，不会对其他元素造成影响。</li>
+</ul>
+</li>
+</ol>
+<h1 id="3-特殊解析composite合成-和性能优化"><a href="#3-特殊解析composite合成-和性能优化" class="headerlink" title="3. 特殊解析composite合成 和性能优化"></a>3. 特殊解析composite合成 和性能优化</h1><p>绘制的过程，浏览器会将布局后的元素绘制到多个合成图层中（这是浏览器的一种优化手段）；</p>
+<ul>
+<li>默认情况下，标准流的元素会被绘制到同一个图层中；</li>
+<li>而某些特殊的属性，会单独创建一个新的合成层，并且新的图层可以使用<code>GPU</code>加速绘制（每个合成层都是单独进行渲染）</li>
+</ul>
+<p><strong>哪些属性可以形成新的合成层呢</strong>？下面是常见的一下属性：</p>
+<ul>
+<li>3D transforms</li>
+<li><code>video</code>、<code>canvas</code>、<code>iframe</code></li>
+<li><code>opacity</code>动画转换</li>
+<li><code>position: fixed</code></li>
+<li><code>will-cahnge</code>：一个实验性的属性，提前告诉浏览器可能会发生哪些变化</li>
+<li><code>animation</code>或<code>transition</code>设置了<code>opacity</code>、<code>transform</code></li>
+</ul>
+<p>注❗️：<br>分层确实可以提高性能，但是它以内存管理为代价，因此不应作为web性能优化策略的一部分过度使用！</p>
+<h1 id="4-defer和async属性"><a href="#4-defer和async属性" class="headerlink" title="4. defer和async属性"></a>4. defer和async属性</h1><p>首先来了解一下 <strong><code>script</code>和页面解析的关系</strong> !</p>
+<p>前面我们已经知道了，浏览器在解析html时遇到<code>&lt;link&gt;</code>不会影响<code>DOM Tree</code>的构建，那遇到<code>&lt;script&gt;</code>呢？会影响吗？<br>答案是：<strong>会的！</strong></p>
+<ul>
+<li>浏览器在遇到<code>&lt;script&gt;</code>时会先停止对<code>DOM Tree</code>构建，转而去下载、执行js脚本；</li>
+<li>只有js脚本执行完毕后，<code>DOM Tree</code>才能继续进行构建；</li>
+</ul>
+<p>那这是为什么呢？</p>
+<ul>
+<li>因为js文件中可能存在对<code>DOM</code>的操作；</li>
+<li>若先构建<code>DOM Tree</code>，再执行js脚本，可能会造成严重的回流和重绘，影响页面性能。</li>
+</ul>
+<p>但是这也会带来新的问题，特别是现在主流框架：</p>
+<ul>
+<li>目前主要流行的<code>Vue</code>、<code>React</code>，脚本往往比html页面更”重”，处理时间更长，</li>
+<li>也就是在js脚本执行结束前，页面可能出现空白</li>
+</ul>
+<p>（有些浏览器可能对此做了优化，也就是在js脚本执行接受之前，先将已经构建的<code>DOM Tree</code>进行展示）<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image8.png" alt="在这里插入图片描述"></p>
+<p>为了解决这个问题，<code>&lt;script&gt;</code>给我们提供了两个属性：<code>defer</code>和<code>async</code></p>
+<h2 id="4-1-defer"><a href="#4-1-defer" class="headerlink" title="4.1 defer"></a>4.1 defer</h2><ul>
+<li>defer会告诉浏览器不要等待脚本的下载，继续执行<code>DOM Tree</code>的构建</li>
+<li>脚本的下载有浏览器完成，不会影响<code>DOM Tree</code>的构建；</li>
+<li>若脚本先下载完，那它会等待<code>DOM Tree</code>构建完成，在<code>DOMContentLoaded</code>事件执行前执行defer中的代码</li>
+</ul>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image9.png" alt="在这里插入图片描述"><br>总结：</p>
+<ol>
+<li><code>defer</code>不会影响<code>DOM Tree</code>的构建；</li>
+<li>在<code>defer</code>中<code>DOM Tree</code>已经构建完成，可进行对dom的操作；</li>
+<li><code>defer</code>总是在<code>DOMContentLoaded</code>时间发出前执行；</li>
+<li>另外，有多个<code>defer</code>会按照编写顺序执行；</li>
+<li>从某种角度来说，<code>defer</code>会提高页面性能，并且推荐放在<code>&lt;head&gt;</code>中（提前下载js脚本）；</li>
+<li>注意：<code>defer</code>仅适用于外部脚本，对于<code>&lt;script&gt;</code>默认内容会被忽略。</li>
+</ol>
+<h2 id="4-2-async"><a href="#4-2-async" class="headerlink" title="4.2 async"></a>4.2 async</h2><ul>
+<li><code>async</code>和<code>defer</code>相似，都能够让脚本不堵塞页面；</li>
+<li><code>async</code>是完全独立于浏览器的：<ul>
+<li>浏览器页面不会因为<code>script</code>脚本而暂停<code>DOM Tree</code>的构建；</li>
+<li><code>async</code>脚本不能保证顺序执行脚本，它独立下载，独立运行，不会等待其他脚本；</li>
+<li><code>async</code>不一定在<code>DOMContentLoaded</code>时间执行前执行</li>
+</ul>
+</li>
+</ul>
+<p><strong>总结：</strong></p>
+<ol>
+<li><code>defer</code>通常需要在文档解析后操作<code>DOM</code>的<code>javascript</code>代码，并且对多个<code>script</code>文件有顺序要求；</li>
+<li><code>async</code>通常用于独立的脚本，对其他脚本，甚至<code>DOM</code>没有依赖的：</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
     <title>01- this的指向规则</title>
     <url>/posts/d8cbe511.html</url>
     <content><![CDATA[<p><code>this</code> 到底指向谁? 箭头函数中的<code>this</code>还能使用吗? 如果能使用又要怎么使用呢? 与普通函数的<code>this</code>指向一致吗?</p>
