@@ -127,16 +127,16 @@ avatar:
 disable_top_img: false
 
 # 所有页面的默认顶部图
-default_top_img: /img/bac.jpg
+default_top_img: /img/index_bac.jpg
 
 # 首页图
-index_img: /img/bac.jpg
+index_img: /img/index_bac.jpg
 
 # 归档（时间线）页面顶部图
-archive_img: /img/bac.jpg
+archive_img: /img/index_bac.jpg
 
 # Note: tag page, not tags page
-tag_img: /img/bac.jpg
+tag_img: /img/index_bac.jpg
 
 # The banner image of tag page, you can set the banner image for each tag
 # Format:
@@ -149,7 +149,7 @@ category_img:
 # The banner image of category page, you can set the banner image for each category
 # Format:
 #  - category name: xxxxx
-category_per_img: /img/bac.jpg
+category_per_img: /img/index_bac.jpg
 
 # The background image of footer
 footer_img: true

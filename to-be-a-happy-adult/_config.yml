@@ -176,7 +176,7 @@ gitalk:
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repository: https://github.com/chenruiiiii/to-be-a-happy-adult.github.io.git  #你的仓库地址
+  repo: git@github.com:chenruiiiii/to-be-a-happy-adult.github.io.git
   branch: master
 
 
