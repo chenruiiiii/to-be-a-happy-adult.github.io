@@ -6,7 +6,7 @@
   <link href="http://to-be-a-happy-adult.xyz/atom.xml" rel="self"/>
   
   <link href="http://to-be-a-happy-adult.xyz/"/>
-  <updated>2025-06-02T08:43:51.855Z</updated>
+  <updated>2025-06-03T02:37:37.635Z</updated>
   <id>http://to-be-a-happy-adult.xyz/</id>
   
   <author>
@@ -21,15 +21,15 @@
     <link href="http://to-be-a-happy-adult.xyz/posts/4bc49eeb.html"/>
     <id>http://to-be-a-happy-adult.xyz/posts/4bc49eeb.html</id>
     <published>2025-06-02T08:22:59.353Z</published>
-    <updated>2025-06-02T08:43:51.855Z</updated>
+    <updated>2025-06-03T02:37:37.635Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;h1 id=&quot;V8引擎&quot;&gt;&lt;a href=&quot;#V8引擎&quot; class=&quot;headerlink&quot; title=&quot;V8引擎&quot;&gt;&lt;/a&gt;V8引擎&lt;/h1&gt;&lt;p&gt;先来了解一下V8引擎:&lt;/p&gt;
-&lt;p&gt;&lt;img</summary>
+    <summary type="html">&lt;p&gt;上篇博客了解了一下浏览器的运行原理，那javascript的运行原理又是怎么样的呢？&lt;/p&gt;
+&lt;h1 id=&quot;V8引擎&quot;&gt;&lt;a href=&quot;#V8引擎&quot; class=&quot;headerlink&quot;</summary>
         
       
     
