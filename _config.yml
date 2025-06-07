@@ -28,6 +28,12 @@ pretty_urls:
 #    url: https://a-big-dreamer.github.io/
 #    description: A Big Dreamer's Blog
 
+# 原生暗黑模式
+darkmode:
+    enable: true
+    button: true
+    default: auto
+
 # 文章字数统计
 postInfo:
   date: true
