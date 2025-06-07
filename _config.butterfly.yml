@@ -21,10 +21,10 @@ Home: / || fas fa-home
 Archives: /archives/ || fas fa-archive
 Tags: /tags/ || fas fa-tags
 Categories: /categories/ || fas fa-folder-open
-#List||fas fa-list:
+List||fas fa-list:
 #  Music: /music/ || fas fa-music
 #  Video: /videos/ || fas fa-video
-#  Link: /link/ || fas fa-link
+  Link: /link/ || fas fa-link
 About: /about/ || fas fa-heart
 
 menu:
@@ -32,10 +32,10 @@ menu:
    归档: /archives/ || fas fa-archive
    分类: /categories/ || fas fa-folder-open
    标签: /tags/ || fas fa-tags
-#   列表:
+   列表:
 #    音乐: /music/ || fas fa-music
 #    心情: /videos/ || fas fa-video
-#    友链: /link/ || fas fa-link
+    友链: /link/ || fas fa-link
    关于: /about/ || fas fa-heart
 
 #   相册: /gallery/fas fa-solid fa-image

@@ -23,6 +23,11 @@ pretty_urls:
   trailing_html: true # Set to false to remove trailing '.html' from permalinks
 
 
+#links:
+#  - title: A Big Dreamer's Blog
+#    url: https://a-big-dreamer.github.io/
+#    description: A Big Dreamer's Blog
+
 # 文章字数统计
 postInfo:
   date: true
