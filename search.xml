@@ -437,4 +437,108 @@
         <tag>js高级</tag>
       </tags>
   </entry>
+  <entry>
+    <title>04-闭包</title>
+    <url>/posts/2f741396.html</url>
+    <content><![CDATA[<h1 id="1-函数对象的属性"><a href="#1-函数对象的属性" class="headerlink" title="1. 函数对象的属性"></a>1. 函数对象的属性</h1><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params">a, b</span>)&#123;</span><br><span class="line">        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>自定义属性 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">foo.<span class="property">title</span> = <span class="string">&quot;foo title&quot;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(foo.<span class="property">title</span>) <span class="comment">// fo title</span></span><br></pre></td></tr></table></figure></li>
+<li>默认属性<ul>
+<li><code>name</code><br> <code>console.log(foo.name) // foo</code></li>
+<li><code>length</code> (指的是函数参数的个数,但不包括有默认值的参数和可变参数)<br><code>console.log(foo.length) // 2</code></li>
+</ul>
+</li>
+</ol>
+<h1 id="2-函数的arguments"><a href="#2-函数的arguments" class="headerlink" title="2. 函数的arguments"></a>2. 函数的<code>arguments</code></h1><ol>
+<li><p>三种获取方式</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo1</span>(<span class="params">a, b, c</span>) &#123;</span><br><span class="line">   <span class="comment">// 获取arguments</span></span><br><span class="line">   <span class="comment">// 1. arguments是一个伪数组对象，可通过[]字面量继续进行获取</span></span><br><span class="line">   <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">arguments</span>[<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 2.for循环遍历</span></span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="variable language_">arguments</span>.<span class="property">length</span>; i++) &#123;</span><br><span class="line">       <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">arguments</span>[i]);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 3. for of 遍历   （for of 可用来遍历可迭代对象）</span></span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">let</span> item <span class="keyword">of</span> <span class="variable language_">arguments</span>) &#123;</span><br><span class="line">       <span class="variable language_">console</span>.<span class="title function_">log</span>(item);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>三种转换为数组的方式</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo2</span>(<span class="params">a, b</span>)&#123;</span><br><span class="line">   <span class="comment">// 转换成数组</span></span><br><span class="line">   <span class="comment">// 1. 将数据放入新数组</span></span><br><span class="line">   <span class="keyword">let</span> arr1 = []</span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="variable language_">arguments</span>.<span class="property">length</span>; i++) &#123;</span><br><span class="line">       arr1.<span class="title function_">push</span>(<span class="variable language_">arguments</span>[i])</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 2. [].slice()</span></span><br><span class="line">   <span class="keyword">let</span> arr2 = [].<span class="property">slice</span>.<span class="title function_">call</span>(<span class="variable language_">arguments</span>)</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 3. Array.from()</span></span><br><span class="line">   <span class="keyword">let</span> arr3 = <span class="title class_">Array</span>.<span class="title function_">from</span>(<span class="variable language_">arguments</span>)</span><br><span class="line">   <span class="keyword">let</span> arr4 = [...<span class="variable language_">arguments</span>]</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="3-箭头函数的arguments"><a href="#3-箭头函数的arguments" class="headerlink" title="3. 箭头函数的arguments"></a>3. 箭头函数的<code>arguments</code></h1><p>箭头函数没有<code>arguments</code>，若在箭头函数内部使用，那么<code>arguments</code>将会向外寻找父级作用域的<code>arguments</code></p>
+<h1 id="4-函数的剩余参数rest"><a href="#4-函数的剩余参数rest" class="headerlink" title="4. 函数的剩余参数rest"></a>4. 函数的剩余参数<code>rest</code></h1><p>如果最后一个参数以…为前缀，那么该参数将以数组的形式接收剩余的参数。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">rest</span>(<span class="params">a, ...args</span>)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(a)</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(args)</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">rest</span>(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>) <span class="comment">// 1 [2,3,4,5]</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注：剩余参数必须放在最后一个形参位置，否则会报错。</strong></p>
+<p>剩余参数<code>rest</code>和<code>arguments</code>的区别：</p>
+<ol>
+<li><code>rest</code>以数组形式接收参数，<code>arguments</code>以伪数组对象形式接收参数；</li>
+<li><code>rest</code>接收没有对应形参的实参，<code>arguments</code>接收所有实参</li>
+<li><code>arguments</code>是早期<code>ECMAScript</code>为方便获取参数定义的一个属性，而<code>rest</code>是<code>ECMAScript6</code>新增的希望替代arguments的语法，。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>分类</category>
+      </categories>
+      <tags>
+        <tag>js高级</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>04-闭包</title>
+    <url>/posts/2f741396.html</url>
+    <content><![CDATA[<h1 id="javascript-内存管理"><a href="#javascript-内存管理" class="headerlink" title="javascript 内存管理"></a>javascript 内存管理</h1><blockquote>
+<p>认识内存管理</p>
+</blockquote>
+<p>不管什么样的编程语言，<strong>在代码执行过程中都需要进行内存分配</strong>，不同的是有些编程语言需要我们自己手动进行内存配置，有些则会自动帮我们进行内存分配。</p>
+<p>不管什么样的内存分配机制，<strong>内存的分配都会进入如下周期</strong>：</p>
+<ol>
+<li>申请分配内存</li>
+<li>使用分配的内存</li>
+<li>不需要使用时释放内存</li>
+</ol>
+<p>不同的语言会对第一步和第三步进行不同的处理：</p>
+<ul>
+<li>手动管理内存：比如<code>C</code>、<code>C++</code>，包括早期的<code>OC</code>，都是需要手动的进行内存的申请和释放（<code>malloc和free函数</code>）；</li>
+<li>自动管理内存：比如<code>java</code>、<code>javascript</code>、<code>Python</code>、<code>Swift</code>、<code>Dart</code>等，这些语言都有帮我们自动进行内存管理。</li>
+</ul>
+<p>也就是说，我们所使用的<code>javascript</code>会自动的对原始值、对象、函数等进行内存管理，我们并不需要进行多余的操作。</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/04-closure/img1.png" alt="img.png"></p>
+<h1 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h1><h1 id="闭包的概念理解"><a href="#闭包的概念理解" class="headerlink" title="闭包的概念理解"></a>闭包的概念理解</h1><h1 id="闭包的形成过程"><a href="#闭包的形成过程" class="headerlink" title="闭包的形成过程"></a>闭包的形成过程</h1><h1 id="闭包的内存泄漏"><a href="#闭包的内存泄漏" class="headerlink" title="闭包的内存泄漏"></a>闭包的内存泄漏</h1>]]></content>
+      <categories>
+        <category>分类</category>
+      </categories>
+      <tags>
+        <tag>js高级</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Nginx安装与配置以及常用命令</title>
+    <url>/posts/4f72a7f4.html</url>
+    <content><![CDATA[<p>了解一下nginx的安装与配置，以及常见的nginx常用命令</p>
+<h1 id="1-安装与配置"><a href="#1-安装与配置" class="headerlink" title="1. 安装与配置"></a>1. 安装与配置</h1><ol>
+<li><p>阿里云申请免费云服务器，为nginx练习使用</p>
+</li>
+<li><p>连接远程服务器</p>
+<ul>
+<li>首先重置root密码</li>
+<li>若是使用vscode 可安装 <code>remote ssh</code>插件 （用来连接远程服务器）</li>
+<li>连接到远程</li>
+</ul>
+</li>
+<li><p>下载nginx </p>
+<ul>
+<li>cd &#x2F;usr&#x2F;local</li>
+<li>wget <a href="https://nginx.org/download/nginx-1.28.0.tar.gz">https://nginx.org/download/nginx-1.28.0.tar.gz</a> (若下载不成功可通过命令 <code>su</code> 切换到root用户)</li>
+</ul>
+</li>
+</ol>
+<img src="../../img/nginx/img.png">
+    - tar -zxvf nginx-1.28.0.tar.gz
+    - cd ./nginx-1.28.0
+4. 初始配置及编译安装
+    - 初始配置 ./configure
+    - 编译源码 安装 make && make install
+    
+<h1 id="2-Nginx常见命令"><a href="#2-Nginx常见命令" class="headerlink" title="2. Nginx常见命令"></a>2. Nginx常见命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">user admin; # 规定启动nginx的用户</span><br><span class="line">worker_processes 1; # Nginx 启动一个工作进程，适用于轻量部署或开发环境。</span><br><span class="line">events &#123;</span><br><span class="line">   worker_connections 1024; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http&#123;</span><br><span class="line">   include mime.types; # 文件类型映射</span><br><span class="line">   default_type application/octet-stream; # 默认MIME类型</span><br><span class="line">   sendfile        on;                            # 启用 sendfile 加速</span><br><span class="line">   tcp_nopush      on;                            # 优化发送数据包</span><br><span class="line">   keepalive_timeout  65;                         # 长连接超时</span><br><span class="line">   client_max_body_size 10m;                      # 请求体大小限制</span><br><span class="line"></span><br><span class="line">   include /etc/nginx/conf.d/*.conf;              # 引入子配置文件</span><br><span class="line">   </span><br><span class="line">   # 静态文件配置</span><br><span class="line">   server &#123;</span><br><span class="line">      listen 8080 ssl;</span><br><span class="line">      server_name localhost myTest.com;</span><br><span class="line">      </span><br><span class="line">      # 申请ssl证书 配置ssl证书</span><br><span class="line">      ssl_certificate /path/to/cert.pem;</span><br><span class="line">      ssl_certificate_key /path/to/cert.key;</span><br><span class="line">      </span><br><span class="line">      location / &#123;</span><br><span class="line">         root /usr/local/nginx/html/dist; # 相对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      location /api &#123;</span><br><span class="line">         # 设置CORS配置</span><br><span class="line">         add_header Access-Control-Allow-Origin *;</span><br><span class="line">         add_header Access-Control-Allow-Methods &#x27;GET, POST, OPTIONS&#x27;;</span><br><span class="line">         add_header Access-Control-Allow-Headers &#x27;Content-Type, Authorization&#x27;;</span><br><span class="line">         </span><br><span class="line">         alias /usr/local/nginx/html/dist/api; # 绝对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">         </span><br><span class="line">         if ($request_method = &#x27;OPTIONS&#x27;) &#123;</span><br><span class="line">            return 204;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>分类</category>
+      </categories>
+      <tags>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
 </search>
