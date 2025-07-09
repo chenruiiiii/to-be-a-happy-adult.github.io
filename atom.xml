@@ -6,7 +6,7 @@
   <link href="http://to-be-a-happy-adult.xyz/atom.xml" rel="self"/>
   
   <link href="http://to-be-a-happy-adult.xyz/"/>
-  <updated>2025-07-09T08:24:28.572Z</updated>
+  <updated>2025-07-09T13:03:50.447Z</updated>
   <id>http://to-be-a-happy-adult.xyz/</id>
   
   <author>
@@ -17,18 +17,19 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>04-闭包</title>
+    <title>06-javascript函数增强</title>
     <link href="http://to-be-a-happy-adult.xyz/posts/2f741396.html"/>
     <id>http://to-be-a-happy-adult.xyz/posts/2f741396.html</id>
     <published>2025-07-08T02:36:35.419Z</published>
-    <updated>2025-07-09T08:24:28.572Z</updated>
+    <updated>2025-07-09T13:03:50.447Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;h1 id=&quot;1-函数对象的属性&quot;&gt;&lt;a href=&quot;#1-函数对象的属性&quot; class=&quot;headerlink&quot; title=&quot;1. 函数对象的属性&quot;&gt;&lt;/a&gt;1. 函数对象的属性&lt;/h1&gt;&lt;figure class=&quot;highlight</summary>
+    <summary type="html">&lt;p&gt;了解一下&lt;code&gt;js&lt;/code&gt;函数相关增强知识。&lt;/p&gt;
+&lt;h1 id=&quot;1-函数基本概念掌握&quot;&gt;&lt;a href=&quot;#1-函数基本概念掌握&quot; class=&quot;headerlink&quot; title=&quot;1. 函数基本概念掌握&quot;&gt;&lt;/a&gt;1.</summary>
         
       
     
@@ -46,7 +47,7 @@
     <link href="http://to-be-a-happy-adult.xyz/posts/4f72a7f4.html"/>
     <id>http://to-be-a-happy-adult.xyz/posts/4f72a7f4.html</id>
     <published>2025-07-08T00:59:51.010Z</published>
-    <updated>2025-07-08T02:04:34.664Z</updated>
+    <updated>2025-07-09T08:41:18.620Z</updated>
     
     
       

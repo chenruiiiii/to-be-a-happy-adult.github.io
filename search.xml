@@ -1,6 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>03-javascript的运行原理</title>
+    <url>/posts/4bc49eeb.html</url>
+    <content><![CDATA[<p>上篇博客了解了一下浏览器的运行原理，那javascript的运行原理又是怎么样的呢？</p>
+<h1 id="V8引擎"><a href="#V8引擎" class="headerlink" title="V8引擎"></a>V8引擎</h1><p>先来了解一下V8引擎:</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image1.png" alt="在这里插入图片描述"></p>
+<p>简单来说，V8引擎就是在做<strong>将<code>javascript</code>代码转换成机器语言</strong>，从而被cpu识别继而运行的工作。</p>
+<h2 id="执行原理与架构（了解）"><a href="#执行原理与架构（了解）" class="headerlink" title="执行原理与架构（了解）"></a>执行原理与架构（了解）</h2><p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image2.png" alt="在这里插入图片描述"><br>V8引擎本身的源码非常复杂，大概有超过100w行C++代码，通过了解它的架构，我们可以知道它是如何对)vaScript执行的：</p>
+<ul>
+<li><p><code>Parse</code>：将<code>javascript</code>代码转换成<code>AST抽象语法树</code>，因为解释器并不直接认识js代码；</p>
+<ul>
+<li>如果函数没有被调用，那么就不会被转成<code>AST</code></li>
+</ul>
+</li>
+<li><p><code>lgnition</code>：是一个解释器，会将<code>AST</code>转换成字节码；</p>
+<ul>
+<li>同时会收集<code>TurboFan</code>需要的类型信息（比如函数参数的类型信息，有了类型才能进行真实的运算）</li>
+<li>如果函数只执行一次，那么将直接解释执行字节码</li>
+</ul>
+</li>
+<li><p><code>TurboFan</code>：是一个编译器，可以将<code>AST</code>转换成CPU直接能运行的机器码；</p>
+<ul>
+<li>如果一个函数被多次调用，那么将会被标记为<code>热点函数</code>，那么就会经过<code>TurboFan</code>编译成优化的机器码，提高代码的执行性能；</li>
+<li>但是，<strong>机器码实际上也会被还原成字节码</strong>，这是因为如果后续执行过程中类型发生了变化，之前优化的机器码并不能正确的运算，就会逆向的转成字节码</li>
+</ul>
+</li>
+</ul>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image3.png" alt="在这里插入图片描述"></p>
+<h1 id="javascript-执行过程"><a href="#javascript-执行过程" class="headerlink" title="javascript 执行过程"></a>javascript 执行过程</h1><p>假设现在有段这样的代码，它应该是怎样执行的呢？<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image4.png" alt="在这里插入图片描述"></p>
+<p>我们先来了解一下相关的基础知识！</p>
+<h2 id="初始化全局对象"><a href="#初始化全局对象" class="headerlink" title="初始化全局对象"></a>初始化全局对象</h2><ul>
+<li>首先，<code>js</code> 在执行代码前，会创建一个全局对象：<code>Global Object</code><ul>
+<li>该对象 所有的作用域都可以访问；</li>
+<li>里面还会包含<code>Date</code>、<code>Array</code>、<code>Number</code>、<code>setTimeout</code>、<code>setInterval</code>等；</li>
+<li>其中还有一个属性指向<code>window</code></li>
+</ul>
+</li>
+</ul>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image5.png" alt="在这里插入图片描述"></p>
+<h2 id="执行上下文栈"><a href="#执行上下文栈" class="headerlink" title="执行上下文栈"></a>执行上下文栈</h2><p>js 引擎内部有一个<code>执行上下文栈</code>（Excution Context Stack，简称ECS），是用于执行代码的调用栈。</p>
+<ul>
+<li><p>那么现在要执行的是谁呢？是全局的代码块：</p>
+<ul>
+<li>全局的代码块在执行前会创建一个<code>Global Excution Context（GEC）</code>；</li>
+<li><code>GEC</code>会被放到<code>ECS</code>中执行</li>
+</ul>
+</li>
+<li><p><code>GEC</code>被放到<code>ECS</code>中包含两部分内容：</p>
+<ul>
+<li>第一部分：在代码执行前，在<code>parser</code>转成<code>AST</code>的过程中，会将全局定义的变量、函数等加入到<code>Global Object</code>中，但并不会赋值；（这个过程也叫做变量的作用域提升）</li>
+<li>在代码执行中，对变量赋值，或者执行其他的函数；</li>
+</ul>
+</li>
+</ul>
+<h1 id="全局代码的执行"><a href="#全局代码的执行" class="headerlink" title="全局代码的执行"></a>全局代码的执行</h1><p>先来认识一下<code>VO对象</code>：</p>
+<ul>
+<li>每个执行上下文都会关联一个VO（Variable Object，变量对象），变量和函数声明会被添加到这个VO对象中；</li>
+<li>当全局代码被执行的时候，VO就是GO对象了。</li>
+</ul>
+<p>❗️❗️❗️问题来了！<strong>全局代码如何被执行呢？</strong></p>
+<p><strong>执行前：</strong><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image6.png" alt="在这里插入图片描述"><br><strong>执行后：</strong><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image7.png" alt="在这里插入图片描述"><br>现在更改代码为：<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image8.png" alt="在这里插入图片描述"></p>
+<p>那就又有一个问题：<strong>函数代码如何执行呢？</strong></p>
+<h1 id="函数代码的执行"><a href="#函数代码的执行" class="headerlink" title="函数代码的执行"></a>函数代码的执行</h1><ul>
+<li>执行代码遇到函数体时，就会根据函数体创建一个函数体上下文（Functional Excution Context），并且压入到ECS中；</li>
+<li>当进入函数体执行代码时，就会创建一个<code>AO（Activation Obejct）</code>；</li>
+<li>这个<code>AO</code>会使用<code>arguments</code>作为初始化，并且初始值是传入的参数；</li>
+<li>这个<code>AO</code>对象会作为该函数体的执行上下文的<code>VO</code>来存放变量的初始化</li>
+</ul>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image9.png" alt="在这里插入图片描述"></p>
+<p>执行函数上下文之后：</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image10.png" alt="在这里插入图片描述"></p>
+<p>之后，函数执行上下文将会被压出栈外：</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image11.png" alt="在这里插入图片描述"></p>
+<p>❗️在函数作用域中可能遇到这样的情况：</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image12.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p><code>message</code>变量的声明存在于全局作用域，但在局部作用域进行了调用，<strong>那局部作用域又是怎么找到全距作用与中的变量呢？</strong></p>
+</blockquote>
+<p>这就涉及到了<code>javascript</code>的作用域和作用链！</p>
+<h1 id="作用域和作用链"><a href="#作用域和作用链" class="headerlink" title="作用域和作用链"></a>作用域和作用链</h1><p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image13.png" alt="在这里插入图片描述"></p>
+<p>上面说到，但我们进入一个执行上下文时，执行上下文会关联一个VO对象，其实，同时它也会关联一个 <strong><code>作用域链（Scope Chain）</code></strong>。</p>
+<ul>
+<li>作用域链是一个对象列表，用于表示变量标识符的求值；</li>
+<li>当进入一个执行上下文时，这个作用域链就会被创建，并且根据代码类型，添加一系列的对象</li>
+</ul>
+]]></content>
+      <categories>
+        <category>分类</category>
+      </categories>
+      <tags>
+        <tag>js高级</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>01- this的指向规则</title>
     <url>/posts/d8cbe511.html</url>
     <content><![CDATA[<p><code>this</code> 到底指向谁? 箭头函数中的<code>this</code>还能使用吗? 如果能使用又要怎么使用呢? 与普通函数的<code>this</code>指向一致吗?</p>
@@ -216,6 +309,77 @@
       </tags>
   </entry>
   <entry>
+    <title>Nginx安装与配置以及常用命令</title>
+    <url>/posts/4f72a7f4.html</url>
+    <content><![CDATA[<p>了解一下nginx的安装与配置，以及常见的nginx常用命令</p>
+<h1 id="1-安装与配置"><a href="#1-安装与配置" class="headerlink" title="1. 安装与配置"></a>1. 安装与配置</h1><ol>
+<li><p>阿里云申请免费云服务器，为nginx练习使用</p>
+</li>
+<li><p>连接远程服务器</p>
+<ul>
+<li>首先重置root密码</li>
+<li>若是使用vscode 可安装 <code>remote ssh</code>插件 （用来连接远程服务器）</li>
+<li>连接到远程</li>
+</ul>
+</li>
+<li><p>下载nginx </p>
+<ul>
+<li>cd &#x2F;usr&#x2F;local</li>
+<li>wget <a href="https://nginx.org/download/nginx-1.28.0.tar.gz">https://nginx.org/download/nginx-1.28.0.tar.gz</a> (若下载不成功可通过命令 <code>su</code> 切换到root用户)</li>
+</ul>
+</li>
+</ol>
+<img src="../../img/nginx/img.png">
+
+<pre><code>- tar -zxvf nginx-1.28.0.tar.gz
+- cd ./nginx-1.28.0
+</code></pre>
+<ol start="4">
+<li>初始配置及编译安装<ul>
+<li>初始配置 .&#x2F;configure</li>
+<li>编译源码 安装 make &amp;&amp; make install</li>
+</ul>
+</li>
+</ol>
+<h1 id="2-Nginx常见命令"><a href="#2-Nginx常见命令" class="headerlink" title="2. Nginx常见命令"></a>2. Nginx常见命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">user admin; # 规定启动nginx的用户</span><br><span class="line">worker_processes 1; # Nginx 启动一个工作进程，适用于轻量部署或开发环境。</span><br><span class="line">events &#123;</span><br><span class="line">   worker_connections 1024; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http&#123;</span><br><span class="line">   include mime.types; # 文件类型映射</span><br><span class="line">   default_type application/octet-stream; # 默认MIME类型</span><br><span class="line">   sendfile        on;                            # 启用 sendfile 加速</span><br><span class="line">   tcp_nopush      on;                            # 优化发送数据包</span><br><span class="line">   keepalive_timeout  65;                         # 长连接超时</span><br><span class="line">   client_max_body_size 10m;                      # 请求体大小限制</span><br><span class="line"></span><br><span class="line">   include /etc/nginx/conf.d/*.conf;              # 引入子配置文件</span><br><span class="line">   </span><br><span class="line">   # 静态文件配置</span><br><span class="line">   server &#123;</span><br><span class="line">      listen 8080 ssl;</span><br><span class="line">      server_name localhost myTest.com;</span><br><span class="line">      </span><br><span class="line">      # 申请ssl证书 配置ssl证书</span><br><span class="line">      ssl_certificate /path/to/cert.pem;</span><br><span class="line">      ssl_certificate_key /path/to/cert.key;</span><br><span class="line">      </span><br><span class="line">      location / &#123;</span><br><span class="line">         root /usr/local/nginx/html/dist; # 相对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      location /api &#123;</span><br><span class="line">         # 设置CORS配置</span><br><span class="line">         add_header Access-Control-Allow-Origin *;</span><br><span class="line">         add_header Access-Control-Allow-Methods &#x27;GET, POST, OPTIONS&#x27;;</span><br><span class="line">         add_header Access-Control-Allow-Headers &#x27;Content-Type, Authorization&#x27;;</span><br><span class="line">         </span><br><span class="line">         alias /usr/local/nginx/html/dist/api; # 绝对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">         </span><br><span class="line">         if ($request_method = &#x27;OPTIONS&#x27;) &#123;</span><br><span class="line">            return 204;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>分类</category>
+      </categories>
+      <tags>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>04-闭包</title>
+    <url>/posts/2f741396.html</url>
+    <content><![CDATA[<h1 id="javascript-内存管理"><a href="#javascript-内存管理" class="headerlink" title="javascript 内存管理"></a>javascript 内存管理</h1><blockquote>
+<p>认识内存管理</p>
+</blockquote>
+<p>不管什么样的编程语言，<strong>在代码执行过程中都需要进行内存分配</strong>，不同的是有些编程语言需要我们自己手动进行内存配置，有些则会自动帮我们进行内存分配。</p>
+<p>不管什么样的内存分配机制，<strong>内存的分配都会进入如下周期</strong>：</p>
+<ol>
+<li>申请分配内存</li>
+<li>使用分配的内存</li>
+<li>不需要使用时释放内存</li>
+</ol>
+<p>不同的语言会对第一步和第三步进行不同的处理：</p>
+<ul>
+<li>手动管理内存：比如<code>C</code>、<code>C++</code>，包括早期的<code>OC</code>，都是需要手动的进行内存的申请和释放（<code>malloc和free函数</code>）；</li>
+<li>自动管理内存：比如<code>java</code>、<code>javascript</code>、<code>Python</code>、<code>Swift</code>、<code>Dart</code>等，这些语言都有帮我们自动进行内存管理。</li>
+</ul>
+<p>也就是说，我们所使用的<code>javascript</code>会自动的对原始值、对象、函数等进行内存管理，我们并不需要进行多余的操作。</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/04-closure/img1.png" alt="img.png"></p>
+<h1 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h1><h1 id="闭包的概念理解"><a href="#闭包的概念理解" class="headerlink" title="闭包的概念理解"></a>闭包的概念理解</h1><h1 id="闭包的形成过程"><a href="#闭包的形成过程" class="headerlink" title="闭包的形成过程"></a>闭包的形成过程</h1><h1 id="闭包的内存泄漏"><a href="#闭包的内存泄漏" class="headerlink" title="闭包的内存泄漏"></a>闭包的内存泄漏</h1>]]></content>
+      <categories>
+        <category>分类</category>
+      </categories>
+      <tags>
+        <tag>js高级</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>02- 浏览器运行原理</title>
     <url>/posts/2373884b.html</url>
     <content><![CDATA[<p>从输入路径开始，浏览器是怎样一步步渲染出页面的呢？</p>
@@ -345,119 +509,28 @@
       </tags>
   </entry>
   <entry>
-    <title>03-javascript的运行原理</title>
-    <url>/posts/4bc49eeb.html</url>
-    <content><![CDATA[<p>上篇博客了解了一下浏览器的运行原理，那javascript的运行原理又是怎么样的呢？</p>
-<h1 id="V8引擎"><a href="#V8引擎" class="headerlink" title="V8引擎"></a>V8引擎</h1><p>先来了解一下V8引擎:</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image1.png" alt="在这里插入图片描述"></p>
-<p>简单来说，V8引擎就是在做<strong>将<code>javascript</code>代码转换成机器语言</strong>，从而被cpu识别继而运行的工作。</p>
-<h2 id="执行原理与架构（了解）"><a href="#执行原理与架构（了解）" class="headerlink" title="执行原理与架构（了解）"></a>执行原理与架构（了解）</h2><p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image2.png" alt="在这里插入图片描述"><br>V8引擎本身的源码非常复杂，大概有超过100w行C++代码，通过了解它的架构，我们可以知道它是如何对)vaScript执行的：</p>
-<ul>
-<li><p><code>Parse</code>：将<code>javascript</code>代码转换成<code>AST抽象语法树</code>，因为解释器并不直接认识js代码；</p>
-<ul>
-<li>如果函数没有被调用，那么就不会被转成<code>AST</code></li>
-</ul>
-</li>
-<li><p><code>lgnition</code>：是一个解释器，会将<code>AST</code>转换成字节码；</p>
-<ul>
-<li>同时会收集<code>TurboFan</code>需要的类型信息（比如函数参数的类型信息，有了类型才能进行真实的运算）</li>
-<li>如果函数只执行一次，那么将直接解释执行字节码</li>
-</ul>
-</li>
-<li><p><code>TurboFan</code>：是一个编译器，可以将<code>AST</code>转换成CPU直接能运行的机器码；</p>
-<ul>
-<li>如果一个函数被多次调用，那么将会被标记为<code>热点函数</code>，那么就会经过<code>TurboFan</code>编译成优化的机器码，提高代码的执行性能；</li>
-<li>但是，<strong>机器码实际上也会被还原成字节码</strong>，这是因为如果后续执行过程中类型发生了变化，之前优化的机器码并不能正确的运算，就会逆向的转成字节码</li>
-</ul>
-</li>
-</ul>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image3.png" alt="在这里插入图片描述"></p>
-<h1 id="javascript-执行过程"><a href="#javascript-执行过程" class="headerlink" title="javascript 执行过程"></a>javascript 执行过程</h1><p>假设现在有段这样的代码，它应该是怎样执行的呢？<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image4.png" alt="在这里插入图片描述"></p>
-<p>我们先来了解一下相关的基础知识！</p>
-<h2 id="初始化全局对象"><a href="#初始化全局对象" class="headerlink" title="初始化全局对象"></a>初始化全局对象</h2><ul>
-<li>首先，<code>js</code> 在执行代码前，会创建一个全局对象：<code>Global Object</code><ul>
-<li>该对象 所有的作用域都可以访问；</li>
-<li>里面还会包含<code>Date</code>、<code>Array</code>、<code>Number</code>、<code>setTimeout</code>、<code>setInterval</code>等；</li>
-<li>其中还有一个属性指向<code>window</code></li>
-</ul>
-</li>
-</ul>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image5.png" alt="在这里插入图片描述"></p>
-<h2 id="执行上下文栈"><a href="#执行上下文栈" class="headerlink" title="执行上下文栈"></a>执行上下文栈</h2><p>js 引擎内部有一个<code>执行上下文栈</code>（Excution Context Stack，简称ECS），是用于执行代码的调用栈。</p>
-<ul>
-<li><p>那么现在要执行的是谁呢？是全局的代码块：</p>
-<ul>
-<li>全局的代码块在执行前会创建一个<code>Global Excution Context（GEC）</code>；</li>
-<li><code>GEC</code>会被放到<code>ECS</code>中执行</li>
-</ul>
-</li>
-<li><p><code>GEC</code>被放到<code>ECS</code>中包含两部分内容：</p>
-<ul>
-<li>第一部分：在代码执行前，在<code>parser</code>转成<code>AST</code>的过程中，会将全局定义的变量、函数等加入到<code>Global Object</code>中，但并不会赋值；（这个过程也叫做变量的作用域提升）</li>
-<li>在代码执行中，对变量赋值，或者执行其他的函数；</li>
-</ul>
-</li>
-</ul>
-<h1 id="全局代码的执行"><a href="#全局代码的执行" class="headerlink" title="全局代码的执行"></a>全局代码的执行</h1><p>先来认识一下<code>VO对象</code>：</p>
-<ul>
-<li>每个执行上下文都会关联一个VO（Variable Object，变量对象），变量和函数声明会被添加到这个VO对象中；</li>
-<li>当全局代码被执行的时候，VO就是GO对象了。</li>
-</ul>
-<p>❗️❗️❗️问题来了！<strong>全局代码如何被执行呢？</strong></p>
-<p><strong>执行前：</strong><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image6.png" alt="在这里插入图片描述"><br><strong>执行后：</strong><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image7.png" alt="在这里插入图片描述"><br>现在更改代码为：<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image8.png" alt="在这里插入图片描述"></p>
-<p>那就又有一个问题：<strong>函数代码如何执行呢？</strong></p>
-<h1 id="函数代码的执行"><a href="#函数代码的执行" class="headerlink" title="函数代码的执行"></a>函数代码的执行</h1><ul>
-<li>执行代码遇到函数体时，就会根据函数体创建一个函数体上下文（Functional Excution Context），并且压入到ECS中；</li>
-<li>当进入函数体执行代码时，就会创建一个<code>AO（Activation Obejct）</code>；</li>
-<li>这个<code>AO</code>会使用<code>arguments</code>作为初始化，并且初始值是传入的参数；</li>
-<li>这个<code>AO</code>对象会作为该函数体的执行上下文的<code>VO</code>来存放变量的初始化</li>
-</ul>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image9.png" alt="在这里插入图片描述"></p>
-<p>执行函数上下文之后：</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image10.png" alt="在这里插入图片描述"></p>
-<p>之后，函数执行上下文将会被压出栈外：</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image11.png" alt="在这里插入图片描述"></p>
-<p>❗️在函数作用域中可能遇到这样的情况：</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image12.png" alt="在这里插入图片描述"></p>
-<blockquote>
-<p><code>message</code>变量的声明存在于全局作用域，但在局部作用域进行了调用，<strong>那局部作用域又是怎么找到全距作用与中的变量呢？</strong></p>
-</blockquote>
-<p>这就涉及到了<code>javascript</code>的作用域和作用链！</p>
-<h1 id="作用域和作用链"><a href="#作用域和作用链" class="headerlink" title="作用域和作用链"></a>作用域和作用链</h1><p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image13.png" alt="在这里插入图片描述"></p>
-<p>上面说到，但我们进入一个执行上下文时，执行上下文会关联一个VO对象，其实，同时它也会关联一个 <strong><code>作用域链（Scope Chain）</code></strong>。</p>
-<ul>
-<li>作用域链是一个对象列表，用于表示变量标识符的求值；</li>
-<li>当进入一个执行上下文时，这个作用域链就会被创建，并且根据代码类型，添加一系列的对象</li>
-</ul>
-]]></content>
-      <categories>
-        <category>分类</category>
-      </categories>
-      <tags>
-        <tag>js高级</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>04-闭包</title>
+    <title>06-javascript函数增强</title>
     <url>/posts/2f741396.html</url>
-    <content><![CDATA[<h1 id="1-函数对象的属性"><a href="#1-函数对象的属性" class="headerlink" title="1. 函数对象的属性"></a>1. 函数对象的属性</h1><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params">a, b</span>)&#123;</span><br><span class="line">        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <content><![CDATA[<p>了解一下<code>js</code>函数相关增强知识。</p>
+<h1 id="1-函数基本概念掌握"><a href="#1-函数基本概念掌握" class="headerlink" title="1. 函数基本概念掌握"></a>1. 函数基本概念掌握</h1><h2 id="1-1-函数对象的属性"><a href="#1-1-函数对象的属性" class="headerlink" title="1.1 函数对象的属性"></a>1.1 函数对象的属性</h2><p>现定义一个函数：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params">a, b</span>)&#123;</span><br><span class="line">        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ol>
-<li>自定义属性 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">foo.<span class="property">title</span> = <span class="string">&quot;foo title&quot;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(foo.<span class="property">title</span>) <span class="comment">// fo title</span></span><br></pre></td></tr></table></figure></li>
+<li>自定义属性 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">foo.<span class="property">title</span> = <span class="string">&quot;foo title&quot;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(foo.<span class="property">title</span>) <span class="comment">// foo title</span></span><br></pre></td></tr></table></figure></li>
 <li>默认属性<ul>
 <li><code>name</code><br> <code>console.log(foo.name) // foo</code></li>
 <li><code>length</code> (指的是函数参数的个数,但不包括有默认值的参数和可变参数)<br><code>console.log(foo.length) // 2</code></li>
 </ul>
 </li>
 </ol>
-<h1 id="2-函数的arguments"><a href="#2-函数的arguments" class="headerlink" title="2. 函数的arguments"></a>2. 函数的<code>arguments</code></h1><ol>
+<h2 id="1-2-函数的arguments"><a href="#1-2-函数的arguments" class="headerlink" title="1.2 函数的arguments"></a>1.2 函数的<code>arguments</code></h2><ol>
 <li><p>三种获取方式</p>
  <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo1</span>(<span class="params">a, b, c</span>) &#123;</span><br><span class="line">   <span class="comment">// 获取arguments</span></span><br><span class="line">   <span class="comment">// 1. arguments是一个伪数组对象，可通过[]字面量继续进行获取</span></span><br><span class="line">   <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">arguments</span>[<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 2.for循环遍历</span></span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="variable language_">arguments</span>.<span class="property">length</span>; i++) &#123;</span><br><span class="line">       <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">arguments</span>[i]);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 3. for of 遍历   （for of 可用来遍历可迭代对象）</span></span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">let</span> item <span class="keyword">of</span> <span class="variable language_">arguments</span>) &#123;</span><br><span class="line">       <span class="variable language_">console</span>.<span class="title function_">log</span>(item);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>三种转换为数组的方式</p>
  <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo2</span>(<span class="params">a, b</span>)&#123;</span><br><span class="line">   <span class="comment">// 转换成数组</span></span><br><span class="line">   <span class="comment">// 1. 将数据放入新数组</span></span><br><span class="line">   <span class="keyword">let</span> arr1 = []</span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="variable language_">arguments</span>.<span class="property">length</span>; i++) &#123;</span><br><span class="line">       arr1.<span class="title function_">push</span>(<span class="variable language_">arguments</span>[i])</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 2. [].slice()</span></span><br><span class="line">   <span class="keyword">let</span> arr2 = [].<span class="property">slice</span>.<span class="title function_">call</span>(<span class="variable language_">arguments</span>)</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 3. Array.from()</span></span><br><span class="line">   <span class="keyword">let</span> arr3 = <span class="title class_">Array</span>.<span class="title function_">from</span>(<span class="variable language_">arguments</span>)</span><br><span class="line">   <span class="keyword">let</span> arr4 = [...<span class="variable language_">arguments</span>]</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></li>
 </ol>
-<h1 id="3-箭头函数的arguments"><a href="#3-箭头函数的arguments" class="headerlink" title="3. 箭头函数的arguments"></a>3. 箭头函数的<code>arguments</code></h1><p>箭头函数没有<code>arguments</code>，若在箭头函数内部使用，那么<code>arguments</code>将会向外寻找父级作用域的<code>arguments</code></p>
-<h1 id="4-函数的剩余参数rest"><a href="#4-函数的剩余参数rest" class="headerlink" title="4. 函数的剩余参数rest"></a>4. 函数的剩余参数<code>rest</code></h1><p>如果最后一个参数以…为前缀，那么该参数将以数组的形式接收剩余的参数。</p>
+<h2 id="1-3-箭头函数的arguments"><a href="#1-3-箭头函数的arguments" class="headerlink" title="1.3 箭头函数的arguments"></a>1.3 箭头函数的<code>arguments</code></h2><p>箭头函数没有<code>arguments</code>，若在箭头函数内部使用，那么<code>arguments</code>将会向外寻找父级作用域的<code>arguments</code></p>
+<h2 id="1-4-函数的剩余参数rest"><a href="#1-4-函数的剩余参数rest" class="headerlink" title="1.4 函数的剩余参数rest"></a>1.4 函数的剩余参数<code>rest</code></h2><p>如果最后一个参数以…为前缀，那么该参数将以数组的形式接收剩余的参数。</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">rest</span>(<span class="params">a, ...args</span>)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(a)</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(args)</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">rest</span>(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>) <span class="comment">// 1 [2,3,4,5]</span></span><br></pre></td></tr></table></figure>
 
 <p><strong>注：剩余参数必须放在最后一个形参位置，否则会报错。</strong></p>
@@ -467,78 +540,60 @@
 <li><code>rest</code>接收没有对应形参的实参，<code>arguments</code>接收所有实参</li>
 <li><code>arguments</code>是早期<code>ECMAScript</code>为方便获取参数定义的一个属性，而<code>rest</code>是<code>ECMAScript6</code>新增的希望替代arguments的语法，。</li>
 </ol>
-]]></content>
-      <categories>
-        <category>分类</category>
-      </categories>
-      <tags>
-        <tag>js高级</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>04-闭包</title>
-    <url>/posts/2f741396.html</url>
-    <content><![CDATA[<h1 id="javascript-内存管理"><a href="#javascript-内存管理" class="headerlink" title="javascript 内存管理"></a>javascript 内存管理</h1><blockquote>
-<p>认识内存管理</p>
+<h1 id="2-纯函数"><a href="#2-纯函数" class="headerlink" title="2. 纯函数"></a>2. 纯函数</h1><h2 id="2-2-概念理解"><a href="#2-2-概念理解" class="headerlink" title="2.2 概念理解"></a>2.2 概念理解</h2><blockquote>
+<p>简单来说，满足有相同输入时总是有相同输出，并且没有任何副作用的函数叫做纯函数。</p>
 </blockquote>
-<p>不管什么样的编程语言，<strong>在代码执行过程中都需要进行内存分配</strong>，不同的是有些编程语言需要我们自己手动进行内存配置，有些则会自动帮我们进行内存分配。</p>
-<p>不管什么样的内存分配机制，<strong>内存的分配都会进入如下周期</strong>：</p>
 <ol>
-<li>申请分配内存</li>
-<li>使用分配的内存</li>
-<li>不需要使用时释放内存</li>
+<li>输入相同时有相同输出<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> b = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">add1</span>(<span class="params">a</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+这个函数就不是一个纯函数，因为函数内部存在外部变量b，输出可能不一致。</li>
+<li>没有产生任何副作用<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> a,b = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">add1</span>(<span class="params">a,b</span>)&#123;</span><br><span class="line">    b = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+这个函数修改了外部变量b，也就是产生了副作用，所以这个函数也不是纯函数。</li>
 </ol>
-<p>不同的语言会对第一步和第三步进行不同的处理：</p>
+<h2 id="2-2-纯函数案例"><a href="#2-2-纯函数案例" class="headerlink" title="2.2 纯函数案例"></a>2.2 纯函数案例</h2><blockquote>
+<p>let arr &#x3D; [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</p>
+</blockquote>
 <ul>
-<li>手动管理内存：比如<code>C</code>、<code>C++</code>，包括早期的<code>OC</code>，都是需要手动的进行内存的申请和释放（<code>malloc和free函数</code>）；</li>
-<li>自动管理内存：比如<code>java</code>、<code>javascript</code>、<code>Python</code>、<code>Swift</code>、<code>Dart</code>等，这些语言都有帮我们自动进行内存管理。</li>
-</ul>
-<p>也就是说，我们所使用的<code>javascript</code>会自动的对原始值、对象、函数等进行内存管理，我们并不需要进行多余的操作。</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/04-closure/img1.png" alt="img.png"></p>
-<h1 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h1><h1 id="闭包的概念理解"><a href="#闭包的概念理解" class="headerlink" title="闭包的概念理解"></a>闭包的概念理解</h1><h1 id="闭包的形成过程"><a href="#闭包的形成过程" class="headerlink" title="闭包的形成过程"></a>闭包的形成过程</h1><h1 id="闭包的内存泄漏"><a href="#闭包的内存泄漏" class="headerlink" title="闭包的内存泄漏"></a>闭包的内存泄漏</h1>]]></content>
-      <categories>
-        <category>分类</category>
-      </categories>
-      <tags>
-        <tag>js高级</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Nginx安装与配置以及常用命令</title>
-    <url>/posts/4f72a7f4.html</url>
-    <content><![CDATA[<p>了解一下nginx的安装与配置，以及常见的nginx常用命令</p>
-<h1 id="1-安装与配置"><a href="#1-安装与配置" class="headerlink" title="1. 安装与配置"></a>1. 安装与配置</h1><ol>
-<li><p>阿里云申请免费云服务器，为nginx练习使用</p>
+<li><code>slice()</code><blockquote>
+<p>console.log(arr.slice(0, 5), arr);   &#x2F;&#x2F;截取数组</p>
+</blockquote>
 </li>
-<li><p>连接远程服务器</p>
+</ul>
+<p>输出：[1, 2, 3, 4, 5]   [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</p>
 <ul>
-<li>首先重置root密码</li>
-<li>若是使用vscode 可安装 <code>remote ssh</code>插件 （用来连接远程服务器）</li>
-<li>连接到远程</li>
-</ul>
+<li><code>splice()</code><blockquote>
+<p>console.log(arr.splice(0, 5), arr);</p>
+</blockquote>
 </li>
-<li><p>下载nginx </p>
-<ul>
-<li>cd &#x2F;usr&#x2F;local</li>
-<li>wget <a href="https://nginx.org/download/nginx-1.28.0.tar.gz">https://nginx.org/download/nginx-1.28.0.tar.gz</a> (若下载不成功可通过命令 <code>su</code> 切换到root用户)</li>
 </ul>
-</li>
-</ol>
-<img src="../../img/nginx/img.png">
-    - tar -zxvf nginx-1.28.0.tar.gz
-    - cd ./nginx-1.28.0
-4. 初始配置及编译安装
-    - 初始配置 ./configure
-    - 编译源码 安装 make && make install
-    
-<h1 id="2-Nginx常见命令"><a href="#2-Nginx常见命令" class="headerlink" title="2. Nginx常见命令"></a>2. Nginx常见命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">user admin; # 规定启动nginx的用户</span><br><span class="line">worker_processes 1; # Nginx 启动一个工作进程，适用于轻量部署或开发环境。</span><br><span class="line">events &#123;</span><br><span class="line">   worker_connections 1024; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http&#123;</span><br><span class="line">   include mime.types; # 文件类型映射</span><br><span class="line">   default_type application/octet-stream; # 默认MIME类型</span><br><span class="line">   sendfile        on;                            # 启用 sendfile 加速</span><br><span class="line">   tcp_nopush      on;                            # 优化发送数据包</span><br><span class="line">   keepalive_timeout  65;                         # 长连接超时</span><br><span class="line">   client_max_body_size 10m;                      # 请求体大小限制</span><br><span class="line"></span><br><span class="line">   include /etc/nginx/conf.d/*.conf;              # 引入子配置文件</span><br><span class="line">   </span><br><span class="line">   # 静态文件配置</span><br><span class="line">   server &#123;</span><br><span class="line">      listen 8080 ssl;</span><br><span class="line">      server_name localhost myTest.com;</span><br><span class="line">      </span><br><span class="line">      # 申请ssl证书 配置ssl证书</span><br><span class="line">      ssl_certificate /path/to/cert.pem;</span><br><span class="line">      ssl_certificate_key /path/to/cert.key;</span><br><span class="line">      </span><br><span class="line">      location / &#123;</span><br><span class="line">         root /usr/local/nginx/html/dist; # 相对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      location /api &#123;</span><br><span class="line">         # 设置CORS配置</span><br><span class="line">         add_header Access-Control-Allow-Origin *;</span><br><span class="line">         add_header Access-Control-Allow-Methods &#x27;GET, POST, OPTIONS&#x27;;</span><br><span class="line">         add_header Access-Control-Allow-Headers &#x27;Content-Type, Authorization&#x27;;</span><br><span class="line">         </span><br><span class="line">         alias /usr/local/nginx/html/dist/api; # 绝对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">         </span><br><span class="line">         if ($request_method = &#x27;OPTIONS&#x27;) &#123;</span><br><span class="line">            return 204;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>输出：[ 1, 2, 3, 4, 5 ] [ 6, 7, 8, 9, 10 ]</p>
+<p>根据输出结果可以知道slice()是纯函数，但splice()不是纯函数，因为splice()修改了arr，产生了外部影响。</p>
+<p><strong>纯函数在函数式编程中很重要，它保证了函数的纯度，只单纯实现自己的业务逻辑，不会对外部变量产生影响。</strong></p>
+<h1 id="3-函数柯里化"><a href="#3-函数柯里化" class="headerlink" title="3. 函数柯里化"></a>3. 函数柯里化</h1><h2 id="3-1-基本了解"><a href="#3-1-基本了解" class="headerlink" title="3.1 基本了解"></a>3.1 基本了解</h2><blockquote>
+<p><code>柯里化（Currying）</code>是把接受多个参数的函数变换成接受一个参数的函数，并且返回接受多个参数的函数的函数。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params">a, b, c</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b + c;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">foo</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p>柯里化后：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params">a</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">b</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">c</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> a + b + c;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">foo</span>(<span class="number">1</span>)(<span class="number">2</span>)(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+<p>箭头函数写法：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">foo</span> = a =&gt; <span class="function"><span class="params">b</span> =&gt;</span> <span class="function"><span class="params">c</span> =&gt;</span> a + b + c;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
 
 ]]></content>
       <categories>
         <category>分类</category>
       </categories>
       <tags>
-        <tag>nginx</tag>
+        <tag>js高级</tag>
       </tags>
   </entry>
 </search>
