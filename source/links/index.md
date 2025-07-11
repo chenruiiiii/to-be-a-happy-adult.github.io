@@ -1,5 +1,5 @@
 ---
-title: links
+title: 友链
 date: 2025-06-05 22:29:00
 type: 
 comments: false
@@ -41,11 +41,11 @@ comments: false
     transform: scale(1.02);
 }
 
-body[class*='darkmode--activated'] .link-item {
+[data-theme='dark'] .link-item {
     box-shadow: 1px 1px 5px 0 rgba(255,255,255, .1), inset 1px 1px 5px 0 rgba(255,255,255, .1);
 }
 
-body[class*='darkmode--activated'] .link-item:hover {
+[data-theme='dark'] .link-item:hover {
     box-shadow: 1px 1px 5px 0 rgba(255,255,255, .2), inset 1px 1px 5px 0 rgba(255,255,255, .1);
 }
 
@@ -77,16 +77,11 @@ body[class*='darkmode--activated'] .link-item:hover {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
 }
-
-a {
-    text-decoration: none;
-    border-bottom: none;
-}
 </style>
 
 <div class="links-container">
   <div class="link-item">
-    <a href="https://a-big-dreamer.github.io/" target="_blank" class="link-card">
+    <a href="https://a-big-dreamer.github.io/" target="_blank" class="link-card" style="text-decoration: none">
       <div class="link-icon">
         <img src="../img/A-Big-Dreamer's-Blog.jpg" alt="A Big Dreamer's Blog" />
       </div>

@@ -20,22 +20,22 @@ nav:
 Home: / || fas fa-home
 Archives: /archives/ || fas fa-archive
 Tags: /tags/ || fas fa-tags
-Categories: /categories/ || fas fa-folder-open
 List||fas fa-list:
 #  Music: /music/ || fas fa-music
 #  Video: /videos/ || fas fa-video
   Links: /links/ || fas fa-link
+#  Categories: /categories/ || fas fa-folder-open
 About: /about/ || fas fa-heart
 
 menu:
    首页: / || fas fa-home
    归档: /archives/ || fas fa-archive
-   分类: /categories/ || fas fa-folder-open
    标签: /tags/ || fas fa-tags
    列表:
 #    音乐: /music/ || fas fa-music
 #    心情: /videos/ || fas fa-video
     友链: /links/ || fas fa-link
+#    分类: /categories/ || fas fa-folder-open
    关于: /about/ || fas fa-heart
 
 #   相册: /gallery/fas fa-solid fa-image
@@ -100,7 +100,7 @@ symbols_count_time:
 #   icon: link || the description || color
 social:
    fab fa-github: https://github.com/chenruiiiii || Github || '#24292e'
-   fas fa-envelope: chenruiiiiii2005@163.com || Email || '#4a7dbe'
+#   fas fa-envelope: chenruiiiiii2005@163.com || Email || '#4a7dbe'
 #   fas fa-rss: /atom.xml || RSS
 
 # --------------------------------------
@@ -111,7 +111,7 @@ social:
 friends:
   Hexo: http://to-be-a-happy-adult.xyz/
   GitHub: https://github.com/chenruiiiii
-  Email: chenruiiiiii2005@163.com
+#  Email: chenruiiiiii2005@163.com
 
 ## 关闭友链
 #friends: false
