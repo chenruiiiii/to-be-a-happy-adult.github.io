@@ -1,170 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Nginx安装与配置以及常用命令</title>
-    <url>/posts/4f72a7f4.html</url>
-    <content><![CDATA[<p>了解一下nginx的安装与配置，以及常见的nginx常用命令</p>
-<h1 id="1-安装与配置"><a href="#1-安装与配置" class="headerlink" title="1. 安装与配置"></a>1. 安装与配置</h1><ol>
-<li><p>阿里云申请免费云服务器，为nginx练习使用</p>
-</li>
-<li><p>连接远程服务器</p>
+    <title>03-javascript的运行原理</title>
+    <url>/posts/4bc49eeb.html</url>
+    <content><![CDATA[<p>上篇博客了解了一下浏览器的运行原理，那javascript的运行原理又是怎么样的呢？</p>
+<h1 id="V8引擎"><a href="#V8引擎" class="headerlink" title="V8引擎"></a>V8引擎</h1><p>先来了解一下V8引擎:</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image1.png" alt="在这里插入图片描述"></p>
+<p>简单来说，V8引擎就是在做<strong>将<code>javascript</code>代码转换成机器语言</strong>，从而被cpu识别继而运行的工作。</p>
+<h2 id="执行原理与架构（了解）"><a href="#执行原理与架构（了解）" class="headerlink" title="执行原理与架构（了解）"></a>执行原理与架构（了解）</h2><p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image2.png" alt="在这里插入图片描述"><br>V8引擎本身的源码非常复杂，大概有超过100w行C++代码，通过了解它的架构，我们可以知道它是如何对)vaScript执行的：</p>
 <ul>
-<li>首先重置root密码</li>
-<li>若是使用vscode 可安装 <code>remote ssh</code>插件 （用来连接远程服务器）</li>
-<li>连接到远程</li>
-</ul>
-</li>
-<li><p>下载nginx </p>
+<li><p><code>Parse</code>：将<code>javascript</code>代码转换成<code>AST抽象语法树</code>，因为解释器并不直接认识js代码；</p>
 <ul>
-<li>cd &#x2F;usr&#x2F;local</li>
-<li>wget <a href="https://nginx.org/download/nginx-1.28.0.tar.gz">https://nginx.org/download/nginx-1.28.0.tar.gz</a> (若下载不成功可通过命令 <code>su</code> 切换到root用户)</li>
+<li>如果函数没有被调用，那么就不会被转成<code>AST</code></li>
 </ul>
 </li>
-</ol>
-<img src="../../img/nginx/img.png">
-
-<pre><code>- tar -zxvf nginx-1.28.0.tar.gz
-- cd ./nginx-1.28.0
-</code></pre>
-<ol start="4">
-<li>初始配置及编译安装<ul>
-<li>初始配置 .&#x2F;configure</li>
-<li>编译源码 安装 make &amp;&amp; make install</li>
+<li><p><code>lgnition</code>：是一个解释器，会将<code>AST</code>转换成字节码；</p>
+<ul>
+<li>同时会收集<code>TurboFan</code>需要的类型信息（比如函数参数的类型信息，有了类型才能进行真实的运算）</li>
+<li>如果函数只执行一次，那么将直接解释执行字节码</li>
 </ul>
 </li>
-</ol>
-<h1 id="2-Nginx常见命令"><a href="#2-Nginx常见命令" class="headerlink" title="2. Nginx常见命令"></a>2. Nginx常见命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">user admin; # 规定启动nginx的用户</span><br><span class="line">worker_processes 1; # Nginx 启动一个工作进程，适用于轻量部署或开发环境。</span><br><span class="line">events &#123;</span><br><span class="line">   worker_connections 1024; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http&#123;</span><br><span class="line">   include mime.types; # 文件类型映射</span><br><span class="line">   default_type application/octet-stream; # 默认MIME类型</span><br><span class="line">   sendfile        on;                            # 启用 sendfile 加速</span><br><span class="line">   tcp_nopush      on;                            # 优化发送数据包</span><br><span class="line">   keepalive_timeout  65;                         # 长连接超时</span><br><span class="line">   client_max_body_size 10m;                      # 请求体大小限制</span><br><span class="line"></span><br><span class="line">   include /etc/nginx/conf.d/*.conf;              # 引入子配置文件</span><br><span class="line">   </span><br><span class="line">   # 静态文件配置</span><br><span class="line">   server &#123;</span><br><span class="line">      listen 8080 ssl;</span><br><span class="line">      server_name localhost myTest.com;</span><br><span class="line">      </span><br><span class="line">      # 申请ssl证书 配置ssl证书</span><br><span class="line">      ssl_certificate /path/to/cert.pem;</span><br><span class="line">      ssl_certificate_key /path/to/cert.key;</span><br><span class="line">      </span><br><span class="line">      location / &#123;</span><br><span class="line">         root /usr/local/nginx/html/dist; # 相对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      location /api &#123;</span><br><span class="line">         # 设置CORS配置</span><br><span class="line">         add_header Access-Control-Allow-Origin *;</span><br><span class="line">         add_header Access-Control-Allow-Methods &#x27;GET, POST, OPTIONS&#x27;;</span><br><span class="line">         add_header Access-Control-Allow-Headers &#x27;Content-Type, Authorization&#x27;;</span><br><span class="line">         </span><br><span class="line">         alias /usr/local/nginx/html/dist/api; # 绝对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">         </span><br><span class="line">         if ($request_method = &#x27;OPTIONS&#x27;) &#123;</span><br><span class="line">            return 204;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
+<li><p><code>TurboFan</code>：是一个编译器，可以将<code>AST</code>转换成CPU直接能运行的机器码；</p>
+<ul>
+<li>如果一个函数被多次调用，那么将会被标记为<code>热点函数</code>，那么就会经过<code>TurboFan</code>编译成优化的机器码，提高代码的执行性能；</li>
+<li>但是，<strong>机器码实际上也会被还原成字节码</strong>，这是因为如果后续执行过程中类型发生了变化，之前优化的机器码并不能正确的运算，就会逆向的转成字节码</li>
+</ul>
+</li>
+</ul>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image3.png" alt="在这里插入图片描述"></p>
+<h1 id="javascript-执行过程"><a href="#javascript-执行过程" class="headerlink" title="javascript 执行过程"></a>javascript 执行过程</h1><p>假设现在有段这样的代码，它应该是怎样执行的呢？<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image4.png" alt="在这里插入图片描述"></p>
+<p>我们先来了解一下相关的基础知识！</p>
+<h2 id="初始化全局对象"><a href="#初始化全局对象" class="headerlink" title="初始化全局对象"></a>初始化全局对象</h2><ul>
+<li>首先，<code>js</code> 在执行代码前，会创建一个全局对象：<code>Global Object</code><ul>
+<li>该对象 所有的作用域都可以访问；</li>
+<li>里面还会包含<code>Date</code>、<code>Array</code>、<code>Number</code>、<code>setTimeout</code>、<code>setInterval</code>等；</li>
+<li>其中还有一个属性指向<code>window</code></li>
+</ul>
+</li>
+</ul>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image5.png" alt="在这里插入图片描述"></p>
+<h2 id="执行上下文栈"><a href="#执行上下文栈" class="headerlink" title="执行上下文栈"></a>执行上下文栈</h2><p>js 引擎内部有一个<code>执行上下文栈</code>（Excution Context Stack，简称ECS），是用于执行代码的调用栈。</p>
+<ul>
+<li><p>那么现在要执行的是谁呢？是全局的代码块：</p>
+<ul>
+<li>全局的代码块在执行前会创建一个<code>Global Excution Context（GEC）</code>；</li>
+<li><code>GEC</code>会被放到<code>ECS</code>中执行</li>
+</ul>
+</li>
+<li><p><code>GEC</code>被放到<code>ECS</code>中包含两部分内容：</p>
+<ul>
+<li>第一部分：在代码执行前，在<code>parser</code>转成<code>AST</code>的过程中，会将全局定义的变量、函数等加入到<code>Global Object</code>中，但并不会赋值；（这个过程也叫做变量的作用域提升）</li>
+<li>在代码执行中，对变量赋值，或者执行其他的函数；</li>
+</ul>
+</li>
+</ul>
+<h1 id="全局代码的执行"><a href="#全局代码的执行" class="headerlink" title="全局代码的执行"></a>全局代码的执行</h1><p>先来认识一下<code>VO对象</code>：</p>
+<ul>
+<li>每个执行上下文都会关联一个VO（Variable Object，变量对象），变量和函数声明会被添加到这个VO对象中；</li>
+<li>当全局代码被执行的时候，VO就是GO对象了。</li>
+</ul>
+<p>❗️❗️❗️问题来了！<strong>全局代码如何被执行呢？</strong></p>
+<p><strong>执行前：</strong><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image6.png" alt="在这里插入图片描述"><br><strong>执行后：</strong><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image7.png" alt="在这里插入图片描述"><br>现在更改代码为：<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image8.png" alt="在这里插入图片描述"></p>
+<p>那就又有一个问题：<strong>函数代码如何执行呢？</strong></p>
+<h1 id="函数代码的执行"><a href="#函数代码的执行" class="headerlink" title="函数代码的执行"></a>函数代码的执行</h1><ul>
+<li>执行代码遇到函数体时，就会根据函数体创建一个函数体上下文（Functional Excution Context），并且压入到ECS中；</li>
+<li>当进入函数体执行代码时，就会创建一个<code>AO（Activation Obejct）</code>；</li>
+<li>这个<code>AO</code>会使用<code>arguments</code>作为初始化，并且初始值是传入的参数；</li>
+<li>这个<code>AO</code>对象会作为该函数体的执行上下文的<code>VO</code>来存放变量的初始化</li>
+</ul>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image9.png" alt="在这里插入图片描述"></p>
+<p>执行函数上下文之后：</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image10.png" alt="在这里插入图片描述"></p>
+<p>之后，函数执行上下文将会被压出栈外：</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image11.png" alt="在这里插入图片描述"></p>
+<p>❗️在函数作用域中可能遇到这样的情况：</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image12.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p><code>message</code>变量的声明存在于全局作用域，但在局部作用域进行了调用，<strong>那局部作用域又是怎么找到全距作用与中的变量呢？</strong></p>
+</blockquote>
+<p>这就涉及到了<code>javascript</code>的作用域和作用链！</p>
+<h1 id="作用域和作用链"><a href="#作用域和作用链" class="headerlink" title="作用域和作用链"></a>作用域和作用链</h1><p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image13.png" alt="在这里插入图片描述"></p>
+<p>上面说到，但我们进入一个执行上下文时，执行上下文会关联一个VO对象，其实，同时它也会关联一个 <strong><code>作用域链（Scope Chain）</code></strong>。</p>
+<ul>
+<li>作用域链是一个对象列表，用于表示变量标识符的求值；</li>
+<li>当进入一个执行上下文时，这个作用域链就会被创建，并且根据代码类型，添加一系列的对象</li>
+</ul>
 ]]></content>
       <categories>
         <category>分类</category>
       </categories>
       <tags>
-        <tag>nginx</tag>
+        <tag>js高级</tag>
       </tags>
   </entry>
   <entry>
-    <title>02- 浏览器运行原理</title>
-    <url>/posts/2373884b.html</url>
-    <content><![CDATA[<p>从输入路径开始，浏览器是怎样一步步渲染出页面的呢？</p>
-<h1 id="网页的解析过程"><a href="#网页的解析过程" class="headerlink" title="网页的解析过程"></a>网页的解析过程</h1><p>输入地址 —&gt; DNS解析 —&gt; 服务器响应 —&gt; 浏览器响应<br>一个网页URL从输入到浏览器中，到显示经历怎样的过程呢？<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image1.png" alt="在这里插入图片描述"></p>
-<h2 id="浏览器内核"><a href="#浏览器内核" class="headerlink" title="浏览器内核"></a>浏览器内核</h2><p>常见的浏览器内核：<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image2.png" alt="在这里插入图片描述"><br>我们常说的<code>浏览器内核</code>指的是浏览器的<code>排版引擎</code>，也称之为<code>页面渲染引擎</code>或<code>样板引擎</code>。</p>
-<h1 id="浏览器渲染流程"><a href="#浏览器渲染流程" class="headerlink" title="浏览器渲染流程"></a>浏览器渲染流程</h1><p>详细内容可看我的另一篇博客：<br><a href="https://blog.csdn.net/2302_79523175/article/details/140614526?spm=1011.2415.3001.5331">浏览器渲染原理</a><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image3.png" alt="在这里插入图片描述"></p>
-<h2 id="解析html"><a href="#解析html" class="headerlink" title="解析html"></a>解析html</h2><p>因为默认情况下服务器会给浏览器返回index..html文件，所以解析HTML是所有步骤的开始：<br>解析HTML，会构建DOM Tree:<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image4.png" alt="在这里插入图片描述"></p>
-<h2 id="生成css规则"><a href="#生成css规则" class="headerlink" title="生成css规则"></a>生成css规则</h2><p>浏览器在解析html时遇到 css 的<code>&lt;link&gt;</code>时会开启另外一个线程对css文件进行下载，这也就不会影响到dom tree的生成；<br>下载完css文件后就会对其进行解析，生成对应的<code>cssom</code>树。<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image5.png" alt="在这里插入图片描述"></p>
-<h2 id="构建render-tree"><a href="#构建render-tree" class="headerlink" title="构建render tree"></a>构建render tree</h2><p>当有了<code>DOM Tree</code>和<code>CSSOM Tree</code>两部分之后，就可以结合来生成<code>Render Tree</code>了。<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image6.png" alt="在这里插入图片描述"></p>
-<p>注意❗️</p>
+    <title>04-闭包</title>
+    <url>/posts/2f741396.html</url>
+    <content><![CDATA[<h1 id="javascript-内存管理"><a href="#javascript-内存管理" class="headerlink" title="javascript 内存管理"></a>javascript 内存管理</h1><blockquote>
+<p>认识内存管理</p>
+</blockquote>
+<p>不管什么样的编程语言，<strong>在代码执行过程中都需要进行内存分配</strong>，不同的是有些编程语言需要我们自己手动进行内存配置，有些则会自动帮我们进行内存分配。</p>
+<p>不管什么样的内存分配机制，<strong>内存的分配都会进入如下周期</strong>：</p>
 <ol>
-<li><code>link</code>元素不会阻塞<code>DOM Tree</code>的构建，但是会阻塞<code>Render Tree</code>的构建，因为构建<code>Render Tree</code>需要对应的<code>CSSOM Tree</code>；</li>
-<li><strong><code>DOM Tree</code>和<code>Render Tree</code>并不是一一对应的</strong>，有些dom可能设置了<code>display: none;</code>，不会在<code>Render Tree</code>中出现。</li>
+<li>申请分配内存</li>
+<li>使用分配的内存</li>
+<li>不需要使用时释放内存</li>
 </ol>
-<h2 id="布局-Layout"><a href="#布局-Layout" class="headerlink" title="布局(Layout)"></a>布局(Layout)</h2><p>布局是确定呈现树中所有节点的宽度、高度和位置信息</p>
-<p><code>Render Tree</code>形成之后，就可以对dom的style进行计算：</p>
-<ol>
-<li><code>em</code>、<code>rem</code>或<code>%</code>等转换成<code>px</code>；</li>
-<li>…</li>
-</ol>
-<h2 id="绘制-Paint"><a href="#绘制-Paint" class="headerlink" title="绘制(Paint)"></a>绘制(Paint)</h2><ul>
-<li>在绘制阶段，浏览器将布局阶段计算的每个frame转为屏幕上实际的像素点；</li>
-<li>包括将元素的可见部分进行绘制，比如文本、颜色、边框、阴影、替换元素（比如img）<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image7.png" alt="在这里插入图片描述"></li>
-</ul>
-<h1 id="回流和重绘"><a href="#回流和重绘" class="headerlink" title="回流和重绘"></a>回流和重绘</h1><h2 id="回流reflow"><a href="#回流reflow" class="headerlink" title="回流reflow"></a>回流reflow</h2><h3 id="（1）理解："><a href="#（1）理解：" class="headerlink" title="（1）理解："></a>（1）理解：</h3><ul>
-<li>第一次确定节点的位置和大小叫做布局(Layout)；</li>
-<li>之后对于节点大小以及位置等的计算叫做回流。</li>
-</ul>
-<h3 id="（2）出现情况"><a href="#（2）出现情况" class="headerlink" title="（2）出现情况"></a>（2）出现情况</h3><ol>
-<li><code>DOM</code>结构发生改变（添加新节点或者移除节点）；</li>
-<li>布局改变（修改了width、height、padding等值）；</li>
-<li>窗口resize（修改了窗口的尺寸）；</li>
-<li>调用<code>getComputedStyle</code>方法获取尺寸、位置信息；</li>
-</ol>
-<h2 id="重绘repaint"><a href="#重绘repaint" class="headerlink" title="重绘repaint"></a>重绘repaint</h2><h3 id="（1）理解：-1"><a href="#（1）理解：-1" class="headerlink" title="（1）理解："></a>（1）理解：</h3><ul>
-<li>第一次渲染内容叫做绘制(Paint)；</li>
-<li>之后重新渲染叫做重绘（repaint）。</li>
-</ul>
-<h3 id="（2）出现情况-1"><a href="#（2）出现情况-1" class="headerlink" title="（2）出现情况"></a>（2）出现情况</h3><ol>
-<li>修改背景色、边框颜色、文字颜色、模糊样式等</li>
-<li><code>回流</code>一定引起<code>重绘</code>，所以回流是很<strong>消耗性能</strong>的事情。</li>
-</ol>
-<p><strong>所以在开发中要尽量避免回流</strong>：</p>
-<ol>
-<li>修改样式时尽量一次性修改<ul>
-<li>比如通过<code>cssText</code>修改，通过添加<code>class</code>修改。</li>
-</ul>
-</li>
-<li>尽量避免频繁的操作DOM<ul>
-<li>我们可以在一个<code>DocumentFragment</code>(了解即可)或者是父元素中将要操作的DOM操作完成，在一次性的操作。</li>
-</ul>
-</li>
-<li>尽量避免通过<code>getComputedStyle</code>获取尺寸、位置等信息</li>
-<li>对某些元素使用<code>position</code>的<code>absolute</code>或<code>fixed</code><ul>
-<li>这种操作并不是不会引起回流，而是相对来说开销较小，不会对其他元素造成影响。</li>
-</ul>
-</li>
-</ol>
-<h1 id="特殊解析composite合成-和性能优化"><a href="#特殊解析composite合成-和性能优化" class="headerlink" title="特殊解析composite合成 和性能优化"></a>特殊解析composite合成 和性能优化</h1><p>绘制的过程，浏览器会将布局后的元素绘制到多个合成图层中（这是浏览器的一种优化手段）；</p>
+<p>不同的语言会对第一步和第三步进行不同的处理：</p>
 <ul>
-<li>默认情况下，标准流的元素会被绘制到同一个图层中；</li>
-<li>而某些特殊的属性，会单独创建一个新的合成层，并且新的图层可以使用<code>GPU</code>加速绘制（每个合成层都是单独进行渲染）</li>
+<li>手动管理内存：比如<code>C</code>、<code>C++</code>，包括早期的<code>OC</code>，都是需要手动的进行内存的申请和释放（<code>malloc和free函数</code>）；</li>
+<li>自动管理内存：比如<code>java</code>、<code>javascript</code>、<code>Python</code>、<code>Swift</code>、<code>Dart</code>等，这些语言都有帮我们自动进行内存管理。</li>
 </ul>
-<p><strong>哪些属性可以形成新的合成层呢</strong>？下面是常见的一下属性：</p>
-<ul>
-<li>3D transforms</li>
-<li><code>video</code>、<code>canvas</code>、<code>iframe</code></li>
-<li><code>opacity</code>动画转换</li>
-<li><code>position: fixed</code></li>
-<li><code>will-cahnge</code>：一个实验性的属性，提前告诉浏览器可能会发生哪些变化</li>
-<li><code>animation</code>或<code>transition</code>设置了<code>opacity</code>、<code>transform</code></li>
-</ul>
-<p>注❗️：<br>分层确实可以提高性能，但是它以内存管理为代价，因此不应作为web性能优化策略的一部分过度使用！</p>
-<h1 id="defer和async属性"><a href="#defer和async属性" class="headerlink" title="defer和async属性"></a>defer和async属性</h1><p>首先来了解一下 <strong><code>script</code>和页面解析的关系</strong> !</p>
-<p>前面我们已经知道了，浏览器在解析html时遇到<code>&lt;link&gt;</code>不会影响<code>DOM Tree</code>的构建，那遇到<code>&lt;script&gt;</code>呢？会影响吗？<br>答案是：<strong>会的！</strong></p>
-<ul>
-<li>浏览器在遇到<code>&lt;script&gt;</code>时会先停止对<code>DOM Tree</code>构建，转而去下载、执行js脚本；</li>
-<li>只有js脚本执行完毕后，<code>DOM Tree</code>才能继续进行构建；</li>
-</ul>
-<p>那这是为什么呢？</p>
-<ul>
-<li>因为js文件中可能存在对<code>DOM</code>的操作；</li>
-<li>若先构建<code>DOM Tree</code>，再执行js脚本，可能会造成严重的回流和重绘，影响页面性能。</li>
-</ul>
-<p>但是这也会带来新的问题，特别是现在主流框架：</p>
-<ul>
-<li>目前主要流行的<code>Vue</code>、<code>React</code>，脚本往往比html页面更”重”，处理时间更长，</li>
-<li>也就是在js脚本执行结束前，页面可能出现空白</li>
-</ul>
-<p>（有些浏览器可能对此做了优化，也就是在js脚本执行接受之前，先将已经构建的<code>DOM Tree</code>进行展示）<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image8.png" alt="在这里插入图片描述"></p>
-<p>为了解决这个问题，<code>&lt;script&gt;</code>给我们提供了两个属性：<code>defer</code>和<code>async</code></p>
-<h2 id="4-1-defer"><a href="#4-1-defer" class="headerlink" title="4.1 defer"></a>4.1 defer</h2><ul>
-<li>defer会告诉浏览器不要等待脚本的下载，继续执行<code>DOM Tree</code>的构建</li>
-<li>脚本的下载有浏览器完成，不会影响<code>DOM Tree</code>的构建；</li>
-<li>若脚本先下载完，那它会等待<code>DOM Tree</code>构建完成，在<code>DOMContentLoaded</code>事件执行前执行defer中的代码</li>
-</ul>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image9.png" alt="在这里插入图片描述"><br>总结：</p>
-<ol>
-<li><code>defer</code>不会影响<code>DOM Tree</code>的构建；</li>
-<li>在<code>defer</code>中<code>DOM Tree</code>已经构建完成，可进行对dom的操作；</li>
-<li><code>defer</code>总是在<code>DOMContentLoaded</code>时间发出前执行；</li>
-<li>另外，有多个<code>defer</code>会按照编写顺序执行；</li>
-<li>从某种角度来说，<code>defer</code>会提高页面性能，并且推荐放在<code>&lt;head&gt;</code>中（提前下载js脚本）；</li>
-<li>注意：<code>defer</code>仅适用于外部脚本，对于<code>&lt;script&gt;</code>默认内容会被忽略。</li>
-</ol>
-<h2 id="4-2-async"><a href="#4-2-async" class="headerlink" title="4.2 async"></a>4.2 async</h2><ul>
-<li><code>async</code>和<code>defer</code>相似，都能够让脚本不堵塞页面；</li>
-<li><code>async</code>是完全独立于浏览器的：<ul>
-<li>浏览器页面不会因为<code>script</code>脚本而暂停<code>DOM Tree</code>的构建；</li>
-<li><code>async</code>脚本不能保证顺序执行脚本，它独立下载，独立运行，不会等待其他脚本；</li>
-<li><code>async</code>不一定在<code>DOMContentLoaded</code>时间执行前执行</li>
-</ul>
-</li>
-</ul>
-<p><strong>总结：</strong></p>
-<ol>
-<li><code>defer</code>通常需要在文档解析后操作<code>DOM</code>的<code>javascript</code>代码，并且对多个<code>script</code>文件有顺序要求；</li>
-<li><code>async</code>通常用于独立的脚本，对其他脚本，甚至<code>DOM</code>没有依赖的。</li>
-</ol>
-<p>注：整个JS高级专栏依托于coderwhy老师的课程，相关图片、代码均来自于其课程。</p>
-]]></content>
+<p>也就是说，我们所使用的<code>javascript</code>会自动的对原始值、对象、函数等进行内存管理，我们并不需要进行多余的操作。</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/04-closure/img1.png" alt="img.png"></p>
+<h1 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h1><h1 id="闭包的概念理解"><a href="#闭包的概念理解" class="headerlink" title="闭包的概念理解"></a>闭包的概念理解</h1><h1 id="闭包的形成过程"><a href="#闭包的形成过程" class="headerlink" title="闭包的形成过程"></a>闭包的形成过程</h1><h1 id="闭包的内存泄漏"><a href="#闭包的内存泄漏" class="headerlink" title="闭包的内存泄漏"></a>闭包的内存泄漏</h1>]]></content>
       <categories>
         <category>分类</category>
       </categories>
@@ -374,90 +323,126 @@
       </tags>
   </entry>
   <entry>
-    <title>03-javascript的运行原理</title>
-    <url>/posts/4bc49eeb.html</url>
-    <content><![CDATA[<p>上篇博客了解了一下浏览器的运行原理，那javascript的运行原理又是怎么样的呢？</p>
-<h1 id="V8引擎"><a href="#V8引擎" class="headerlink" title="V8引擎"></a>V8引擎</h1><p>先来了解一下V8引擎:</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image1.png" alt="在这里插入图片描述"></p>
-<p>简单来说，V8引擎就是在做<strong>将<code>javascript</code>代码转换成机器语言</strong>，从而被cpu识别继而运行的工作。</p>
-<h2 id="执行原理与架构（了解）"><a href="#执行原理与架构（了解）" class="headerlink" title="执行原理与架构（了解）"></a>执行原理与架构（了解）</h2><p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image2.png" alt="在这里插入图片描述"><br>V8引擎本身的源码非常复杂，大概有超过100w行C++代码，通过了解它的架构，我们可以知道它是如何对)vaScript执行的：</p>
-<ul>
-<li><p><code>Parse</code>：将<code>javascript</code>代码转换成<code>AST抽象语法树</code>，因为解释器并不直接认识js代码；</p>
-<ul>
-<li>如果函数没有被调用，那么就不会被转成<code>AST</code></li>
+    <title>02- 浏览器运行原理</title>
+    <url>/posts/2373884b.html</url>
+    <content><![CDATA[<p>从输入路径开始，浏览器是怎样一步步渲染出页面的呢？</p>
+<h1 id="网页的解析过程"><a href="#网页的解析过程" class="headerlink" title="网页的解析过程"></a>网页的解析过程</h1><p>输入地址 —&gt; DNS解析 —&gt; 服务器响应 —&gt; 浏览器响应<br>一个网页URL从输入到浏览器中，到显示经历怎样的过程呢？<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image1.png" alt="在这里插入图片描述"></p>
+<h2 id="浏览器内核"><a href="#浏览器内核" class="headerlink" title="浏览器内核"></a>浏览器内核</h2><p>常见的浏览器内核：<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image2.png" alt="在这里插入图片描述"><br>我们常说的<code>浏览器内核</code>指的是浏览器的<code>排版引擎</code>，也称之为<code>页面渲染引擎</code>或<code>样板引擎</code>。</p>
+<h1 id="浏览器渲染流程"><a href="#浏览器渲染流程" class="headerlink" title="浏览器渲染流程"></a>浏览器渲染流程</h1><p>详细内容可看我的另一篇博客：<br><a href="https://blog.csdn.net/2302_79523175/article/details/140614526?spm=1011.2415.3001.5331">浏览器渲染原理</a><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image3.png" alt="在这里插入图片描述"></p>
+<h2 id="解析html"><a href="#解析html" class="headerlink" title="解析html"></a>解析html</h2><p>因为默认情况下服务器会给浏览器返回index..html文件，所以解析HTML是所有步骤的开始：<br>解析HTML，会构建DOM Tree:<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image4.png" alt="在这里插入图片描述"></p>
+<h2 id="生成css规则"><a href="#生成css规则" class="headerlink" title="生成css规则"></a>生成css规则</h2><p>浏览器在解析html时遇到 css 的<code>&lt;link&gt;</code>时会开启另外一个线程对css文件进行下载，这也就不会影响到dom tree的生成；<br>下载完css文件后就会对其进行解析，生成对应的<code>cssom</code>树。<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image5.png" alt="在这里插入图片描述"></p>
+<h2 id="构建render-tree"><a href="#构建render-tree" class="headerlink" title="构建render tree"></a>构建render tree</h2><p>当有了<code>DOM Tree</code>和<code>CSSOM Tree</code>两部分之后，就可以结合来生成<code>Render Tree</code>了。<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image6.png" alt="在这里插入图片描述"></p>
+<p>注意❗️</p>
+<ol>
+<li><code>link</code>元素不会阻塞<code>DOM Tree</code>的构建，但是会阻塞<code>Render Tree</code>的构建，因为构建<code>Render Tree</code>需要对应的<code>CSSOM Tree</code>；</li>
+<li><strong><code>DOM Tree</code>和<code>Render Tree</code>并不是一一对应的</strong>，有些dom可能设置了<code>display: none;</code>，不会在<code>Render Tree</code>中出现。</li>
+</ol>
+<h2 id="布局-Layout"><a href="#布局-Layout" class="headerlink" title="布局(Layout)"></a>布局(Layout)</h2><p>布局是确定呈现树中所有节点的宽度、高度和位置信息</p>
+<p><code>Render Tree</code>形成之后，就可以对dom的style进行计算：</p>
+<ol>
+<li><code>em</code>、<code>rem</code>或<code>%</code>等转换成<code>px</code>；</li>
+<li>…</li>
+</ol>
+<h2 id="绘制-Paint"><a href="#绘制-Paint" class="headerlink" title="绘制(Paint)"></a>绘制(Paint)</h2><ul>
+<li>在绘制阶段，浏览器将布局阶段计算的每个frame转为屏幕上实际的像素点；</li>
+<li>包括将元素的可见部分进行绘制，比如文本、颜色、边框、阴影、替换元素（比如img）<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image7.png" alt="在这里插入图片描述"></li>
+</ul>
+<h1 id="回流和重绘"><a href="#回流和重绘" class="headerlink" title="回流和重绘"></a>回流和重绘</h1><h2 id="回流reflow"><a href="#回流reflow" class="headerlink" title="回流reflow"></a>回流reflow</h2><h3 id="（1）理解："><a href="#（1）理解：" class="headerlink" title="（1）理解："></a>（1）理解：</h3><ul>
+<li>第一次确定节点的位置和大小叫做布局(Layout)；</li>
+<li>之后对于节点大小以及位置等的计算叫做回流。</li>
+</ul>
+<h3 id="（2）出现情况"><a href="#（2）出现情况" class="headerlink" title="（2）出现情况"></a>（2）出现情况</h3><ol>
+<li><code>DOM</code>结构发生改变（添加新节点或者移除节点）；</li>
+<li>布局改变（修改了width、height、padding等值）；</li>
+<li>窗口resize（修改了窗口的尺寸）；</li>
+<li>调用<code>getComputedStyle</code>方法获取尺寸、位置信息；</li>
+</ol>
+<h2 id="重绘repaint"><a href="#重绘repaint" class="headerlink" title="重绘repaint"></a>重绘repaint</h2><h3 id="（1）理解：-1"><a href="#（1）理解：-1" class="headerlink" title="（1）理解："></a>（1）理解：</h3><ul>
+<li>第一次渲染内容叫做绘制(Paint)；</li>
+<li>之后重新渲染叫做重绘（repaint）。</li>
+</ul>
+<h3 id="（2）出现情况-1"><a href="#（2）出现情况-1" class="headerlink" title="（2）出现情况"></a>（2）出现情况</h3><ol>
+<li>修改背景色、边框颜色、文字颜色、模糊样式等</li>
+<li><code>回流</code>一定引起<code>重绘</code>，所以回流是很<strong>消耗性能</strong>的事情。</li>
+</ol>
+<p><strong>所以在开发中要尽量避免回流</strong>：</p>
+<ol>
+<li>修改样式时尽量一次性修改<ul>
+<li>比如通过<code>cssText</code>修改，通过添加<code>class</code>修改。</li>
 </ul>
 </li>
-<li><p><code>lgnition</code>：是一个解释器，会将<code>AST</code>转换成字节码；</p>
-<ul>
-<li>同时会收集<code>TurboFan</code>需要的类型信息（比如函数参数的类型信息，有了类型才能进行真实的运算）</li>
-<li>如果函数只执行一次，那么将直接解释执行字节码</li>
+<li>尽量避免频繁的操作DOM<ul>
+<li>我们可以在一个<code>DocumentFragment</code>(了解即可)或者是父元素中将要操作的DOM操作完成，在一次性的操作。</li>
 </ul>
 </li>
-<li><p><code>TurboFan</code>：是一个编译器，可以将<code>AST</code>转换成CPU直接能运行的机器码；</p>
+<li>尽量避免通过<code>getComputedStyle</code>获取尺寸、位置等信息</li>
+<li>对某些元素使用<code>position</code>的<code>absolute</code>或<code>fixed</code><ul>
+<li>这种操作并不是不会引起回流，而是相对来说开销较小，不会对其他元素造成影响。</li>
+</ul>
+</li>
+</ol>
+<h1 id="特殊解析composite合成-和性能优化"><a href="#特殊解析composite合成-和性能优化" class="headerlink" title="特殊解析composite合成 和性能优化"></a>特殊解析composite合成 和性能优化</h1><p>绘制的过程，浏览器会将布局后的元素绘制到多个合成图层中（这是浏览器的一种优化手段）；</p>
 <ul>
-<li>如果一个函数被多次调用，那么将会被标记为<code>热点函数</code>，那么就会经过<code>TurboFan</code>编译成优化的机器码，提高代码的执行性能；</li>
-<li>但是，<strong>机器码实际上也会被还原成字节码</strong>，这是因为如果后续执行过程中类型发生了变化，之前优化的机器码并不能正确的运算，就会逆向的转成字节码</li>
+<li>默认情况下，标准流的元素会被绘制到同一个图层中；</li>
+<li>而某些特殊的属性，会单独创建一个新的合成层，并且新的图层可以使用<code>GPU</code>加速绘制（每个合成层都是单独进行渲染）</li>
+</ul>
+<p><strong>哪些属性可以形成新的合成层呢</strong>？下面是常见的一下属性：</p>
+<ul>
+<li>3D transforms</li>
+<li><code>video</code>、<code>canvas</code>、<code>iframe</code></li>
+<li><code>opacity</code>动画转换</li>
+<li><code>position: fixed</code></li>
+<li><code>will-cahnge</code>：一个实验性的属性，提前告诉浏览器可能会发生哪些变化</li>
+<li><code>animation</code>或<code>transition</code>设置了<code>opacity</code>、<code>transform</code></li>
+</ul>
+<p>注❗️：<br>分层确实可以提高性能，但是它以内存管理为代价，因此不应作为web性能优化策略的一部分过度使用！</p>
+<h1 id="defer和async属性"><a href="#defer和async属性" class="headerlink" title="defer和async属性"></a>defer和async属性</h1><p>首先来了解一下 <strong><code>script</code>和页面解析的关系</strong> !</p>
+<p>前面我们已经知道了，浏览器在解析html时遇到<code>&lt;link&gt;</code>不会影响<code>DOM Tree</code>的构建，那遇到<code>&lt;script&gt;</code>呢？会影响吗？<br>答案是：<strong>会的！</strong></p>
+<ul>
+<li>浏览器在遇到<code>&lt;script&gt;</code>时会先停止对<code>DOM Tree</code>构建，转而去下载、执行js脚本；</li>
+<li>只有js脚本执行完毕后，<code>DOM Tree</code>才能继续进行构建；</li>
+</ul>
+<p>那这是为什么呢？</p>
+<ul>
+<li>因为js文件中可能存在对<code>DOM</code>的操作；</li>
+<li>若先构建<code>DOM Tree</code>，再执行js脚本，可能会造成严重的回流和重绘，影响页面性能。</li>
+</ul>
+<p>但是这也会带来新的问题，特别是现在主流框架：</p>
+<ul>
+<li>目前主要流行的<code>Vue</code>、<code>React</code>，脚本往往比html页面更”重”，处理时间更长，</li>
+<li>也就是在js脚本执行结束前，页面可能出现空白</li>
+</ul>
+<p>（有些浏览器可能对此做了优化，也就是在js脚本执行接受之前，先将已经构建的<code>DOM Tree</code>进行展示）<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image8.png" alt="在这里插入图片描述"></p>
+<p>为了解决这个问题，<code>&lt;script&gt;</code>给我们提供了两个属性：<code>defer</code>和<code>async</code></p>
+<h2 id="4-1-defer"><a href="#4-1-defer" class="headerlink" title="4.1 defer"></a>4.1 defer</h2><ul>
+<li>defer会告诉浏览器不要等待脚本的下载，继续执行<code>DOM Tree</code>的构建</li>
+<li>脚本的下载有浏览器完成，不会影响<code>DOM Tree</code>的构建；</li>
+<li>若脚本先下载完，那它会等待<code>DOM Tree</code>构建完成，在<code>DOMContentLoaded</code>事件执行前执行defer中的代码</li>
+</ul>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image9.png" alt="在这里插入图片描述"><br>总结：</p>
+<ol>
+<li><code>defer</code>不会影响<code>DOM Tree</code>的构建；</li>
+<li>在<code>defer</code>中<code>DOM Tree</code>已经构建完成，可进行对dom的操作；</li>
+<li><code>defer</code>总是在<code>DOMContentLoaded</code>时间发出前执行；</li>
+<li>另外，有多个<code>defer</code>会按照编写顺序执行；</li>
+<li>从某种角度来说，<code>defer</code>会提高页面性能，并且推荐放在<code>&lt;head&gt;</code>中（提前下载js脚本）；</li>
+<li>注意：<code>defer</code>仅适用于外部脚本，对于<code>&lt;script&gt;</code>默认内容会被忽略。</li>
+</ol>
+<h2 id="4-2-async"><a href="#4-2-async" class="headerlink" title="4.2 async"></a>4.2 async</h2><ul>
+<li><code>async</code>和<code>defer</code>相似，都能够让脚本不堵塞页面；</li>
+<li><code>async</code>是完全独立于浏览器的：<ul>
+<li>浏览器页面不会因为<code>script</code>脚本而暂停<code>DOM Tree</code>的构建；</li>
+<li><code>async</code>脚本不能保证顺序执行脚本，它独立下载，独立运行，不会等待其他脚本；</li>
+<li><code>async</code>不一定在<code>DOMContentLoaded</code>时间执行前执行</li>
 </ul>
 </li>
 </ul>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image3.png" alt="在这里插入图片描述"></p>
-<h1 id="javascript-执行过程"><a href="#javascript-执行过程" class="headerlink" title="javascript 执行过程"></a>javascript 执行过程</h1><p>假设现在有段这样的代码，它应该是怎样执行的呢？<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image4.png" alt="在这里插入图片描述"></p>
-<p>我们先来了解一下相关的基础知识！</p>
-<h2 id="初始化全局对象"><a href="#初始化全局对象" class="headerlink" title="初始化全局对象"></a>初始化全局对象</h2><ul>
-<li>首先，<code>js</code> 在执行代码前，会创建一个全局对象：<code>Global Object</code><ul>
-<li>该对象 所有的作用域都可以访问；</li>
-<li>里面还会包含<code>Date</code>、<code>Array</code>、<code>Number</code>、<code>setTimeout</code>、<code>setInterval</code>等；</li>
-<li>其中还有一个属性指向<code>window</code></li>
-</ul>
-</li>
-</ul>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image5.png" alt="在这里插入图片描述"></p>
-<h2 id="执行上下文栈"><a href="#执行上下文栈" class="headerlink" title="执行上下文栈"></a>执行上下文栈</h2><p>js 引擎内部有一个<code>执行上下文栈</code>（Excution Context Stack，简称ECS），是用于执行代码的调用栈。</p>
-<ul>
-<li><p>那么现在要执行的是谁呢？是全局的代码块：</p>
-<ul>
-<li>全局的代码块在执行前会创建一个<code>Global Excution Context（GEC）</code>；</li>
-<li><code>GEC</code>会被放到<code>ECS</code>中执行</li>
-</ul>
-</li>
-<li><p><code>GEC</code>被放到<code>ECS</code>中包含两部分内容：</p>
-<ul>
-<li>第一部分：在代码执行前，在<code>parser</code>转成<code>AST</code>的过程中，会将全局定义的变量、函数等加入到<code>Global Object</code>中，但并不会赋值；（这个过程也叫做变量的作用域提升）</li>
-<li>在代码执行中，对变量赋值，或者执行其他的函数；</li>
-</ul>
-</li>
-</ul>
-<h1 id="全局代码的执行"><a href="#全局代码的执行" class="headerlink" title="全局代码的执行"></a>全局代码的执行</h1><p>先来认识一下<code>VO对象</code>：</p>
-<ul>
-<li>每个执行上下文都会关联一个VO（Variable Object，变量对象），变量和函数声明会被添加到这个VO对象中；</li>
-<li>当全局代码被执行的时候，VO就是GO对象了。</li>
-</ul>
-<p>❗️❗️❗️问题来了！<strong>全局代码如何被执行呢？</strong></p>
-<p><strong>执行前：</strong><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image6.png" alt="在这里插入图片描述"><br><strong>执行后：</strong><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image7.png" alt="在这里插入图片描述"><br>现在更改代码为：<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image8.png" alt="在这里插入图片描述"></p>
-<p>那就又有一个问题：<strong>函数代码如何执行呢？</strong></p>
-<h1 id="函数代码的执行"><a href="#函数代码的执行" class="headerlink" title="函数代码的执行"></a>函数代码的执行</h1><ul>
-<li>执行代码遇到函数体时，就会根据函数体创建一个函数体上下文（Functional Excution Context），并且压入到ECS中；</li>
-<li>当进入函数体执行代码时，就会创建一个<code>AO（Activation Obejct）</code>；</li>
-<li>这个<code>AO</code>会使用<code>arguments</code>作为初始化，并且初始值是传入的参数；</li>
-<li>这个<code>AO</code>对象会作为该函数体的执行上下文的<code>VO</code>来存放变量的初始化</li>
-</ul>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image9.png" alt="在这里插入图片描述"></p>
-<p>执行函数上下文之后：</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image10.png" alt="在这里插入图片描述"></p>
-<p>之后，函数执行上下文将会被压出栈外：</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image11.png" alt="在这里插入图片描述"></p>
-<p>❗️在函数作用域中可能遇到这样的情况：</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image12.png" alt="在这里插入图片描述"></p>
-<blockquote>
-<p><code>message</code>变量的声明存在于全局作用域，但在局部作用域进行了调用，<strong>那局部作用域又是怎么找到全距作用与中的变量呢？</strong></p>
-</blockquote>
-<p>这就涉及到了<code>javascript</code>的作用域和作用链！</p>
-<h1 id="作用域和作用链"><a href="#作用域和作用链" class="headerlink" title="作用域和作用链"></a>作用域和作用链</h1><p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image13.png" alt="在这里插入图片描述"></p>
-<p>上面说到，但我们进入一个执行上下文时，执行上下文会关联一个VO对象，其实，同时它也会关联一个 <strong><code>作用域链（Scope Chain）</code></strong>。</p>
-<ul>
-<li>作用域链是一个对象列表，用于表示变量标识符的求值；</li>
-<li>当进入一个执行上下文时，这个作用域链就会被创建，并且根据代码类型，添加一系列的对象</li>
-</ul>
+<p><strong>总结：</strong></p>
+<ol>
+<li><code>defer</code>通常需要在文档解析后操作<code>DOM</code>的<code>javascript</code>代码，并且对多个<code>script</code>文件有顺序要求；</li>
+<li><code>async</code>通常用于独立的脚本，对其他脚本，甚至<code>DOM</code>没有依赖的。</li>
+</ol>
+<p>注：整个JS高级专栏依托于coderwhy老师的课程，相关图片、代码均来自于其课程。</p>
 ]]></content>
       <categories>
         <category>分类</category>
@@ -467,168 +452,46 @@
       </tags>
   </entry>
   <entry>
-    <title>04-闭包</title>
-    <url>/posts/2f741396.html</url>
-    <content><![CDATA[<h1 id="javascript-内存管理"><a href="#javascript-内存管理" class="headerlink" title="javascript 内存管理"></a>javascript 内存管理</h1><blockquote>
-<p>认识内存管理</p>
-</blockquote>
-<p>不管什么样的编程语言，<strong>在代码执行过程中都需要进行内存分配</strong>，不同的是有些编程语言需要我们自己手动进行内存配置，有些则会自动帮我们进行内存分配。</p>
-<p>不管什么样的内存分配机制，<strong>内存的分配都会进入如下周期</strong>：</p>
-<ol>
-<li>申请分配内存</li>
-<li>使用分配的内存</li>
-<li>不需要使用时释放内存</li>
-</ol>
-<p>不同的语言会对第一步和第三步进行不同的处理：</p>
+    <title>Nginx安装与配置以及常用命令</title>
+    <url>/posts/4f72a7f4.html</url>
+    <content><![CDATA[<p>了解一下nginx的安装与配置，以及常见的nginx常用命令</p>
+<h1 id="1-安装与配置"><a href="#1-安装与配置" class="headerlink" title="1. 安装与配置"></a>1. 安装与配置</h1><ol>
+<li><p>阿里云申请免费云服务器，为nginx练习使用</p>
+</li>
+<li><p>连接远程服务器</p>
 <ul>
-<li>手动管理内存：比如<code>C</code>、<code>C++</code>，包括早期的<code>OC</code>，都是需要手动的进行内存的申请和释放（<code>malloc和free函数</code>）；</li>
-<li>自动管理内存：比如<code>java</code>、<code>javascript</code>、<code>Python</code>、<code>Swift</code>、<code>Dart</code>等，这些语言都有帮我们自动进行内存管理。</li>
+<li>首先重置root密码</li>
+<li>若是使用vscode 可安装 <code>remote ssh</code>插件 （用来连接远程服务器）</li>
+<li>连接到远程</li>
 </ul>
-<p>也就是说，我们所使用的<code>javascript</code>会自动的对原始值、对象、函数等进行内存管理，我们并不需要进行多余的操作。</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/04-closure/img1.png" alt="img.png"></p>
-<h1 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h1><h1 id="闭包的概念理解"><a href="#闭包的概念理解" class="headerlink" title="闭包的概念理解"></a>闭包的概念理解</h1><h1 id="闭包的形成过程"><a href="#闭包的形成过程" class="headerlink" title="闭包的形成过程"></a>闭包的形成过程</h1><h1 id="闭包的内存泄漏"><a href="#闭包的内存泄漏" class="headerlink" title="闭包的内存泄漏"></a>闭包的内存泄漏</h1>]]></content>
+</li>
+<li><p>下载nginx </p>
+<ul>
+<li>cd &#x2F;usr&#x2F;local</li>
+<li>wget <a href="https://nginx.org/download/nginx-1.28.0.tar.gz">https://nginx.org/download/nginx-1.28.0.tar.gz</a> (若下载不成功可通过命令 <code>su</code> 切换到root用户)</li>
+</ul>
+</li>
+</ol>
+<img src="../../img/nginx/img.png">
+
+<pre><code>- tar -zxvf nginx-1.28.0.tar.gz
+- cd ./nginx-1.28.0
+</code></pre>
+<ol start="4">
+<li>初始配置及编译安装<ul>
+<li>初始配置 .&#x2F;configure</li>
+<li>编译源码 安装 make &amp;&amp; make install</li>
+</ul>
+</li>
+</ol>
+<h1 id="2-Nginx常见命令"><a href="#2-Nginx常见命令" class="headerlink" title="2. Nginx常见命令"></a>2. Nginx常见命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">user admin; # 规定启动nginx的用户</span><br><span class="line">worker_processes 1; # Nginx 启动一个工作进程，适用于轻量部署或开发环境。</span><br><span class="line">events &#123;</span><br><span class="line">   worker_connections 1024; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http&#123;</span><br><span class="line">   include mime.types; # 文件类型映射</span><br><span class="line">   default_type application/octet-stream; # 默认MIME类型</span><br><span class="line">   sendfile        on;                            # 启用 sendfile 加速</span><br><span class="line">   tcp_nopush      on;                            # 优化发送数据包</span><br><span class="line">   keepalive_timeout  65;                         # 长连接超时</span><br><span class="line">   client_max_body_size 10m;                      # 请求体大小限制</span><br><span class="line"></span><br><span class="line">   include /etc/nginx/conf.d/*.conf;              # 引入子配置文件</span><br><span class="line">   </span><br><span class="line">   # 静态文件配置</span><br><span class="line">   server &#123;</span><br><span class="line">      listen 8080 ssl;</span><br><span class="line">      server_name localhost myTest.com;</span><br><span class="line">      </span><br><span class="line">      # 申请ssl证书 配置ssl证书</span><br><span class="line">      ssl_certificate /path/to/cert.pem;</span><br><span class="line">      ssl_certificate_key /path/to/cert.key;</span><br><span class="line">      </span><br><span class="line">      location / &#123;</span><br><span class="line">         root /usr/local/nginx/html/dist; # 相对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      location /api &#123;</span><br><span class="line">         # 设置CORS配置</span><br><span class="line">         add_header Access-Control-Allow-Origin *;</span><br><span class="line">         add_header Access-Control-Allow-Methods &#x27;GET, POST, OPTIONS&#x27;;</span><br><span class="line">         add_header Access-Control-Allow-Headers &#x27;Content-Type, Authorization&#x27;;</span><br><span class="line">         </span><br><span class="line">         alias /usr/local/nginx/html/dist/api; # 绝对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">         </span><br><span class="line">         if ($request_method = &#x27;OPTIONS&#x27;) &#123;</span><br><span class="line">            return 204;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
       <categories>
         <category>分类</category>
       </categories>
       <tags>
-        <tag>js高级</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>07-原型和原型链</title>
-    <url>/posts/e3799824.html</url>
-    <content><![CDATA[<p>认识一下原型和原型链。</p>
-<h1 id="1-认识原型"><a href="#1-认识原型" class="headerlink" title="1. 认识原型"></a>1. 认识原型</h1><p><strong>原型是什么？怎样获取？</strong></p>
-<h2 id="1-1-ES5-–-对象的原型"><a href="#1-1-ES5-–-对象的原型" class="headerlink" title="1.1 ES5 – 对象的原型"></a>1.1 ES5 – <strong>对象</strong>的原型</h2><p>每个对象身上都有一个[[prototype]]内置属性，这个特殊的对象可以指向另外一个对象。</p>
-<ul>
-<li>当我们通过引用对象的<code>key</code>来获取<code>value</code>时，就会触发[[Get]]操作；</li>
-<li>这个操作首先会在对象本身进行寻找，如果有的话就使用它；</li>
-<li>没有的话就在对象的[[prototype]]属性指向的对象中寻找，如果还没有的话就继续找对象[[prototype]]属性指向的对象的[[prototype]]属性指向的对象中寻找，直到找到或者找不到为止。</li>
-</ul>
-<p><strong>获取对象原型的方法</strong></p>
-<ol>
-<li><code>__proto__</code>属性<blockquote>
-<p>obj.<strong>proto</strong><br>这种方式存在浏览器的兼容性问题，所以不建议使用；</p>
-</blockquote>
-</li>
-<li>getPrototypeOf()<blockquote>
-<p>Object.getPrototypeOf(obj)<br>同样的，设置原型可使用setPrototypeOf(对象，对象要指向的原型)方法；</p>
-</blockquote>
-</li>
-</ol>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">    <span class="keyword">const</span> obj = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;prototype&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj.<span class="property">__proto__</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Object</span>.<span class="title function_">getPrototypeOf</span>(obj));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj.<span class="property">__proto__</span> === <span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-<h2 id="1-2-ES5-–-构造函数的原型"><a href="#1-2-ES5-–-构造函数的原型" class="headerlink" title="1.2 ES5 – 构造函数的原型"></a>1.2 ES5 – <strong>构造函数</strong>的原型</h2><p>函数本身也是对象，它身上有一个<code>[[prototype]]</code>属性，这个属性是一个对象，这个对象就是函数的实例对象。</p>
-<p>区别于对象的获取方式，函数的<code>[[prototype]]</code>属性是<strong>显式原型</strong>，而函数对象的<code>__proto__</code>是<strong>隐式原型</strong>；</p>
-<p>通过<code>new</code>关键字创建对象：</p>
-<ol>
-<li>创建空对象；</li>
-<li>将空对象赋值给this；</li>
-<li>将对象的显式原型赋值给隐式原型；</li>
-</ol>
-<p><strong>案例:</strong></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Student</span>(<span class="params">name, age</span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line"></span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">studying</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span> + <span class="string">&#x27; is studying&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> s1 = <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="string">&#x27;xuexi&#x27;</span>, <span class="number">18</span>);</span><br><span class="line"><span class="keyword">const</span> s2 = <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="string">&#x27;student&#x27;</span>, <span class="number">18</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(s1.<span class="property">studying</span> === s2.<span class="property">studying</span>); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>若这样定义函数，那么每次通过<code>new</code>创建对象时都会创建一个新的<code>studying</code>方法；</li>
-<li>但若是将该方法定义在<code>Student.prototype</code>对象中，那么<code>studying</code>方法只会创建一次，所有对象实例都会共享这个方法。</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Student</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">studying</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span> + <span class="string">&#x27; is studying&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> s1 = <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="string">&#x27;xuexi&#x27;</span>, <span class="number">18</span>);</span><br><span class="line"><span class="keyword">const</span> s2 = <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="string">&#x27;student&#x27;</span>, <span class="number">18</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(s1.<span class="property">studying</span> === s2.<span class="property">studying</span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-
-<p>函数的显式原型对象<code>[[prototype]]</code>上有一个<code>[[constructor]]</code>属性，和这个属性指向函数本身。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Student</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">constructor</span> === <span class="title class_">Student</span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>案例：</strong></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name, age</span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">age</span> = age</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> p1 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;p1&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"><span class="keyword">const</span> p2 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;p2&#x27;</span>, <span class="number">20</span>)</span><br><span class="line"></span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">running</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span> + <span class="string">&#x27; is running&#x27;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<img src="../../img/js高级/07-prototype/img.png" alt="">
-
-<p>查找某个属性时，首先在对象本身中寻找，如果没有再在原型对象上寻找，如果没有再在原型对象的原型对象上（Object.prototype）寻找，直到找到或者找不到为止。</p>
-<h2 id="1-3-ES5-–-重写原型对象（不推荐）"><a href="#1-3-ES5-–-重写原型对象（不推荐）" class="headerlink" title="1.3 ES5 – 重写原型对象（不推荐）"></a>1.3 ES5 – 重写原型对象（不推荐）</h2><p>如果要在原型对象上添加很多属性，那么我们一般会重写原型对象。</p>
-<img src="../../img/js高级/07-prototype/img_2.png" alt="">
-
-<p>我们可以通过上面的方法重写原型对象，但注意不要忘记添加<code>[[constructor]]</code>属性。</p>
-<p>在重写前我们发现原型对象的<code>[[constructor]]</code>的属性描述符是不可枚举的：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Object</span>.<span class="title function_">keys</span>(<span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>))  <span class="comment">// [&#x27;running&#x27;]</span></span><br></pre></td></tr></table></figure>
-
-<p>但是按照我们重写的方式来看，<code>[[constructor]]</code>属性也将会被枚举，所以我们需要通过属性描述符对这个属性进行更改。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(<span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>, <span class="string">&quot;constructor&quot;</span>, &#123;</span><br><span class="line">  <span class="attr">configurable</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">value</span>: <span class="string">&quot;Person&quot;</span>,</span><br><span class="line">  <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">writable</span>: <span class="literal">true</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<h1 id="2-原型链"><a href="#2-原型链" class="headerlink" title="2. 原型链"></a>2. 原型链</h1><h2 id="2-1-ES5-–-默认对象的原型链"><a href="#2-1-ES5-–-默认对象的原型链" class="headerlink" title="2.1 ES5 – 默认对象的原型链"></a>2.1 ES5 – 默认对象的原型链</h2><img src="../../img/js高级/07-prototype/img_3.png" alt="">
-
-<p>当在对象身上查找某个属性时，会现在真神寻找，自身没有会在原型<code>__proto__</code>上寻找，如果没有的话会在原型的原型<code>__proto__</code>上寻找，最终查找到<code>Object.prototype</code>,它指向<code>null</code>,直到找到或者找不到为止。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;&#125;;</span><br><span class="line"><span class="comment">// 相当于  const obj = new Object(); 构造函数的原型</span></span><br><span class="line"><span class="comment">// 即 obj.__proto__ = Object.prototype;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="2-2-ES5-–-利用原型链实现继承"><a href="#2-2-ES5-–-利用原型链实现继承" class="headerlink" title="2.2 ES5 – 利用原型链实现继承"></a>2.2 ES5 – 利用<strong>原型链</strong>实现继承</h2><p>现定义一个<code>Person</code>类，定义一个<code>Student</code>类，实现<code>Student</code>继承<code>Person</code>。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name, age</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">say</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;hello world&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Student</span>(<span class="params">name, age</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">Student</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">say</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;hello world&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Student</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">studying</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span> + <span class="string">&#x27; is studying&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ol>
-<li><p>方式一 – <code>Student.prototype = Person.prototype;</code></p>
-<p>这种方式会产生问题：<br>   本来只有<code>Student</code>类才有的studying方法，但是通过这种方式，<code>Student</code>类和<code>Person</code>类都拥有studying方法。也就没有实现继承。</p>
-</li>
-<li><p>方式二 – <code>Student.prototype = new Person();Student.prototype = p;</code></p>
-<p>这种方式将<code>Student</code>类的studying方法放在<code>p</code>对象身上，而<code>Person</code>原型上没有，实现了继承。</p>
-</li>
-</ol>
-<h2 id="2-3-ES5-–-借用构造函数实现属性继承"><a href="#2-3-ES5-–-借用构造函数实现属性继承" class="headerlink" title="2.3 ES5 – 借用构造函数实现属性继承"></a>2.3 ES5 – 借用<strong>构造函数</strong>实现属性继承</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在利用原型链实现继承的基础上</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Student</span>(<span class="params">name, age</span>) &#123;</span><br><span class="line">    <span class="title class_">Person</span>.<span class="title function_">apply</span>(<span class="variable language_">this</span>,name,age)</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> student = <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="string">&quot;chender&quot;</span>, <span class="number">22</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>组合继承的弊端</strong></p>
-<ol>
-<li>创建对象时，会调用两次父类的构造函数，一次是<code>Student.prototype = new Person();</code>，一次是<code>Student.prototype = p;</code>；</li>
-<li>所有的子类实例都有两份父类的属性，一份在自身，一份在原型上；</li>
-</ol>
-<h2 id="2-4-ES5-–-原型式继承函数"><a href="#2-4-ES5-–-原型式继承函数" class="headerlink" title="2.4 ES5 – 原型式继承函数"></a>2.4 ES5 – 原型式继承函数</h2><p>从上面的例子中可以发现，想要实现继承就需要将父类和子类连接起来：</p>
-<ol>
-<li>创建新对象；</li>
-<li>将新对象的原型指向父类原型；</li>
-<li>子类原型指向所创建的对象；</li>
-</ol>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">createObj</span>(<span class="params">o</span>)&#123;</span><br><span class="line"><span class="comment">//     无兼容性创建对象方式</span></span><br><span class="line">   <span class="keyword">function</span> <span class="title function_">F</span>(<span class="params"></span>)&#123;&#125;</span><br><span class="line">   F.<span class="property"><span class="keyword">prototype</span></span> = o</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> <span class="title function_">F</span>()</span><br><span class="line">   </span><br><span class="line"><span class="comment">//    有兼容性创建方式：</span></span><br><span class="line"><span class="comment">//    return Object.craete(SuperType.prototype)</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">inderit</span>(<span class="params">SubType, SuperType</span>)&#123;</span><br><span class="line">    <span class="title class_">SubType</span>.<span class="property"><span class="keyword">prototype</span></span> = <span class="title function_">craeteObj</span>(<span class="title class_">SuperType</span>.<span class="property"><span class="keyword">prototype</span></span>)</span><br><span class="line">    <span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(<span class="title class_">SubType</span>.<span class="property"><span class="keyword">prototype</span></span>, <span class="string">&quot;constructor&quot;</span>, &#123;</span><br><span class="line">       <span class="attr">enumerable</span>:<span class="literal">false</span>,</span><br><span class="line">       <span class="attr">configurable</span>: <span class="literal">true</span>,</span><br><span class="line">       <span class="attr">writable</span>:<span class="literal">true</span>,</span><br><span class="line">       <span class="attr">value</span>: <span class="title class_">SubType</span></span><br><span class="line">   &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>继承的最终写法(寄生组合式继承)：</strong></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name, age</span>) &#123;</span><br><span class="line">   <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">   <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">eating</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">   <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;eating&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Student</span>(<span class="params">name, age, sex, grade</span>) &#123;</span><br><span class="line">   <span class="title class_">Person</span>.<span class="title function_">apply</span>(<span class="variable language_">this</span>, [name, age])</span><br><span class="line">   <span class="variable language_">this</span>.<span class="property">sex</span> = sex;</span><br><span class="line">   <span class="variable language_">this</span>.<span class="property">grade</span> = grade;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">createObj</span>(<span class="params">o</span>) &#123;</span><br><span class="line">   <span class="keyword">function</span> <span class="title function_">F</span>(<span class="params"></span>) &#123; &#125;</span><br><span class="line">   F.<span class="property"><span class="keyword">prototype</span></span> = o</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> <span class="title function_">F</span>()</span><br><span class="line"></span><br><span class="line">   <span class="comment">//    return Object.create(o)</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">inherit</span>(<span class="params">SubType, SuperType</span>) &#123;</span><br><span class="line">   <span class="title class_">SubType</span>.<span class="property"><span class="keyword">prototype</span></span> = <span class="title function_">createObj</span>(<span class="title class_">SuperType</span>.<span class="property"><span class="keyword">prototype</span></span>)</span><br><span class="line">   <span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(<span class="title class_">SubType</span>.<span class="property"><span class="keyword">prototype</span></span>, <span class="string">&quot;constructor&quot;</span>, &#123;</span><br><span class="line">      <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">      <span class="attr">writable</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">configurable</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">value</span>: <span class="title class_">SubType</span></span><br><span class="line">   &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>补充 – 寄生式继承函数</strong></p>
-<ul>
-<li>寄生式(Parasitic)继承是与原型式继承紧密相关的一种思想，并且同样由道格拉斯·克罗克福德(Douglas Crockford)提出和推<br>广的；</li>
-<li>寄生式继承的思路是结合原型类继承和工厂模式的一种方式；</li>
-<li>即创建一个<strong>封装</strong>继承过程的函数，该函数在内部以某种方式来增强对象，最后再将这个对象返回；</li>
-</ul>
-<img src="../../img/js高级/07-prototype/img_1.png" alt="">
-
-<p>从图中可以看出，<code>Student</code>继承自<code>Person</code>，同样的，<code>Person</code>也继承自<code>Object</code>，可得<font color="red"><strong><code>Object</code>是所有类的子类</strong></font>。</p>
-<h2 id="2-5-ES5-–-对象补充方法"><a href="#2-5-ES5-–-对象补充方法" class="headerlink" title="2.5 ES5 – 对象补充方法"></a>2.5 ES5 – 对象补充方法</h2><ol>
-<li><p>hasOwnProperty() – 判断某个属性是否存在于对象自身，而不是原型的</p>
-<blockquote>
-<p>obj.hasOwnProperty(“name”)</p>
-</blockquote>
-</li>
-<li><p>in操作符 – 判断某个属性是否存在于对象身上（包括原型）</p>
-<blockquote>
-<p>“name” in obj</p>
-</blockquote>
-<p>for…in 可遍历对象的所有可枚举属性，包括原型上的属性</p>
-</li>
-<li><p>instanceof – 用于检测构造函数的<code>prototype</code></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name, age</span>) &#123;&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Student</span>(<span class="params">name, age</span>) &#123;&#125;</span><br><span class="line"><span class="title function_">inherit</span>(<span class="title class_">Student</span>, <span class="title class_">Person</span>)</span><br><span class="line"><span class="keyword">const</span> p = <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="string">&quot;chender&quot;</span>, <span class="number">22</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(p <span class="keyword">instanceof</span> <span class="title class_">Student</span>) <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(p <span class="keyword">instanceof</span> <span class="title class_">Person</span>)  <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(p <span class="keyword">instanceof</span> <span class="title class_">Object</span>)  <span class="comment">// true</span></span><br></pre></td></tr></table></figure></li>
-<li><p>isPrototypeof() – 用于判断某个对象是否出现在某个实例对象的原型链上 （了解即可）</p>
-<blockquote>
-<p>Student.prototype.isPrototypeof(p)   &#x2F;&#x2F; p是否在Student.prototype的原型链上</p>
-</blockquote>
-</li>
-</ol>
-<h1 id="3-原型关系"><a href="#3-原型关系" class="headerlink" title="3. 原型关系"></a>3. 原型关系</h1><h2 id="3-1-原型继承关系图"><a href="#3-1-原型继承关系图" class="headerlink" title="3.1 原型继承关系图"></a>3.1 原型继承关系图</h2><img src="../../img/js高级/07-prototype/img_4.png" alt="">
-
-<p><strong>注：</strong></p>
-<ol>
-<li>所有函数（比如Person， Object）都是Function的实例对象；</li>
-<li>Function也是Function的实例对象；</li>
-<li>原型对象创建时默认其隐式原型指向Object的显式原型；</li>
-<li>推导得：Object是Person, Function的父类</li>
-</ol>
-<h2 id="3-2-class方式定义类"><a href="#3-2-class方式定义类" class="headerlink" title="3.2 class方式定义类"></a>3.2 class方式定义类</h2><h2 id="3-3-extends实现继承"><a href="#3-3-extends实现继承" class="headerlink" title="3.3 extends实现继承"></a>3.3 extends实现继承</h2>]]></content>
-      <categories>
-        <category>分类</category>
-      </categories>
-      <tags>
-        <tag>js高级</tag>
+        <tag>nginx</tag>
       </tags>
   </entry>
   <entry>
@@ -810,6 +673,197 @@
 <li>阻止对象的扩展<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 阻止扩展</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">preventExtensions</span>(obj)</span><br><span class="line">obj.<span class="property">address</span> = <span class="string">&#x27;beijing&#x27;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj);</span><br></pre></td></tr></table></figure></li>
 <li>密封对象 – 禁止删除操作<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 密封对象</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">seal</span>(obj)</span><br><span class="line"><span class="keyword">delete</span> obj.<span class="property">name</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj);</span><br></pre></td></tr></table></figure></li>
 <li>冻结对象 – 禁止修改操作<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 冻结对象</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">freeze</span>(obj)</span><br><span class="line">obj.<span class="property">name</span> = <span class="string">&#x27;renzhenxuexi&#x27;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj);</span><br></pre></td></tr></table></figure></li>
+</ol>
+]]></content>
+      <categories>
+        <category>分类</category>
+      </categories>
+      <tags>
+        <tag>js高级</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>07-原型和原型链</title>
+    <url>/posts/e3799824.html</url>
+    <content><![CDATA[<p>认识一下原型和原型链。</p>
+<h1 id="1-认识原型"><a href="#1-认识原型" class="headerlink" title="1. 认识原型"></a>1. 认识原型</h1><p><strong>原型是什么？怎样获取？</strong></p>
+<h2 id="1-1-ES5-–-对象的原型"><a href="#1-1-ES5-–-对象的原型" class="headerlink" title="1.1 ES5 – 对象的原型"></a>1.1 ES5 – <strong>对象</strong>的原型</h2><p>每个对象身上都有一个[[prototype]]内置属性，这个特殊的对象可以指向另外一个对象。</p>
+<ul>
+<li>当我们通过引用对象的<code>key</code>来获取<code>value</code>时，就会触发[[Get]]操作；</li>
+<li>这个操作首先会在对象本身进行寻找，如果有的话就使用它；</li>
+<li>没有的话就在对象的[[prototype]]属性指向的对象中寻找，如果还没有的话就继续找对象[[prototype]]属性指向的对象的[[prototype]]属性指向的对象中寻找，直到找到或者找不到为止。</li>
+</ul>
+<p><strong>获取对象原型的方法</strong></p>
+<ol>
+<li><code>__proto__</code>属性<blockquote>
+<p>obj.<strong>proto</strong><br>这种方式存在浏览器的兼容性问题，所以不建议使用；</p>
+</blockquote>
+</li>
+<li>getPrototypeOf()<blockquote>
+<p>Object.getPrototypeOf(obj)<br>同样的，设置原型可使用setPrototypeOf(对象，对象要指向的原型)方法；</p>
+</blockquote>
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">    <span class="keyword">const</span> obj = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;prototype&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj.<span class="property">__proto__</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Object</span>.<span class="title function_">getPrototypeOf</span>(obj));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj.<span class="property">__proto__</span> === <span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<h2 id="1-2-ES5-–-构造函数的原型"><a href="#1-2-ES5-–-构造函数的原型" class="headerlink" title="1.2 ES5 – 构造函数的原型"></a>1.2 ES5 – <strong>构造函数</strong>的原型</h2><p>函数本身也是对象，它身上有一个<code>[[prototype]]</code>属性，这个属性是一个对象，这个对象就是函数的实例对象。</p>
+<p>区别于对象的获取方式，函数的<code>[[prototype]]</code>属性是<strong>显式原型</strong>，而函数对象的<code>__proto__</code>是<strong>隐式原型</strong>；</p>
+<p>通过<code>new</code>关键字创建对象：</p>
+<ol>
+<li>创建空对象；</li>
+<li>将空对象赋值给this；</li>
+<li>将对象的显式原型赋值给隐式原型；</li>
+</ol>
+<p><strong>案例:</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Student</span>(<span class="params">name, age</span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line"></span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">studying</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span> + <span class="string">&#x27; is studying&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> s1 = <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="string">&#x27;xuexi&#x27;</span>, <span class="number">18</span>);</span><br><span class="line"><span class="keyword">const</span> s2 = <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="string">&#x27;student&#x27;</span>, <span class="number">18</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(s1.<span class="property">studying</span> === s2.<span class="property">studying</span>); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>若这样定义函数，那么每次通过<code>new</code>创建对象时都会创建一个新的<code>studying</code>方法；</li>
+<li>但若是将该方法定义在<code>Student.prototype</code>对象中，那么<code>studying</code>方法只会创建一次，所有对象实例都会共享这个方法。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Student</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">studying</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span> + <span class="string">&#x27; is studying&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> s1 = <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="string">&#x27;xuexi&#x27;</span>, <span class="number">18</span>);</span><br><span class="line"><span class="keyword">const</span> s2 = <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="string">&#x27;student&#x27;</span>, <span class="number">18</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(s1.<span class="property">studying</span> === s2.<span class="property">studying</span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>函数的显式原型对象<code>[[prototype]]</code>上有一个<code>[[constructor]]</code>属性，和这个属性指向函数本身。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Student</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">constructor</span> === <span class="title class_">Student</span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>案例：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name, age</span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">age</span> = age</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> p1 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;p1&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"><span class="keyword">const</span> p2 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;p2&#x27;</span>, <span class="number">20</span>)</span><br><span class="line"></span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">running</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span> + <span class="string">&#x27; is running&#x27;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="../../img/js高级/07-prototype/img.png" alt="">
+
+<p>查找某个属性时，首先在对象本身中寻找，如果没有再在原型对象上寻找，如果没有再在原型对象的原型对象上（Object.prototype）寻找，直到找到或者找不到为止。</p>
+<h2 id="1-3-ES5-–-重写原型对象（不推荐）"><a href="#1-3-ES5-–-重写原型对象（不推荐）" class="headerlink" title="1.3 ES5 – 重写原型对象（不推荐）"></a>1.3 ES5 – 重写原型对象（不推荐）</h2><p>如果要在原型对象上添加很多属性，那么我们一般会重写原型对象。</p>
+<img src="../../img/js高级/07-prototype/img_2.png" alt="">
+
+<p>我们可以通过上面的方法重写原型对象，但注意不要忘记添加<code>[[constructor]]</code>属性。</p>
+<p>在重写前我们发现原型对象的<code>[[constructor]]</code>的属性描述符是不可枚举的：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Object</span>.<span class="title function_">keys</span>(<span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>))  <span class="comment">// [&#x27;running&#x27;]</span></span><br></pre></td></tr></table></figure>
+
+<p>但是按照我们重写的方式来看，<code>[[constructor]]</code>属性也将会被枚举，所以我们需要通过属性描述符对这个属性进行更改。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(<span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>, <span class="string">&quot;constructor&quot;</span>, &#123;</span><br><span class="line">  <span class="attr">configurable</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">value</span>: <span class="string">&quot;Person&quot;</span>,</span><br><span class="line">  <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">writable</span>: <span class="literal">true</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-原型链"><a href="#2-原型链" class="headerlink" title="2. 原型链"></a>2. 原型链</h1><h2 id="2-1-ES5-–-默认对象的原型链"><a href="#2-1-ES5-–-默认对象的原型链" class="headerlink" title="2.1 ES5 – 默认对象的原型链"></a>2.1 ES5 – 默认对象的原型链</h2><img src="../../img/js高级/07-prototype/img_3.png" alt="">
+
+<p>当在对象身上查找某个属性时，会现在真神寻找，自身没有会在原型<code>__proto__</code>上寻找，如果没有的话会在原型的原型<code>__proto__</code>上寻找，最终查找到<code>Object.prototype</code>,它指向<code>null</code>,直到找到或者找不到为止。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;&#125;;</span><br><span class="line"><span class="comment">// 相当于  const obj = new Object(); 构造函数的原型</span></span><br><span class="line"><span class="comment">// 即 obj.__proto__ = Object.prototype;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-ES5-–-利用原型链实现继承"><a href="#2-2-ES5-–-利用原型链实现继承" class="headerlink" title="2.2 ES5 – 利用原型链实现继承"></a>2.2 ES5 – 利用<strong>原型链</strong>实现继承</h2><p>现定义一个<code>Person</code>类，定义一个<code>Student</code>类，实现<code>Student</code>继承<code>Person</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name, age</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">say</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;hello world&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Student</span>(<span class="params">name, age</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">Student</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">say</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;hello world&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Student</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">studying</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span> + <span class="string">&#x27; is studying&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>方式一 – <code>Student.prototype = Person.prototype;</code></p>
+<p>这种方式会产生问题：<br>   本来只有<code>Student</code>类才有的studying方法，但是通过这种方式，<code>Student</code>类和<code>Person</code>类都拥有studying方法。也就没有实现继承。</p>
+</li>
+<li><p>方式二 – <code>Student.prototype = new Person();Student.prototype = p;</code></p>
+<p>这种方式将<code>Student</code>类的studying方法放在<code>p</code>对象身上，而<code>Person</code>原型上没有，实现了继承。</p>
+</li>
+</ol>
+<h2 id="2-3-ES5-–-借用构造函数实现属性继承"><a href="#2-3-ES5-–-借用构造函数实现属性继承" class="headerlink" title="2.3 ES5 – 借用构造函数实现属性继承"></a>2.3 ES5 – 借用<strong>构造函数</strong>实现属性继承</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在利用原型链实现继承的基础上</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Student</span>(<span class="params">name, age</span>) &#123;</span><br><span class="line">    <span class="title class_">Person</span>.<span class="title function_">apply</span>(<span class="variable language_">this</span>,name,age)</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> student = <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="string">&quot;chender&quot;</span>, <span class="number">22</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>组合继承的弊端</strong></p>
+<ol>
+<li>创建对象时，会调用两次父类的构造函数，一次是<code>Student.prototype = new Person();</code>，一次是<code>Student.prototype = p;</code>；</li>
+<li>所有的子类实例都有两份父类的属性，一份在自身，一份在原型上；</li>
+</ol>
+<h2 id="2-4-ES5-–-原型式继承函数"><a href="#2-4-ES5-–-原型式继承函数" class="headerlink" title="2.4 ES5 – 原型式继承函数"></a>2.4 ES5 – 原型式继承函数</h2><p>从上面的例子中可以发现，想要实现继承就需要将父类和子类连接起来：</p>
+<ol>
+<li>创建新对象；</li>
+<li>将新对象的原型指向父类原型；</li>
+<li>子类原型指向所创建的对象；</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">createObj</span>(<span class="params">o</span>)&#123;</span><br><span class="line"><span class="comment">//     无兼容性创建对象方式</span></span><br><span class="line">   <span class="keyword">function</span> <span class="title function_">F</span>(<span class="params"></span>)&#123;&#125;</span><br><span class="line">   F.<span class="property"><span class="keyword">prototype</span></span> = o</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> <span class="title function_">F</span>()</span><br><span class="line">   </span><br><span class="line"><span class="comment">//    有兼容性创建方式：</span></span><br><span class="line"><span class="comment">//    return Object.craete(SuperType.prototype)</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">inderit</span>(<span class="params">SubType, SuperType</span>)&#123;</span><br><span class="line">    <span class="title class_">SubType</span>.<span class="property"><span class="keyword">prototype</span></span> = <span class="title function_">craeteObj</span>(<span class="title class_">SuperType</span>.<span class="property"><span class="keyword">prototype</span></span>)</span><br><span class="line">    <span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(<span class="title class_">SubType</span>.<span class="property"><span class="keyword">prototype</span></span>, <span class="string">&quot;constructor&quot;</span>, &#123;</span><br><span class="line">       <span class="attr">enumerable</span>:<span class="literal">false</span>,</span><br><span class="line">       <span class="attr">configurable</span>: <span class="literal">true</span>,</span><br><span class="line">       <span class="attr">writable</span>:<span class="literal">true</span>,</span><br><span class="line">       <span class="attr">value</span>: <span class="title class_">SubType</span></span><br><span class="line">   &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>继承的最终写法(寄生组合式继承)：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name, age</span>) &#123;</span><br><span class="line">   <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">   <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">eating</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">   <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;eating&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Student</span>(<span class="params">name, age, sex, grade</span>) &#123;</span><br><span class="line">   <span class="title class_">Person</span>.<span class="title function_">apply</span>(<span class="variable language_">this</span>, [name, age])</span><br><span class="line">   <span class="variable language_">this</span>.<span class="property">sex</span> = sex;</span><br><span class="line">   <span class="variable language_">this</span>.<span class="property">grade</span> = grade;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">createObj</span>(<span class="params">o</span>) &#123;</span><br><span class="line">   <span class="keyword">function</span> <span class="title function_">F</span>(<span class="params"></span>) &#123; &#125;</span><br><span class="line">   F.<span class="property"><span class="keyword">prototype</span></span> = o</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> <span class="title function_">F</span>()</span><br><span class="line"></span><br><span class="line">   <span class="comment">//    return Object.create(o)</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">inherit</span>(<span class="params">SubType, SuperType</span>) &#123;</span><br><span class="line">   <span class="title class_">SubType</span>.<span class="property"><span class="keyword">prototype</span></span> = <span class="title function_">createObj</span>(<span class="title class_">SuperType</span>.<span class="property"><span class="keyword">prototype</span></span>)</span><br><span class="line">   <span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(<span class="title class_">SubType</span>.<span class="property"><span class="keyword">prototype</span></span>, <span class="string">&quot;constructor&quot;</span>, &#123;</span><br><span class="line">      <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">      <span class="attr">writable</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">configurable</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">value</span>: <span class="title class_">SubType</span></span><br><span class="line">   &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>补充 – 寄生式继承函数</strong></p>
+<ul>
+<li>寄生式(Parasitic)继承是与原型式继承紧密相关的一种思想，并且同样由道格拉斯·克罗克福德(Douglas Crockford)提出和推<br>广的；</li>
+<li>寄生式继承的思路是结合原型类继承和工厂模式的一种方式；</li>
+<li>即创建一个<strong>封装</strong>继承过程的函数，该函数在内部以某种方式来增强对象，最后再将这个对象返回；</li>
+</ul>
+<img src="../../img/js高级/07-prototype/img_1.png" alt="">
+
+<p>从图中可以看出，<code>Student</code>继承自<code>Person</code>，同样的，<code>Person</code>也继承自<code>Object</code>，可得<font color="red"><strong><code>Object</code>是所有类的子类</strong></font>。</p>
+<h2 id="2-5-ES5-–-对象补充方法"><a href="#2-5-ES5-–-对象补充方法" class="headerlink" title="2.5 ES5 – 对象补充方法"></a>2.5 ES5 – 对象补充方法</h2><ol>
+<li><p>hasOwnProperty() – 判断某个属性是否存在于对象自身，而不是原型的</p>
+<blockquote>
+<p>obj.hasOwnProperty(“name”)</p>
+</blockquote>
+</li>
+<li><p>in操作符 – 判断某个属性是否存在于对象身上（包括原型）</p>
+<blockquote>
+<p>“name” in obj</p>
+</blockquote>
+<p>for…in 可遍历对象的所有可枚举属性，包括原型上的属性</p>
+</li>
+<li><p>instanceof – 用于检测构造函数的<code>prototype</code></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name, age</span>) &#123;&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Student</span>(<span class="params">name, age</span>) &#123;&#125;</span><br><span class="line"><span class="title function_">inherit</span>(<span class="title class_">Student</span>, <span class="title class_">Person</span>)</span><br><span class="line"><span class="keyword">const</span> p = <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="string">&quot;chender&quot;</span>, <span class="number">22</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(p <span class="keyword">instanceof</span> <span class="title class_">Student</span>) <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(p <span class="keyword">instanceof</span> <span class="title class_">Person</span>)  <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(p <span class="keyword">instanceof</span> <span class="title class_">Object</span>)  <span class="comment">// true</span></span><br></pre></td></tr></table></figure></li>
+<li><p>isPrototypeof() – 用于判断某个对象是否出现在某个实例对象的原型链上 （了解即可）</p>
+<blockquote>
+<p>Student.prototype.isPrototypeof(p)   &#x2F;&#x2F; p是否在Student.prototype的原型链上</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="3-原型关系"><a href="#3-原型关系" class="headerlink" title="3. 原型关系"></a>3. 原型关系</h1><h2 id="3-1-原型继承关系图"><a href="#3-1-原型继承关系图" class="headerlink" title="3.1 原型继承关系图"></a>3.1 原型继承关系图</h2><img src="../../img/js高级/07-prototype/javascript_layout_tree.png" alt="javascript_layout_tree">
+图片来源：<a href="http://mollypages.org/tutorials/js.mp" >javascript_layout_tree</a>
+
+<p><strong>注：</strong></p>
+<ol>
+<li><strong>所有函数（比如Person， Object）都是Function的实例对象</strong>；</li>
+<li>Function也是Function的实例对象；</li>
+<li>原型对象创建时默认其隐式原型指向Object的显式原型；</li>
+<li>推导得：Object是Person, Function的父类</li>
+</ol>
+<p><strong>补充 – 构造函数的类方法和实例方法：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name, age</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 实例方法</span></span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">eating</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">   <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;eating&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 类方法</span></span><br><span class="line"><span class="title class_">Person</span>.<span class="property">randomPerson</span> = <span class="keyword">function</span> (<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&quot;abc&quot;</span>, <span class="number">18</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> p1 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&quot;name&quot;</span>, <span class="number">18</span>)</span><br></pre></td></tr></table></figure>
+<p>有了上面这段代码，现在来思考一个问题：</p>
+<ol>
+<li><blockquote>
+<p>Person.eating() 会执行吗？</p>
+</blockquote>
+<blockquote>
+<p>答案是 不会。</p>
+<ul>
+<li>因为Person是Function的实例对象，是Object，且Person原型上没有eating方法，接着在Object原型上找也没有找到，所以会报错。</li>
+<li>这种定义在构造函数原型上的方法就叫做实例方法（只有创建实例对象才能调用）。</li>
+</ul>
+</blockquote>
+</li>
+<li><blockquote>
+<p>const p &#x3D; Person.randomPerson() 会执行吗？</p>
+</blockquote>
+<blockquote>
+<p>答案是 会。</p>
+<ul>
+<li>因为randomPerson方法在Person对象身上，直接调用即可获得；</li>
+<li>这种定义在构造函数对象上的方法就叫做类方法。</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+<h2 id="3-2-ES6的class"><a href="#3-2-ES6的class" class="headerlink" title="3.2 ES6的class"></a>3.2 ES6的<code>class</code></h2><h3 id="3-2-1-class定义类"><a href="#3-2-1-class定义类" class="headerlink" title="3.2.1 class定义类"></a>3.2.1 class定义类</h3><p><code>ES6</code>新的标准中使用class关键字定义类。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span>&#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">name, age</span>)&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 实例方法</span></span><br><span class="line">    <span class="comment">// 本质是Person.prototype.eating = function()&#123;&#125;</span></span><br><span class="line">    <span class="title function_">eating</span>(<span class="params"></span>)&#123;</span><br><span class="line">       <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;eating&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"><span class="comment">//     类方法</span></span><br><span class="line">    <span class="keyword">static</span> <span class="title function_">sleeping</span>(<span class="params"></span>)&#123;</span><br><span class="line">       <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;sleeping&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>class方式定义类，创建对象和构造函数方式定义类创建对象本质上是一样，但class定义的类不能作为普通函数进行调用：</p>
+<h3 id="3-2-2-访问器"><a href="#3-2-2-访问器" class="headerlink" title="3.2.2 访问器"></a>3.2.2 访问器</h3><p>如何更灵活的对对象或者类的属性进行管理？我们可以使用<code>访问器</code>来实现。</p>
+<ol>
+<li><p>对象访问器</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">   <span class="string">&quot;_name&quot;</span>: <span class="string">&quot;chen&quot;</span>,</span><br><span class="line">   <span class="keyword">get</span> <span class="title function_">name</span>()&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">_name</span></span><br><span class="line">   &#125;,</span><br><span class="line">   <span class="keyword">set</span> <span class="title function_">name</span>(<span class="params">value</span>)&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">_name</span> = value</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 也可以使用Object.defineProperty()进行访问器定义</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(obj, <span class="string">&quot;name&quot;</span>, &#123;</span><br><span class="line">   <span class="attr">configurable</span>: <span class="literal">true</span>,</span><br><span class="line">   <span class="attr">enumerable</span>: <span class="literal">true</span>,</span><br><span class="line">   <span class="title function_">get</span>(<span class="params"></span>)&#123;&#125;,</span><br><span class="line">   <span class="title function_">set</span>(<span class="params">value</span>)&#123;&#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>类访问器</p>
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span>&#123;</span><br><span class="line">   <span class="title function_">constructor</span>(<span class="params">name</span>)&#123;</span><br><span class="line">       <span class="variable language_">this</span>.<span class="property">name</span> = name</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">get</span> <span class="title function_">name</span>()&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">name</span></span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">set</span> <span class="title function_">name</span>(<span class="params">value</span>)&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">name</span> = value</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-3-extends实现继承"><a href="#3-3-extends实现继承" class="headerlink" title="3.3 extends实现继承"></a>3.3 extends实现继承</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span>&#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">name</span>)&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">name</span> = name</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">say</span>(<span class="params"></span>)&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Person</span>&#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">name, age</span>)&#123;</span><br><span class="line">        <span class="variable language_">super</span>(name)</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">age</span> = age</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>class中的<code>super</code>关键字：</strong></p>
+<ol>
+<li>super.method(…) 来调用一个父类方法；</li>
+<li>super(…) 来调用父类的constructor(…)</li>
+</ol>
+<p>注：</p>
+<ol>
+<li>在子类中使用<code>this</code>或者返回默认对象前必须先通过<code>super</code>调用父类构造函数；</li>
+<li><code>super</code>的使用位置：构造函数、实例方法、类方法；</li>
+<li><code>super</code>只能调用同名函数，不能调用不同名函数；<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Person</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">static</span> <span class="title function_">sleep</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">super</span>.<span class="title function_">sleep</span>()</span><br><span class="line">        <span class="comment">// super.eat()   // 报错</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;sleeping&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ol>
 ]]></content>
       <categories>
