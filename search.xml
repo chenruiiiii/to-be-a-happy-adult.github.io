@@ -333,6 +333,49 @@
       </tags>
   </entry>
   <entry>
+    <title>Nginx安装与配置以及常用命令</title>
+    <url>/posts/4f72a7f4.html</url>
+    <content><![CDATA[<p>了解一下Nginx的安装与配置，以及常见的Nginx常用命令</p>
+<h1 id="1-安装与配置"><a href="#1-安装与配置" class="headerlink" title="1. 安装与配置"></a>1. 安装与配置</h1><ol>
+<li><p>阿里云申请免费云服务器，为Nginx练习使用</p>
+</li>
+<li><p>连接远程服务器</p>
+<ul>
+<li>首先重置root密码</li>
+<li>若是使用vscode 可安装 <code>remote ssh</code>插件 （用来连接远程服务器）</li>
+<li>连接到远程</li>
+</ul>
+</li>
+<li><p>下载Nginx </p>
+<ul>
+<li>cd &#x2F;usr&#x2F;local</li>
+<li>wget <a href="https://nginx.org/download/Nginx-1.28.0.tar.gz">https://nginx.org/download/Nginx-1.28.0.tar.gz</a> (若下载不成功可通过命令 <code>su</code> 切换到root用户)</li>
+</ul>
+</li>
+</ol>
+<img src="../../img/Nginx/img.png">
+
+<pre><code>- tar -zxvf Nginx-1.28.0.tar.gz
+- cd ./Nginx-1.28.0
+</code></pre>
+<ol start="4">
+<li>初始配置及编译安装<ul>
+<li>初始配置 .&#x2F;configure</li>
+<li>编译源码 安装 make &amp;&amp; make install</li>
+</ul>
+</li>
+</ol>
+<h1 id="2-Nginx常见命令"><a href="#2-Nginx常见命令" class="headerlink" title="2. Nginx常见命令"></a>2. Nginx常见命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">user admin; # 规定启动Nginx的用户</span><br><span class="line">worker_processes 1; # Nginx 启动一个工作进程，适用于轻量部署或开发环境。</span><br><span class="line">events &#123;</span><br><span class="line">   worker_connections 1024; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http&#123;</span><br><span class="line">   include mime.types; # 文件类型映射</span><br><span class="line">   default_type application/octet-stream; # 默认MIME类型</span><br><span class="line">   sendfile        on;                            # 启用 sendfile 加速</span><br><span class="line">   tcp_nopush      on;                            # 优化发送数据包</span><br><span class="line">   keepalive_timeout  65;                         # 长连接超时</span><br><span class="line">   client_max_body_size 10m;                      # 请求体大小限制</span><br><span class="line"></span><br><span class="line">   include /etc/nginx/conf.d/*.conf;              # 引入子配置文件</span><br><span class="line">   </span><br><span class="line">   # 静态文件配置</span><br><span class="line">   server &#123;</span><br><span class="line">      listen 8080 ssl;</span><br><span class="line">      server_name localhost myTest.com;</span><br><span class="line">      </span><br><span class="line">      # 申请ssl证书 配置ssl证书</span><br><span class="line">      ssl_certificate /path/to/cert.pem;</span><br><span class="line">      ssl_certificate_key /path/to/cert.key;</span><br><span class="line">      </span><br><span class="line">      location / &#123;</span><br><span class="line">         root /usr/local/nginx/html/dist; # 相对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      location /api &#123;</span><br><span class="line">         # 设置CORS配置</span><br><span class="line">         add_header Access-Control-Allow-Origin *;</span><br><span class="line">         add_header Access-Control-Allow-Methods &#x27;GET, POST, OPTIONS&#x27;;</span><br><span class="line">         add_header Access-Control-Allow-Headers &#x27;Content-Type, Authorization&#x27;;</span><br><span class="line">         </span><br><span class="line">         alias /usr/local/nginx/html/dist/api; # 绝对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">         </span><br><span class="line">         if ($request_method = &#x27;OPTIONS&#x27;) &#123;</span><br><span class="line">            return 204;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Nginx</category>
+      </categories>
+      <tags>
+        <tag>Nginx</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>03-javascript的运行原理</title>
     <url>/posts/4bc49eeb.html</url>
     <content><![CDATA[<p>上篇博客了解了一下浏览器的运行原理，那javascript的运行原理又是怎么样的呢？</p>
@@ -446,17 +489,6 @@
 <p>也就是说，我们所使用的<code>javascript</code>会自动的对原始值、对象、函数等进行内存管理，我们并不需要进行多余的操作。</p>
 <p><img src="/../../img/js%E9%AB%98%E7%BA%A7/04-closure/img1.png" alt="img.png"></p>
 <h1 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h1><h1 id="闭包的概念理解"><a href="#闭包的概念理解" class="headerlink" title="闭包的概念理解"></a>闭包的概念理解</h1><h1 id="闭包的形成过程"><a href="#闭包的形成过程" class="headerlink" title="闭包的形成过程"></a>闭包的形成过程</h1><h1 id="闭包的内存泄漏"><a href="#闭包的内存泄漏" class="headerlink" title="闭包的内存泄漏"></a>闭包的内存泄漏</h1>]]></content>
-      <categories>
-        <category>js高级</category>
-      </categories>
-      <tags>
-        <tag>js高级</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>08-手写apply/call/bind</title>
-    <url>/posts/5be1151a.html</url>
-    <content><![CDATA[]]></content>
       <categories>
         <category>js高级</category>
       </categories>
@@ -653,6 +685,17 @@
       </tags>
   </entry>
   <entry>
+    <title>08-手写apply/call/bind</title>
+    <url>/posts/5be1151a.html</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>js高级</category>
+      </categories>
+      <tags>
+        <tag>js高级</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>07-原型和原型链</title>
     <url>/posts/e3799824.html</url>
     <content><![CDATA[<p>认识一下原型和原型链。<br>1111</p>
@@ -841,49 +884,6 @@
       </categories>
       <tags>
         <tag>js高级</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Nginx安装与配置以及常用命令</title>
-    <url>/posts/4f72a7f4.html</url>
-    <content><![CDATA[<p>了解一下Nginx的安装与配置，以及常见的Nginx常用命令</p>
-<h1 id="1-安装与配置"><a href="#1-安装与配置" class="headerlink" title="1. 安装与配置"></a>1. 安装与配置</h1><ol>
-<li><p>阿里云申请免费云服务器，为Nginx练习使用</p>
-</li>
-<li><p>连接远程服务器</p>
-<ul>
-<li>首先重置root密码</li>
-<li>若是使用vscode 可安装 <code>remote ssh</code>插件 （用来连接远程服务器）</li>
-<li>连接到远程</li>
-</ul>
-</li>
-<li><p>下载Nginx </p>
-<ul>
-<li>cd &#x2F;usr&#x2F;local</li>
-<li>wget <a href="https://nginx.org/download/Nginx-1.28.0.tar.gz">https://nginx.org/download/Nginx-1.28.0.tar.gz</a> (若下载不成功可通过命令 <code>su</code> 切换到root用户)</li>
-</ul>
-</li>
-</ol>
-<img src="../../img/Nginx/img.png">
-
-<pre><code>- tar -zxvf Nginx-1.28.0.tar.gz
-- cd ./Nginx-1.28.0
-</code></pre>
-<ol start="4">
-<li>初始配置及编译安装<ul>
-<li>初始配置 .&#x2F;configure</li>
-<li>编译源码 安装 make &amp;&amp; make install</li>
-</ul>
-</li>
-</ol>
-<h1 id="2-Nginx常见命令"><a href="#2-Nginx常见命令" class="headerlink" title="2. Nginx常见命令"></a>2. Nginx常见命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">user admin; # 规定启动Nginx的用户</span><br><span class="line">worker_processes 1; # Nginx 启动一个工作进程，适用于轻量部署或开发环境。</span><br><span class="line">events &#123;</span><br><span class="line">   worker_connections 1024; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http&#123;</span><br><span class="line">   include mime.types; # 文件类型映射</span><br><span class="line">   default_type application/octet-stream; # 默认MIME类型</span><br><span class="line">   sendfile        on;                            # 启用 sendfile 加速</span><br><span class="line">   tcp_nopush      on;                            # 优化发送数据包</span><br><span class="line">   keepalive_timeout  65;                         # 长连接超时</span><br><span class="line">   client_max_body_size 10m;                      # 请求体大小限制</span><br><span class="line"></span><br><span class="line">   include /etc/nginx/conf.d/*.conf;              # 引入子配置文件</span><br><span class="line">   </span><br><span class="line">   # 静态文件配置</span><br><span class="line">   server &#123;</span><br><span class="line">      listen 8080 ssl;</span><br><span class="line">      server_name localhost myTest.com;</span><br><span class="line">      </span><br><span class="line">      # 申请ssl证书 配置ssl证书</span><br><span class="line">      ssl_certificate /path/to/cert.pem;</span><br><span class="line">      ssl_certificate_key /path/to/cert.key;</span><br><span class="line">      </span><br><span class="line">      location / &#123;</span><br><span class="line">         root /usr/local/nginx/html/dist; # 相对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      location /api &#123;</span><br><span class="line">         # 设置CORS配置</span><br><span class="line">         add_header Access-Control-Allow-Origin *;</span><br><span class="line">         add_header Access-Control-Allow-Methods &#x27;GET, POST, OPTIONS&#x27;;</span><br><span class="line">         add_header Access-Control-Allow-Headers &#x27;Content-Type, Authorization&#x27;;</span><br><span class="line">         </span><br><span class="line">         alias /usr/local/nginx/html/dist/api; # 绝对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">         </span><br><span class="line">         if ($request_method = &#x27;OPTIONS&#x27;) &#123;</span><br><span class="line">            return 204;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Nginx</category>
-      </categories>
-      <tags>
-        <tag>Nginx</tag>
       </tags>
   </entry>
 </search>
