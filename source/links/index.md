@@ -83,7 +83,7 @@ comments: false
   <div class="link-item">
     <a href="https://a-big-dreamer.github.io/" target="_blank" class="link-card" style="text-decoration: none">
       <div class="link-icon">
-        <img src="../img/A-Big-Dreamer's-Blog.jpg" alt="A Big Dreamer's Blog" />
+        <img src="../img/7788/A-Big-Dreamer's-Blog.jpg" alt="A Big Dreamer's Blog" />
       </div>
       <div class="link-info">
         <h3>A Big Dreamer's Blog</h3>

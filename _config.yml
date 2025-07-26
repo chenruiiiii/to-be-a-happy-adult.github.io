@@ -171,17 +171,18 @@ ignore:
 ## Themes: https://hexo.io/themes/
 theme: butterfly
 
-gitalk:
-  enable: true
-  client_id: Ov23li9seGOCgxQ2bHbc
-  client_secret: af36a8b002e48cc7e6ca77b17f6ef6b360833d9f
-  labels: 'gitalk comments'
-  repo: to-be-a-happy-adult  # 此处是仓库名称 不是地址
-  owner: chenruiiiii
-  admin: chenruiiiii
-  option:
-  distractionFreeMode: false
-  perPage: 10 # Pagination size, with maximum 100.
+#gitalk:
+#  enable: true
+#  client_id: Ov23li9seGOCgxQ2bHbc
+#  client_secret: 6fed60e66b2f8a41d8d0c1e849a23de8f5623db3
+#  labels: 'gitalk comments'
+#  repo: to-be-a-happy-adult.github.io  # 此处是仓库名称 不是地址
+#  owner: chenruiiiii
+#  admin: chenruiiiii
+#  option:
+#   id: location.pathname
+#  distractionFreeMode: false
+#  perPage: 10 # Pagination size, with maximum 100.
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment

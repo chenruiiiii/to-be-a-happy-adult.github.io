@@ -1,35 +1,35 @@
 ---
 title: Nginx安装与配置以及常用命令
 categories:
-  - 分类
+  - Nginx
 tags:
-  - nginx
+  - Nginx
 abbrlink: 4f72a7f4
 ---
 
-了解一下nginx的安装与配置，以及常见的nginx常用命令
+了解一下Nginx的安装与配置，以及常见的Nginx常用命令
 
 # 1. 安装与配置
-1. 阿里云申请免费云服务器，为nginx练习使用
+1. 阿里云申请免费云服务器，为Nginx练习使用
 2. 连接远程服务器
     - 首先重置root密码
     - 若是使用vscode 可安装 `remote ssh`插件 （用来连接远程服务器）
     - 连接到远程
 
-3. 下载nginx 
+3. 下载Nginx 
     - cd /usr/local
-    - wget https://nginx.org/download/nginx-1.28.0.tar.gz (若下载不成功可通过命令 `su` 切换到root用户)
-<img src="../../img/nginx/img.png">
+    - wget https://nginx.org/download/Nginx-1.28.0.tar.gz (若下载不成功可通过命令 `su` 切换到root用户)
+<img src="../../img/Nginx/img.png">
 
-    - tar -zxvf nginx-1.28.0.tar.gz
-    - cd ./nginx-1.28.0
+    - tar -zxvf Nginx-1.28.0.tar.gz
+    - cd ./Nginx-1.28.0
 4. 初始配置及编译安装
     - 初始配置 ./configure
     - 编译源码 安装 make && make install
     
 # 2. Nginx常见命令
 ```
-user admin; # 规定启动nginx的用户
+user admin; # 规定启动Nginx的用户
 worker_processes 1; # Nginx 启动一个工作进程，适用于轻量部署或开发环境。
 events {
    worker_connections 1024; 

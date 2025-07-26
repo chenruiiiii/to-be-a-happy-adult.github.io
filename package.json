@@ -5,7 +5,7 @@
   "scripts": {
     "build": "hexo generate",
     "clean": "hexo clean",
-    "deploy": "hexo clean & hexo g & hexo d",
+    "deploy": "hexo clean && hexo g && hexo d",
     "server": "hexo server"
   },
   "hexo": {
@@ -17,6 +17,7 @@
     "hexo": "^7.3.0",
     "hexo-abbrlink": "^2.2.1",
     "hexo-all-minifier": "^0.5.7",
+    "hexo-butterfly-clock-anzhiyu": "^1.1.8",
     "hexo-deployer-git": "^4.0.0",
     "hexo-generator-archive": "^2.0.0",
     "hexo-generator-category": "^2.0.0",
@@ -32,6 +33,7 @@
     "hexo-symbols-count-time": "^0.7.1",
     "hexo-theme-butterfly": "^5.3.5",
     "hexo-theme-landscape": "^1.0.0",
-    "hexo-wordcount": "^6.0.1"
+    "hexo-wordcount": "^6.0.1",
+    "mongodb": "^6.17.0"
   }
 }

@@ -1,7 +1,7 @@
 ---
 title: 01- this的指向规则
 categories:
-  - 分类
+  - js高级
 tags:
   - js高级
 indexing: false
@@ -16,20 +16,19 @@ date: 2025-05-14 18:30:24
 
 1. 直接调用
 
-> foo()  // window{}
->
+    > foo()  // window{}
 
 2. 通过对象调用
 
-```html
-var obj = { name: 'name' }
-obj.foo = foo
-obj.foo(); // Object{}     (obj这个对象)
-```
+    ```html
+    var obj = { name: 'name' }
+    obj.foo = foo
+    obj.foo(); // Object{}     (obj这个对象)
+    ```
 
 3. call/apply/bind
 
-> foo.apply("abc") //  String {'abc'}
+    > foo.apply("abc") //  String {'abc'}
 
 **结论：**
 1. 函数在调用时，js会**默认给this绑定一个值**；
@@ -60,9 +59,7 @@ obj.foo(); // Object{}     (obj这个对象)
 + 高阶函数
 
 > function test(fn) {
->
 >     fn()
->
 > }
 >
 > test(obj.foo) // window{}
@@ -71,7 +68,6 @@ obj.foo(); // Object{}     (obj这个对象)
 
 ### 隐式绑定
 > 一般是通过**对象**来发起调用。
->
 
 ![](../../img/js高级/01-this-img/image1.png)
 
@@ -90,7 +86,7 @@ foo.apply(obj) // foo {name:'name'}
 #### call / apply函数说明
 ```javascript
 function test(name, age) {
-  console.log('参数:', name, age);
+  console.log('参数:', name, age); 
 }
 ```
 
@@ -146,52 +142,50 @@ bar() // 参数: chender 18    （参数一开始就指定好了，修改不了�
 
 1. 默认绑定优先级最低
 2. 显式绑定 > 隐式绑定
-
-```javascript
-var obj = {
-  name: 'chenber',
-  age: 18,
-  test: test
-}
-
-obj.test.apply('apply', ['1', 19]) 
-// this [String: 'apply']
-// 参数: 1 19
-var test1 = obj.test.bind('bind', 'chenber', 18)
-test1()
-// this [String: 'bind']
-// 参数: chenber 18
-```
-
+    ```javascript
+    var obj = {
+      name: 'chenber',
+      age: 18,
+      test: test
+    }
+    
+    obj.test.apply('apply', ['1', 19]) 
+    // this [String: 'apply']
+    // 参数: 1 19
+    var test1 = obj.test.bind('bind', 'chenber', 18)
+    test1()
+    // this [String: 'bind']
+    // 参数: chenber 18
+    ```
+    
 3. new 绑定 > 隐式绑定
-
-```javascript
-var obj = {
-  name: 'chenber',
-  foo: function () {
-    console.log('foo:', this);
-    console.log('foo:', this === obj);
-  }
-}
-new obj.foo()
-// foo: foo {}
-// foo: false
-```
-
+    ```javascript
+    var obj = {
+      name: 'chenber',
+      foo: function () {
+        console.log('foo:', this);
+        console.log('foo:', this === obj);
+      }
+    }
+    new obj.foo()
+    // foo: foo {}
+    // foo: false
+    ```
+    
 4.  new > 显式(bind)
 
-❗️`new`和`apply` / `call`不可以一起使用，所以没有可比性
-
-`new`和`bind`可以一起使用
-
-```javascript
-function test() {
+    ❗️`new`和`apply` / `call`不可以一起使用，所以没有可比性
+    
+    `new`和`bind`可以一起使用
+    
+    ```javascript
+    function test() {
       console.log('test', this);
     }
-
+    
     var testFN = test.bind('abc')
     new testFN() // test{}
-```
+    ```
 
 ### new绑定
 
@@ -201,41 +195,40 @@ function test() {
 - 这个新对象会绑定到函数调用的this上（this的绑定在这个步骤完成）；
 - 如果函数没有返回其他对象，表达式会返回这个新对象：
 
-总结(优先级从高到低)：
+**总结(优先级从高到低)：**
 1. new
 2. bind 
 3. apply / call
 4. 隐式
 5. 默认绑定
+
 ## 内置函数的调用绑定
 内置函数的this指向需要`根据一些经验`获取
 
 1. setTimeOut()
-
-```javascript
-setTimeOut(()=>{
-  console.log('this', this) //window
-},1000)
-```
+    ```javascript
+    setTimeOut(()=>{
+      console.log('this', this) //window
+    },1000)
+    ```
 
 2. 按钮的点击监听
-
-```javascript
+    ```javascript
     var btn = document.querySelector('button')
     btn.onclick = function () {
       console.log('btn', this); // <button>点击</button>
     }
- btn.addEventListener("click", () => {
+    btn.addEventListener("click", () => {
       console.log('btn', this); // <button>点击</button>
     })
     btn.addEventListener("click", () => {
       console.log('btn', this); // window
     })
-```
-
+    ```
+    
 3. forEach
 
-forEach(function(){}, {})
+    forEach(function(){}, {})
 
 ![](../../img/js高级/01-this-img/image3.png)
 
@@ -251,23 +244,23 @@ names.forEach(function (item) {
 })
 
 names.forEach(function (item) {
-      console.log('forEach', this); // String {'abc'}
-    }, "cba")
+    console.log('forEach', this); // String {'abc'}
+}, "cba")
 ```
 ## `this` 绑定之外的规则
 1. 如果在使用显式绑定时传入`null`或者`undefined`，那么就会使用默认绑定规则
 
-```javascript
+    ```javascript
     foo.apply(null) // window
     foo.apply(undefined) // window
-```
-严格模式差异：在严格模式下，绑定null/undefined时会直接使用传入值，this会指向null或undefined本身。
+    ```
+    严格模式差异：在严格模式下，绑定null/undefined时会直接使用传入值，this会指向null或undefined本身。
 
 2. 间接函数引用（知道就行，一般不会出现）
-```javascript
+    ```javascript
     var obj2 = {};
-    (obj2.foo = obj.foo)() // window
-```
+        (obj2.foo = obj.foo)() // window
+    ```
 3. 箭头函数(补充)
 箭头函数是 `es6` 新增的一种函数的声明方法。
 - 完整写法
@@ -279,8 +272,8 @@ const foo = (name,age)=>{
 ```
 ❗️注:
 
-	- 	箭头函数不会绑定`this` 和 `arguments`(有新的属性进行代替)属性；
-	- 	箭头函数不能作为构造函数来使用（会抛出错误）
+	- 箭头函数不会绑定`this` 和 `arguments`(有新的属性进行代替)属性；
+	- 箭头函数不能作为构造函数来使用（会抛出错误）
 
 - 箭头函数的简写
 	- 只有一个参数时 可省略()
@@ -313,39 +306,34 @@ test2() // window
 应用实例：
 
 ```javascript
-   // 模拟网络请求函数
-    function request(url, callbackFn) {
-      const results = {
-        code: 200,
-        msg: '成功',
-        data: null
-      }
-      callbackFn(results)
+// 模拟网络请求函数
+function request(url, callbackFn) {
+    const results = {code: 200, msg: '成功', data: null
     }
-    
-    // 将获取的数据传输给obj的results
-    var obj = {
-      results: {},
-      // 之前的写法：
-      // getData: function () {
-      //   var _this = this
-      //   request('/test', function (res) {
-      //     _this.results = res
-      //   })
-      // }
+    callbackFn(results)
+}
 
-      // 使用箭头函数:
-      getData: function () {
+// 将获取的数据传输给obj的results
+var obj = {
+    results: {},
+    // 之前的写法：
+    // getData: function () {
+    //   var _this = this
+    //   request('/test', function (res) {
+    //     _this.results = res
+    //   })
+    // }
+    // 使用箭头函数:
+    getData: function () {
         request('/test', (res) => {
-          this.results = res
+        this.results = res
         })
-      }
     }
-    obj.getData()
+}
+obj.getData()
 ```
 ## 1.6 相关面试题
 1. 面试题一
-
 ```javascript
 // 面试题一
 var name = 'window'
@@ -410,7 +398,8 @@ person1.foo4().call(person2); // 显式绑定  输出：person1
 ```
 
 3. 面试题三
-   ![在这里插入图片描述](../../img/js高级/01-this-img/image7.png)
+
+![在这里插入图片描述](../../img/js高级/01-this-img/image7.png)
 
 ```javascript
 // 面试题三
@@ -452,7 +441,9 @@ person1.foo4().call(person2); // 显式绑定  上层作用域查找  输出：p
 ```
 
 4. 面试题四
-   ![在这里插入图片描述](../../img/js高级/01-this-img/image8.png)
+   
+![在这里插入图片描述](../../img/js高级/01-this-img/image8.png)
+
 ```javascript
 // 面试题四
 var name = 'window'

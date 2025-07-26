@@ -1,7 +1,7 @@
 ---
 title: 06-javascript函数和对象增强
 categories:
-  - 分类
+  - js高级
 tags:
   - js高级
 indexing: false

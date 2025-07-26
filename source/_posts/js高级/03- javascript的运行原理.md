@@ -1,7 +1,7 @@
 ---
 title: 03-javascript的运行原理
 categories:
-  - 分类
+  - js高级
 tags:
   - js高级
 indexing: false
