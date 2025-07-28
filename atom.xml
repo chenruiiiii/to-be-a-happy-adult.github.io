@@ -6,7 +6,7 @@
   <link href="http://to-be-a-happy-adult.xyz/atom.xml" rel="self"/>
   
   <link href="http://to-be-a-happy-adult.xyz/"/>
-  <updated>2025-07-28T08:27:41.025Z</updated>
+  <updated>2025-07-28T08:27:28.076Z</updated>
   <id>http://to-be-a-happy-adult.xyz/</id>
   
   <author>
@@ -15,32 +15,6 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>11-Promise</title>
-    <link href="http://to-be-a-happy-adult.xyz/posts/f65fe714.html"/>
-    <id>http://to-be-a-happy-adult.xyz/posts/f65fe714.html</id>
-    <published>2025-07-28T08:08:08.000Z</published>
-    <updated>2025-07-28T08:27:41.025Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;&lt;code&gt;Promise&lt;/code&gt;详解&lt;/p&gt;
-&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="Promise" scheme="http://to-be-a-happy-adult.xyz/categories/Promise/"/>
-    
-    
-    <category term="js高级" scheme="http://to-be-a-happy-adult.xyz/tags/js%E9%AB%98%E7%BA%A7/"/>
-    
-  </entry>
   
   <entry>
     <title>10-Proxy-Reflect</title>
