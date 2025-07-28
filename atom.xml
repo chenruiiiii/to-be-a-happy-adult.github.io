@@ -6,7 +6,7 @@
   <link href="http://to-be-a-happy-adult.xyz/atom.xml" rel="self"/>
   
   <link href="http://to-be-a-happy-adult.xyz/"/>
-  <updated>2025-07-26T02:18:21.716Z</updated>
+  <updated>2025-07-28T08:09:18.055Z</updated>
   <id>http://to-be-a-happy-adult.xyz/</id>
   
   <author>
@@ -17,19 +17,45 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>11-Promise</title>
+    <link href="http://to-be-a-happy-adult.xyz/posts/f65fe714.html"/>
+    <id>http://to-be-a-happy-adult.xyz/posts/f65fe714.html</id>
+    <published>2025-07-28T08:08:08.000Z</published>
+    <updated>2025-07-28T08:09:18.055Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;&lt;code&gt;Promise&lt;/code&gt;详解&lt;/p&gt;
+</summary>
+        
+      
+    
+    
+    
+    <category term="js高级" scheme="http://to-be-a-happy-adult.xyz/categories/js%E9%AB%98%E7%BA%A7/"/>
+    
+    
+    <category term="js高级" scheme="http://to-be-a-happy-adult.xyz/tags/js%E9%AB%98%E7%BA%A7/"/>
+    
+  </entry>
+  
+  <entry>
     <title>10-Proxy-Reflect</title>
     <link href="http://to-be-a-happy-adult.xyz/posts/9d935f.html"/>
     <id>http://to-be-a-happy-adult.xyz/posts/9d935f.html</id>
     <published>2025-07-26T01:45:11.000Z</published>
-    <updated>2025-07-26T02:18:21.716Z</updated>
+    <updated>2025-07-28T08:00:41.460Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;p&gt;&lt;code&gt;Proxy&lt;/code&gt;和&lt;code&gt;Reflect&lt;/code&gt;详解。&lt;/p&gt;
-</summary>
+    <summary type="html">&lt;p&gt;&lt;code&gt;Proxy&lt;/code&gt;详解。&lt;/p&gt;
+&lt;h1 id=&quot;1-Proxy&quot;&gt;&lt;a href=&quot;#1-Proxy&quot; class=&quot;headerlink&quot; title=&quot;1. Proxy&quot;&gt;&lt;/a&gt;1.</summary>
         
       
     
@@ -47,7 +73,7 @@
     <link href="http://to-be-a-happy-adult.xyz/posts/abd5a0df.html"/>
     <id>http://to-be-a-happy-adult.xyz/posts/abd5a0df.html</id>
     <published>2025-07-23T00:45:19.000Z</published>
-    <updated>2025-07-26T02:58:56.876Z</updated>
+    <updated>2025-07-26T02:59:06.501Z</updated>
     
     
       

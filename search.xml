@@ -1,49 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Nginx安装与配置以及常用命令</title>
-    <url>/posts/4f72a7f4.html</url>
-    <content><![CDATA[<p>了解一下Nginx的安装与配置，以及常见的Nginx常用命令</p>
-<h1 id="1-安装与配置"><a href="#1-安装与配置" class="headerlink" title="1. 安装与配置"></a>1. 安装与配置</h1><ol>
-<li><p>阿里云申请免费云服务器，为Nginx练习使用</p>
-</li>
-<li><p>连接远程服务器</p>
-<ul>
-<li>首先重置root密码</li>
-<li>若是使用vscode 可安装 <code>remote ssh</code>插件 （用来连接远程服务器）</li>
-<li>连接到远程</li>
-</ul>
-</li>
-<li><p>下载Nginx </p>
-<ul>
-<li>cd &#x2F;usr&#x2F;local</li>
-<li>wget <a href="https://nginx.org/download/Nginx-1.28.0.tar.gz">https://nginx.org/download/Nginx-1.28.0.tar.gz</a> (若下载不成功可通过命令 <code>su</code> 切换到root用户)</li>
-</ul>
-</li>
-</ol>
-<img src="../../img/Nginx/img.png">
-
-<pre><code>- tar -zxvf Nginx-1.28.0.tar.gz
-- cd ./Nginx-1.28.0
-</code></pre>
-<ol start="4">
-<li>初始配置及编译安装<ul>
-<li>初始配置 .&#x2F;configure</li>
-<li>编译源码 安装 make &amp;&amp; make install</li>
-</ul>
-</li>
-</ol>
-<h1 id="2-Nginx常见命令"><a href="#2-Nginx常见命令" class="headerlink" title="2. Nginx常见命令"></a>2. Nginx常见命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">user admin; # 规定启动Nginx的用户</span><br><span class="line">worker_processes 1; # Nginx 启动一个工作进程，适用于轻量部署或开发环境。</span><br><span class="line">events &#123;</span><br><span class="line">   worker_connections 1024; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http&#123;</span><br><span class="line">   include mime.types; # 文件类型映射</span><br><span class="line">   default_type application/octet-stream; # 默认MIME类型</span><br><span class="line">   sendfile        on;                            # 启用 sendfile 加速</span><br><span class="line">   tcp_nopush      on;                            # 优化发送数据包</span><br><span class="line">   keepalive_timeout  65;                         # 长连接超时</span><br><span class="line">   client_max_body_size 10m;                      # 请求体大小限制</span><br><span class="line"></span><br><span class="line">   include /etc/nginx/conf.d/*.conf;              # 引入子配置文件</span><br><span class="line">   </span><br><span class="line">   # 静态文件配置</span><br><span class="line">   server &#123;</span><br><span class="line">      listen 8080 ssl;</span><br><span class="line">      server_name localhost myTest.com;</span><br><span class="line">      </span><br><span class="line">      # 申请ssl证书 配置ssl证书</span><br><span class="line">      ssl_certificate /path/to/cert.pem;</span><br><span class="line">      ssl_certificate_key /path/to/cert.key;</span><br><span class="line">      </span><br><span class="line">      location / &#123;</span><br><span class="line">         root /usr/local/nginx/html/dist; # 相对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      location /api &#123;</span><br><span class="line">         # 设置CORS配置</span><br><span class="line">         add_header Access-Control-Allow-Origin *;</span><br><span class="line">         add_header Access-Control-Allow-Methods &#x27;GET, POST, OPTIONS&#x27;;</span><br><span class="line">         add_header Access-Control-Allow-Headers &#x27;Content-Type, Authorization&#x27;;</span><br><span class="line">         </span><br><span class="line">         alias /usr/local/nginx/html/dist/api; # 绝对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">         </span><br><span class="line">         if ($request_method = &#x27;OPTIONS&#x27;) &#123;</span><br><span class="line">            return 204;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Nginx</category>
-      </categories>
-      <tags>
-        <tag>Nginx</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>01- this的指向规则</title>
     <url>/posts/d8cbe511.html</url>
     <content><![CDATA[<p><code>this</code> 到底指向谁? 箭头函数中的<code>this</code>还能使用吗? 如果能使用又要怎么使用呢? 与普通函数的<code>this</code>指向一致吗?</p>
@@ -247,6 +204,49 @@
       </tags>
   </entry>
   <entry>
+    <title>Nginx安装与配置以及常用命令</title>
+    <url>/posts/4f72a7f4.html</url>
+    <content><![CDATA[<p>了解一下Nginx的安装与配置，以及常见的Nginx常用命令</p>
+<h1 id="1-安装与配置"><a href="#1-安装与配置" class="headerlink" title="1. 安装与配置"></a>1. 安装与配置</h1><ol>
+<li><p>阿里云申请免费云服务器，为Nginx练习使用</p>
+</li>
+<li><p>连接远程服务器</p>
+<ul>
+<li>首先重置root密码</li>
+<li>若是使用vscode 可安装 <code>remote ssh</code>插件 （用来连接远程服务器）</li>
+<li>连接到远程</li>
+</ul>
+</li>
+<li><p>下载Nginx </p>
+<ul>
+<li>cd &#x2F;usr&#x2F;local</li>
+<li>wget <a href="https://nginx.org/download/Nginx-1.28.0.tar.gz">https://nginx.org/download/Nginx-1.28.0.tar.gz</a> (若下载不成功可通过命令 <code>su</code> 切换到root用户)</li>
+</ul>
+</li>
+</ol>
+<img src="../../img/Nginx/img.png">
+
+<pre><code>- tar -zxvf Nginx-1.28.0.tar.gz
+- cd ./Nginx-1.28.0
+</code></pre>
+<ol start="4">
+<li>初始配置及编译安装<ul>
+<li>初始配置 .&#x2F;configure</li>
+<li>编译源码 安装 make &amp;&amp; make install</li>
+</ul>
+</li>
+</ol>
+<h1 id="2-Nginx常见命令"><a href="#2-Nginx常见命令" class="headerlink" title="2. Nginx常见命令"></a>2. Nginx常见命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">user admin; # 规定启动Nginx的用户</span><br><span class="line">worker_processes 1; # Nginx 启动一个工作进程，适用于轻量部署或开发环境。</span><br><span class="line">events &#123;</span><br><span class="line">   worker_connections 1024; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http&#123;</span><br><span class="line">   include mime.types; # 文件类型映射</span><br><span class="line">   default_type application/octet-stream; # 默认MIME类型</span><br><span class="line">   sendfile        on;                            # 启用 sendfile 加速</span><br><span class="line">   tcp_nopush      on;                            # 优化发送数据包</span><br><span class="line">   keepalive_timeout  65;                         # 长连接超时</span><br><span class="line">   client_max_body_size 10m;                      # 请求体大小限制</span><br><span class="line"></span><br><span class="line">   include /etc/nginx/conf.d/*.conf;              # 引入子配置文件</span><br><span class="line">   </span><br><span class="line">   # 静态文件配置</span><br><span class="line">   server &#123;</span><br><span class="line">      listen 8080 ssl;</span><br><span class="line">      server_name localhost myTest.com;</span><br><span class="line">      </span><br><span class="line">      # 申请ssl证书 配置ssl证书</span><br><span class="line">      ssl_certificate /path/to/cert.pem;</span><br><span class="line">      ssl_certificate_key /path/to/cert.key;</span><br><span class="line">      </span><br><span class="line">      location / &#123;</span><br><span class="line">         root /usr/local/nginx/html/dist; # 相对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      location /api &#123;</span><br><span class="line">         # 设置CORS配置</span><br><span class="line">         add_header Access-Control-Allow-Origin *;</span><br><span class="line">         add_header Access-Control-Allow-Methods &#x27;GET, POST, OPTIONS&#x27;;</span><br><span class="line">         add_header Access-Control-Allow-Headers &#x27;Content-Type, Authorization&#x27;;</span><br><span class="line">         </span><br><span class="line">         alias /usr/local/nginx/html/dist/api; # 绝对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">         </span><br><span class="line">         if ($request_method = &#x27;OPTIONS&#x27;) &#123;</span><br><span class="line">            return 204;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Nginx</category>
+      </categories>
+      <tags>
+        <tag>Nginx</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>02- 浏览器运行原理</title>
     <url>/posts/2373884b.html</url>
     <content><![CDATA[<p>从输入路径开始，浏览器是怎样一步步渲染出页面的呢？</p>
@@ -368,34 +368,6 @@
 </ol>
 <p>注：整个JS高级专栏依托于coderwhy老师的课程，相关图片、代码均来自于其课程。</p>
 ]]></content>
-      <categories>
-        <category>js高级</category>
-      </categories>
-      <tags>
-        <tag>js高级</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>04-闭包</title>
-    <url>/posts/2f741396.html</url>
-    <content><![CDATA[<h1 id="javascript-内存管理"><a href="#javascript-内存管理" class="headerlink" title="javascript 内存管理"></a>javascript 内存管理</h1><blockquote>
-<p>认识内存管理</p>
-</blockquote>
-<p>不管什么样的编程语言，<strong>在代码执行过程中都需要进行内存分配</strong>，不同的是有些编程语言需要我们自己手动进行内存配置，有些则会自动帮我们进行内存分配。</p>
-<p>不管什么样的内存分配机制，<strong>内存的分配都会进入如下周期</strong>：</p>
-<ol>
-<li>申请分配内存</li>
-<li>使用分配的内存</li>
-<li>不需要使用时释放内存</li>
-</ol>
-<p>不同的语言会对第一步和第三步进行不同的处理：</p>
-<ul>
-<li>手动管理内存：比如<code>C</code>、<code>C++</code>，包括早期的<code>OC</code>，都是需要手动的进行内存的申请和释放（<code>malloc和free函数</code>）；</li>
-<li>自动管理内存：比如<code>java</code>、<code>javascript</code>、<code>Python</code>、<code>Swift</code>、<code>Dart</code>等，这些语言都有帮我们自动进行内存管理。</li>
-</ul>
-<p>也就是说，我们所使用的<code>javascript</code>会自动的对原始值、对象、函数等进行内存管理，我们并不需要进行多余的操作。</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/04-closure/img1.png" alt="img.png"></p>
-<h1 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h1><h1 id="闭包的概念理解"><a href="#闭包的概念理解" class="headerlink" title="闭包的概念理解"></a>闭包的概念理解</h1><h1 id="闭包的形成过程"><a href="#闭包的形成过程" class="headerlink" title="闭包的形成过程"></a>闭包的形成过程</h1><h1 id="闭包的内存泄漏"><a href="#闭包的内存泄漏" class="headerlink" title="闭包的内存泄漏"></a>闭包的内存泄漏</h1>]]></content>
       <categories>
         <category>js高级</category>
       </categories>
@@ -592,6 +564,34 @@
       </tags>
   </entry>
   <entry>
+    <title>04-闭包</title>
+    <url>/posts/2f741396.html</url>
+    <content><![CDATA[<h1 id="javascript-内存管理"><a href="#javascript-内存管理" class="headerlink" title="javascript 内存管理"></a>javascript 内存管理</h1><blockquote>
+<p>认识内存管理</p>
+</blockquote>
+<p>不管什么样的编程语言，<strong>在代码执行过程中都需要进行内存分配</strong>，不同的是有些编程语言需要我们自己手动进行内存配置，有些则会自动帮我们进行内存分配。</p>
+<p>不管什么样的内存分配机制，<strong>内存的分配都会进入如下周期</strong>：</p>
+<ol>
+<li>申请分配内存</li>
+<li>使用分配的内存</li>
+<li>不需要使用时释放内存</li>
+</ol>
+<p>不同的语言会对第一步和第三步进行不同的处理：</p>
+<ul>
+<li>手动管理内存：比如<code>C</code>、<code>C++</code>，包括早期的<code>OC</code>，都是需要手动的进行内存的申请和释放（<code>malloc和free函数</code>）；</li>
+<li>自动管理内存：比如<code>java</code>、<code>javascript</code>、<code>Python</code>、<code>Swift</code>、<code>Dart</code>等，这些语言都有帮我们自动进行内存管理。</li>
+</ul>
+<p>也就是说，我们所使用的<code>javascript</code>会自动的对原始值、对象、函数等进行内存管理，我们并不需要进行多余的操作。</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/04-closure/img1.png" alt="img.png"></p>
+<h1 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h1><h1 id="闭包的概念理解"><a href="#闭包的概念理解" class="headerlink" title="闭包的概念理解"></a>闭包的概念理解</h1><h1 id="闭包的形成过程"><a href="#闭包的形成过程" class="headerlink" title="闭包的形成过程"></a>闭包的形成过程</h1><h1 id="闭包的内存泄漏"><a href="#闭包的内存泄漏" class="headerlink" title="闭包的内存泄漏"></a>闭包的内存泄漏</h1>]]></content>
+      <categories>
+        <category>js高级</category>
+      </categories>
+      <tags>
+        <tag>js高级</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>03-javascript的运行原理</title>
     <url>/posts/4bc49eeb.html</url>
     <content><![CDATA[<p>上篇博客了解了一下浏览器的运行原理，那javascript的运行原理又是怎么样的呢？</p>
@@ -676,44 +676,6 @@
 <li>作用域链是一个对象列表，用于表示变量标识符的求值；</li>
 <li>当进入一个执行上下文时，这个作用域链就会被创建，并且根据代码类型，添加一系列的对象</li>
 </ul>
-]]></content>
-      <categories>
-        <category>js高级</category>
-      </categories>
-      <tags>
-        <tag>js高级</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>08-手写apply/call/bind</title>
-    <url>/posts/5be1151a.html</url>
-    <content><![CDATA[<p>手撕apply&#x2F;call&#x2F;bind</p>
-<ul>
-<li>apply()</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Function</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">myApply</span> = <span class="keyword">function</span> (<span class="params">context</span>) &#123;</span><br><span class="line">  <span class="comment">// 判断调用对象是否是函数</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable language_">this</span> !== <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;type error&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 判断this要绑定的对象是否为空</span></span><br><span class="line">  context = context || <span class="variable language_">window</span></span><br><span class="line"></span><br><span class="line">  context.<span class="property">fn</span> = <span class="variable language_">this</span></span><br><span class="line">  <span class="keyword">let</span> result = <span class="literal">null</span>, args = [...<span class="variable language_">arguments</span>].<span class="title function_">slice</span>(<span class="number">1</span>)</span><br><span class="line">  context.<span class="title function_">fn</span>(...args)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">delete</span> context.<span class="property">fn</span></span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>call()</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Function</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">myCall</span> = <span class="keyword">function</span> (<span class="params">context</span>) &#123;</span><br><span class="line">  <span class="comment">// 判断调用对象是否是函数</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable language_">this</span> !== <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;type error&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 判断this要绑定的对象是否为空</span></span><br><span class="line">  context = context || <span class="variable language_">window</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// context.fn = this   </span></span><br><span class="line">  <span class="comment">// 如果不想fn()被展示出来就使用Object.defineProperty()</span></span><br><span class="line">    <span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(context, <span class="string">&#x27;fn&#x27;</span>, &#123;</span><br><span class="line">        <span class="attr">value</span>: <span class="variable language_">this</span>,</span><br><span class="line">        <span class="attr">writable</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">    &#125;)</span><br><span class="line">    </span><br><span class="line">  <span class="keyword">let</span> result = <span class="literal">null</span>, args = [...<span class="variable language_">arguments</span>].<span class="title function_">slice</span>(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment">//  此处fn的调用方式与apply()不同，这个更适合call()风格</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="variable language_">arguments</span>[<span class="number">1</span>]) &#123;</span><br><span class="line">    context.<span class="title function_">fn</span>(...args)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    context.<span class="title function_">fn</span>()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">delete</span> context.<span class="property">fn</span></span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>bind()</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Function</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">myBind</span> = <span class="keyword">function</span>(<span class="params">context</span>) &#123;</span><br><span class="line">    <span class="comment">// 判断调用对象是否为函数</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable language_">this</span> !== <span class="string">&quot;function&quot;</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&quot;Error&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 获取参数</span></span><br><span class="line">    <span class="keyword">var</span> args = [...<span class="variable language_">arguments</span>].<span class="title function_">slice</span>(<span class="number">1</span>),</span><br><span class="line">        fn = <span class="variable language_">this</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> <span class="title function_">Fn</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="comment">// 根据调用方式，传入不同绑定值</span></span><br><span class="line">        <span class="keyword">return</span> fn.<span class="title function_">apply</span>(</span><br><span class="line">            <span class="variable language_">this</span> <span class="keyword">instanceof</span> <span class="title class_">Fn</span> ? <span class="variable language_">this</span> : context,</span><br><span class="line">            args.<span class="title function_">concat</span>(...<span class="variable language_">arguments</span>)</span><br><span class="line">        );</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
 ]]></content>
       <categories>
         <category>js高级</category>
@@ -914,6 +876,116 @@
       </tags>
   </entry>
   <entry>
+    <title>08-手写apply/call/bind</title>
+    <url>/posts/5be1151a.html</url>
+    <content><![CDATA[<p>手撕apply&#x2F;call&#x2F;bind</p>
+<ul>
+<li>apply()</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Function</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">myApply</span> = <span class="keyword">function</span> (<span class="params">context</span>) &#123;</span><br><span class="line">  <span class="comment">// 判断调用对象是否是函数</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable language_">this</span> !== <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;type error&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 判断this要绑定的对象是否为空</span></span><br><span class="line">  context = context || <span class="variable language_">window</span></span><br><span class="line"></span><br><span class="line">  context.<span class="property">fn</span> = <span class="variable language_">this</span></span><br><span class="line">  <span class="keyword">let</span> result = <span class="literal">null</span>, args = [...<span class="variable language_">arguments</span>].<span class="title function_">slice</span>(<span class="number">1</span>)</span><br><span class="line">  context.<span class="title function_">fn</span>(...args)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">delete</span> context.<span class="property">fn</span></span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>call()</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Function</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">myCall</span> = <span class="keyword">function</span> (<span class="params">context</span>) &#123;</span><br><span class="line">  <span class="comment">// 判断调用对象是否是函数</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable language_">this</span> !== <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;type error&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 判断this要绑定的对象是否为空</span></span><br><span class="line">  context = context || <span class="variable language_">window</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// context.fn = this   </span></span><br><span class="line">  <span class="comment">// 如果不想fn()被展示出来就使用Object.defineProperty()</span></span><br><span class="line">    <span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(context, <span class="string">&#x27;fn&#x27;</span>, &#123;</span><br><span class="line">        <span class="attr">value</span>: <span class="variable language_">this</span>,</span><br><span class="line">        <span class="attr">writable</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">    &#125;)</span><br><span class="line">    </span><br><span class="line">  <span class="keyword">let</span> result = <span class="literal">null</span>, args = [...<span class="variable language_">arguments</span>].<span class="title function_">slice</span>(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment">//  此处fn的调用方式与apply()不同，这个更适合call()风格</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="variable language_">arguments</span>[<span class="number">1</span>]) &#123;</span><br><span class="line">    context.<span class="title function_">fn</span>(...args)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    context.<span class="title function_">fn</span>()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">delete</span> context.<span class="property">fn</span></span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>bind()</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Function</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">myBind</span> = <span class="keyword">function</span>(<span class="params">context</span>) &#123;</span><br><span class="line">    <span class="comment">// 判断调用对象是否为函数</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable language_">this</span> !== <span class="string">&quot;function&quot;</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&quot;Error&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 获取参数</span></span><br><span class="line">    <span class="keyword">var</span> args = [...<span class="variable language_">arguments</span>].<span class="title function_">slice</span>(<span class="number">1</span>),</span><br><span class="line">        fn = <span class="variable language_">this</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> <span class="title function_">Fn</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="comment">// 根据调用方式，传入不同绑定值</span></span><br><span class="line">        <span class="keyword">return</span> fn.<span class="title function_">apply</span>(</span><br><span class="line">            <span class="variable language_">this</span> <span class="keyword">instanceof</span> <span class="title class_">Fn</span> ? <span class="variable language_">this</span> : context,</span><br><span class="line">            args.<span class="title function_">concat</span>(...<span class="variable language_">arguments</span>)</span><br><span class="line">        );</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>js高级</category>
+      </categories>
+      <tags>
+        <tag>js高级</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>10-Proxy-Reflect</title>
+    <url>/posts/9d935f.html</url>
+    <content><![CDATA[<p><code>Proxy</code>详解。</p>
+<h1 id="1-Proxy"><a href="#1-Proxy" class="headerlink" title="1. Proxy"></a>1. Proxy</h1><p><strong>现在有一个问题：我们如何监听对象的操作？</strong></p>
+<ol>
+<li><p><code>Object.defineProperty()</code><br> 之前我们会通过<code>Object.defineProperty()</code>来进行监听，</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(obj, <span class="string">&quot;name&quot;</span>, &#123;</span><br><span class="line">  <span class="title function_">get</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> obj.<span class="property">name</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">set</span>(<span class="params">value</span>) &#123;</span><br><span class="line">    obj.<span class="property">name</span> = value</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>Vue2</code>实现响应式原理的核心就是通过<code>Object.defineProperty()</code>来实现的；</li>
+<li>但是<code>Object.defineProperty()</code>设计之初并不是为了监听某个属性；</li>
+<li>我们在定义某个属性时，初衷是定义某个普通属性，但是我们后面强行把它变成了数据属性描述符；</li>
+<li>而且<code>Object.defineProperty()</code>无法监听到新增属性和删除属性等操作</li>
+</ul>
+</li>
+<li><p>Proxy</p>
+<blockquote>
+<p>new Proxy(target, handler)</p>
+<ul>
+<li>target: 目标对象</li>
+<li>handler: 处理函数</li>
+</ul>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> objProxy = <span class="keyword">new</span> <span class="title class_">Proxy</span>(obj, &#123;</span><br><span class="line">  <span class="title function_">get</span>(<span class="params">target, key</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> target[key]</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">set</span>(<span class="params">target, key, newValue</span>) &#123;</span><br><span class="line">    target[key] = newValue</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line">objProxy.<span class="property">name</span> = <span class="string">&#x27;hello world&#x27;</span></span><br><span class="line"><span class="comment">// 之后操作obj可以通过objProxy来操作，可达到监听的目的</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li>对某个对象行进行其他操作时，我们通过<code>Proxy</code>也可以监听到！<br>上面我们介绍了<code>set()</code>和<code>get()</code>两种<code>handler</code>，<code>handler</code>有13种捕获器（handler）：</li>
+</ul>
+<p>除了上面两种常用的捕获器，还有以下两种常用的捕获器：</p>
+<ul>
+<li><code>has()</code>：拦截<code>in</code>操作符；</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">    <span class="keyword">const</span> objProxy = <span class="keyword">new</span> <span class="title class_">Proxy</span>(obj, &#123;</span><br><span class="line">   <span class="comment">// ...</span></span><br><span class="line">   <span class="title function_">has</span>(<span class="params">target, key</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;has&quot;</span>);</span><br><span class="line">      <span class="keyword">return</span> key <span class="keyword">in</span> target</span><br><span class="line">   &#125;,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;in&#x27;</span>, name <span class="keyword">in</span> objProxy); <span class="comment">// in true</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>deleteProperty()</code>：拦截<code>delete</code>操作符；</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> objProxy = <span class="keyword">new</span> <span class="title class_">Proxy</span>(obj, &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="title function_">defineProperty</span>(<span class="params">target, key, descriptor</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;defineProperty&quot;</span>);</span><br><span class="line">    <span class="keyword">delete</span> target[key]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span> objProxy.<span class="property">name</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(objProxy); <span class="comment">// &#123;age: 20&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>下面几种了解即可：<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/10-proxy/img.png" alt="img.png"></p>
+<h1 id="2-Reflect"><a href="#2-Reflect" class="headerlink" title="2. Reflect"></a>2. Reflect</h1><p><code>Reflect</code>对象是<code>ES6</code>新增的对象。</p>
+<ul>
+<li><p><code>Reflect</code>主要提供了一些操作<code>javascript</code>对象的方法，跟<code>Object</code>操作对象的方法类似；</p>
+<ul>
+<li>比如<code>Object.defineProperty()</code>和<code>Reflect.defineProperty()</code></li>
+<li><code>Object.getPrototypeOf()</code>和<code>Reflect.getPrototypeOf()</code></li>
+</ul>
+</li>
+<li><p>早期的ECMA规范没有考虑到这种对对象的操作是否规范就将这些API加在了<code>Object</code>上；</p>
+</li>
+<li><p>但是<code>Object</code>作为一个构造函数，这样设计是不安全的，所以ES6中新增了<code>Rfelct</code>，把这些对对象的操作方法都集中起来；</p>
+</li>
+<li><p>另外，在使用<code>Proxy</code>时不操作原对象</p>
+</li>
+</ul>
+<h2 id="2-1-常用方法"><a href="#2-1-常用方法" class="headerlink" title="2.1 常用方法"></a>2.1 常用方法</h2><p><img src="/../../img/js%E9%AB%98%E7%BA%A7/10-proxy/img2.png" alt="img.png"></p>
+<p><strong><code>Reflect</code>和<code>Proxy</code>共同实现代理：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>,</span><br><span class="line">    <span class="attr">age</span>: <span class="number">18</span>,</span><br><span class="line">    <span class="title function_">set</span>(<span class="params">newValue</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// 默认为   this ---&gt; obj</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> objProxy = <span class="keyword">new</span> <span class="title class_">Proxy</span>(obj, &#123;</span><br><span class="line">    <span class="title function_">get</span>(<span class="params">target, key, receiver</span>) &#123;</span><br><span class="line">        <span class="keyword">const</span> result = <span class="title class_">Reflect</span>.<span class="title function_">get</span>(target, key)</span><br><span class="line">        <span class="comment">// const result = Reflect.get(target, key, receiver)   // 将obj中set()的this指向receiver</span></span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title function_">set</span>(<span class="params">target, key, newValue, receiver</span>) &#123;</span><br><span class="line">        <span class="comment">// 之前  直接操作target对象</span></span><br><span class="line">        target[key] = newValue</span><br><span class="line">        <span class="comment">// 有了Reflect</span></span><br><span class="line">        <span class="keyword">const</span> result = <span class="title class_">Reflect</span>.<span class="title function_">set</span>(target, key, newValue)</span><br><span class="line">        <span class="keyword">if</span> (result) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;成功&quot;</span>);</span><br><span class="line">            target[key] = newValue</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;设置失败&#x27;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>使用<code>Reflect</code>的好处：</p>
+<ol>
+<li>不再直接操作<code>target</code>对象；</li>
+<li><code>Reflect</code>的set等方法会返回boolean值，可以判断是否操作成功；</li>
+<li><code>Reflect.get(target, key, receiver) </code>可将obj中set()的<code>this</code>指向<strong>receiver</strong>(所创建的proxy对象)</li>
+</ol>
+]]></content>
+      <categories>
+        <category>js高级</category>
+      </categories>
+      <tags>
+        <tag>js高级</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>09-let-const</title>
     <url>/posts/abd5a0df.html</url>
     <content><![CDATA[<p>let &#x2F; const 注意事项</p>
@@ -960,9 +1032,9 @@
       </tags>
   </entry>
   <entry>
-    <title>10-Proxy-Reflect</title>
-    <url>/posts/9d935f.html</url>
-    <content><![CDATA[<p><code>Proxy</code>和<code>Reflect</code>详解。</p>
+    <title>11-Promise</title>
+    <url>/posts/f65fe714.html</url>
+    <content><![CDATA[<p><code>Promise</code>详解</p>
 ]]></content>
       <categories>
         <category>js高级</category>
