@@ -3,7 +3,7 @@ title: 01- this的指向规则
 categories:
   - js高级
 tags:
-  - js高级
+  - this指向
 indexing: false
 abbrlink: d8cbe511
 date: 2025-05-14 18:30:24

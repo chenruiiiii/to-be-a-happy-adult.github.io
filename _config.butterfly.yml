@@ -20,23 +20,23 @@ nav:
 Home: / || fas fa-home
 Archives: /archives/ || fas fa-archive
 Tags: /tags/ || fas fa-tags
-List||fas fa-list:
+#List||fas fa-list:
 #  Music: /music/ || fas fa-music
 #  Video: /videos/ || fas fa-video
-  Links: /links/ || fas fa-link
+Links: /links/ || fas fa-link
 #  Categories: /categories/ || fas fa-folder-open
 About: /about/ || fas fa-heart
 
 menu:
-   首页: / || fas fa-home
-   归档: /archives/ || fas fa-archive
-   标签: /tags/ || fas fa-tags
-   列表:
+  首页: / || fas fa-home
+  归档: /archives/ || fas fa-archive
+  标签: /tags/ || fas fa-tags
+  友链: /links/ || fas fa-link
+#   列表:
 #    音乐: /music/ || fas fa-music
 #    心情: /videos/ || fas fa-video
-    友链: /links/ || fas fa-link
 #    分类: /categories/ || fas fa-folder-open
-   关于: /about/ || fas fa-heart
+  关于: /about/ || fas fa-heart
 
 #   相册: /gallery/fas fa-solid fa-image
 

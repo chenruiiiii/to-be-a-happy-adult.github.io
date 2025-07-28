@@ -3,7 +3,7 @@ title: 08-手写apply/call/bind
 categories:
   - js高级
 tags:
-  - js高级
+  - apply/call/bind
 abbrlink: 5be1151a
 date: 2025-07-16 20:44:55
 ---

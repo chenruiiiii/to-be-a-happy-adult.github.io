@@ -1,10 +1,11 @@
 ---
-title: 09-let-const.md
-date: 2025-07-23 08:45:19
-tags: 
-  - js高级
+title: 09-let-const
+tags:
+  - let-const
 categories:
   - js高级
+abbrlink: abd5a0df
+date: 2025-07-23 08:45:19
 ---
 
 let / const 注意事项

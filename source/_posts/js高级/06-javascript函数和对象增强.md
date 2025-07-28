@@ -3,7 +3,7 @@ title: 06-javascript函数和对象增强
 categories:
   - js高级
 tags:
-  - js高级
+  - javascript函数和对象增强
 indexing: false
 keywords: js函数
 abbrlink: 2f741396
