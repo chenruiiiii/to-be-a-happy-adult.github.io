@@ -92,7 +92,7 @@ console.log('in', name in objProxy); // in true
 - 但是`Object`作为一个构造函数，这样设计是不安全的，所以ES6中新增了`Rfelct`，把这些对对象的操作方法都集中起来；
 - 另外，在使用`Proxy`时不操作原对象
 
-## 2.1 常用方法
+## 常用方法
 ![img.png](../../img/js高级/10-proxy/img2.png)
 
 **`Reflect`和`Proxy`共同实现代理：**

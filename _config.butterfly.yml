@@ -159,7 +159,7 @@ background:
 cover:
   # Disable the cover or not
   index_enable: false
-  aside_enable: false
+  aside_enable: true
   archives_enable: false
   # When cover is not set, the default cover is displayed
   default_cover:
@@ -252,10 +252,12 @@ index_post_content:
 # --------------------------------------
 
 toc:
+  enable: true
+  max_depth: 6  // 目录的最大层级
   post: true
   page: false
   number: true # 显示章节数字
-  expand: false
+  expand: true
   # Only for post
   style_simple: false
   scroll_percent: true
@@ -331,6 +333,11 @@ footer:
 # --------------------------------------
 # Aside Settings
 # --------------------------------------
+# 目录多级结构
+category_generator:
+  enable: true
+  per_page: 10
+  order_by: -date
 
 aside:
   enable: true
@@ -372,9 +379,9 @@ aside:
   card_categories:
     enable: true
     # If set 0 will show all
-    limit: 8
+    limit: 0
     # Choose: none / true / false
-    expand: none
+    expand: true
     sort_order:
   card_tags:
     enable: true
