@@ -1,235 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Git 分布式版本控制工具</title>
-    <url>/posts/92d95aa4.html</url>
-    <content><![CDATA[<h1 id="1-Git-概述"><a href="#1-Git-概述" class="headerlink" title="1. Git 概述"></a>1. Git 概述</h1><h2 id="1-1-Git-版本控制器的方式"><a href="#1-1-Git-版本控制器的方式" class="headerlink" title="1.1 Git 版本控制器的方式"></a>1.1 Git 版本控制器的方式</h2><ul>
-<li><p><strong><code>集中式版本控制</code></strong></p>
-<blockquote>
-<p>集中式版本控制工具的版本库是集中放置在中央服务器的，团队中的每个人先从版本库中下载代码（需要联网才能工作），个人修改后提交到中央版本库。<br>例：<code>SVN</code> 和 <code>CVS</code> </p>
-</blockquote>
-</li>
-<li><p><strong><code>分布式版本控制</code></strong></p>
-<blockquote>
-<p>分布式版本控制系统没有“中央版本库”，每个人电脑上都是一个完整的版本库，这样工作的时候就不需要联网了。版本都在自己电脑上，修改后只要提交到仓库就可以实现多人协作。<br>例：<code>Git</code></p>
-</blockquote>
-</li>
-</ul>
-<h2 id="1-2-Git-工作流程"><a href="#1-2-Git-工作流程" class="headerlink" title="1.2 Git 工作流程"></a>1.2 Git 工作流程</h2><p><img src="/../img/Git/img.png" alt="img.png"><br><strong>相关命令：</strong></p>
-<ol>
-<li><code>clone（克隆）</code>：从仓库代码中克隆代码到本地仓库</li>
-<li><code>checkout（检出）</code>：从本地仓库检出一个分支进行修订(也就是切换分支)</li>
-<li><code>add（添加）</code>：将修改的文件添加到暂存区</li>
-<li><code>commit（提交）</code>：将暂存区中的文件提交到本地仓库</li>
-<li><code>fetch（抓取）</code>：从远程库住去到本地仓库，不进行其他的合并动作</li>
-<li><code>pull（拉取）</code>：从远程库拉取最新代码，自动进行合并(merge)，相当于<code>fetch</code>和<code>merge</code></li>
-<li><code>push（推送）</code>：将本地仓库推送到远程仓库</li>
-</ol>
-<h1 id="2-Git-安装与常用命令"><a href="#2-Git-安装与常用命令" class="headerlink" title="2. Git 安装与常用命令"></a>2. Git 安装与常用命令</h1><p>常用Linux命令：</p>
-<ol>
-<li>ll &#x2F; ls：查看当前目录下的文件</li>
-<li>cat：查看文件内容</li>
-<li>touch：创建文件</li>
-</ol>
-<h2 id="2-1-Git-环境配置"><a href="#2-1-Git-环境配置" class="headerlink" title="2.1 Git 环境配置"></a>2.1 Git 环境配置</h2><h3 id="2-1-1-安装"><a href="#2-1-1-安装" class="headerlink" title="2.1.1 安装"></a>2.1.1 安装</h3><blockquote>
-<p>安装地址：<a href="https://git-scm.com/downloads">https://git-scm.com/downloads</a></p>
-</blockquote>
-<p>傻瓜式安装后后见点击桌面出现图示红框中内容即为成功安装。<br><img src="/../img/Git/img_1.png" alt="img_1.png"></p>
-<p><strong>注：</strong><br><code>Git GUI</code>：Git图形化管理工具<br><code>Git Bash</code>：Git命令行工具</p>
-<h3 id="2-1-2-基本配置"><a href="#2-1-2-基本配置" class="headerlink" title="2.1.2 基本配置"></a>2.1.2 基本配置</h3><p>安装完Git后首先是要全局配置email和用户名，每次提交代码时都会使用到！全局配置可以省去每次提交代码时都要输入email和用户名</p>
-<ol>
-<li><p>设置用户信息</p>
-<blockquote>
-<p>git config–global user.name “你的用户名”</p>
-</blockquote>
-<blockquote>
-<p>git config–global user.email “你的邮箱”</p>
-</blockquote>
-</li>
-<li><p>查看用户信息</p>
-<blockquote>
-<p>git config–global user.name</p>
-</blockquote>
-<blockquote>
-<p>git config–global user.email</p>
-</blockquote>
-</li>
-</ol>
-<h3 id="2-1-3-常用命令配置"><a href="#2-1-3-常用命令配置" class="headerlink" title="2.1.3 常用命令配置"></a>2.1.3 常用命令配置</h3><ol>
-<li><p>打开电脑用户目录：C:\Users\你的用户名</p>
-<blockquote>
-<p>部分windows用户不允许用户创建点号开头的文件，可以打开<code>gitbash</code>执行: <code>touch ~/.bashrc</code></p>
-</blockquote>
-</li>
-<li><p>在<code>.bashrc</code>文件中添加如下内容：</p>
-<blockquote>
-<p>用于输出git提交日志<br>alias git-log&#x3D;”git log –pretty&#x3D;oneline –all –graph –abbrev-commit”  </p>
-</blockquote>
-</li>
-<li><p>打开gitBash，执行<code>source ~/.bashrc</code><br><img src="/../img/Git/img_2.png" alt="img_2.png"></p>
-</li>
-</ol>
-<h3 id="2-1-4-解决git乱码问题"><a href="#2-1-4-解决git乱码问题" class="headerlink" title="2.1.4 解决git乱码问题"></a>2.1.4 解决git乱码问题</h3><p><img src="/../img/Git/img_3.png" alt="img_3.png"></p>
-<h2 id="2-2-获取本地仓库"><a href="#2-2-获取本地仓库" class="headerlink" title="2.2 获取本地仓库"></a>2.2 获取本地仓库</h2><p>在工作目录打开git bash 输入<code>git init</code>，若出现.git文件夹这证明获取本地仓库成功。</p>
-<h2 id="2-3-基础操作指令"><a href="#2-3-基础操作指令" class="headerlink" title="2.3 基础操作指令"></a>2.3 基础操作指令</h2><p>Git工作目录下对于文件的修改（新增、更新、删除）会存在几种状态，这些修改的状态会随着我们执行Git命令而发生改变。<br><img src="/../img/Git/img_6.png" alt="img_6.png"></p>
-<ol>
-<li><p><strong>查看修改状态</strong>  —  查看修改的状态（暂存区、工作区）</p>
-<blockquote>
-<p>git status</p>
-</blockquote>
-</li>
-<li><p><strong>添加工作区到暂存区</strong></p>
-<blockquote>
-<p>将文件提交到当前仓库的暂存区<br>git add 文件名 | 通配符<br>例：git add ‘file01.txt’    或者    git add .</p>
-</blockquote>
-</li>
-<li><p><strong>提交暂存到本地仓库</strong></p>
-<blockquote>
-<p>将暂存区中的文件提交到当前仓库的当前分支<br>git commit -m ‘提交信息’</p>
-</blockquote>
-</li>
-</ol>
-<p><img src="/../img/Git/img_8.png" alt="img_8.png"></p>
-<ol start="4">
-<li><p><strong>查看提交日志</strong></p>
-<blockquote>
-<p>git log [options]</p>
-</blockquote>
-<blockquote>
-<p>options:</p>
-</blockquote>
-<pre><code>  &gt; --all  输出全部的提交日志
-  &gt; --pretty=oneline  提交日志在一行输出
-  &gt; --abbrev-commit  使得输出的commitId更简短
-  &gt; --graph  提交日志以图的形式显示
-</code></pre>
-</li>
-<li><p>版本回退</p>
-<blockquote>
-<p>git reset –hard commitId    （commitId可以通过<code>git log</code>或者之前设置的<code>git-log</code>进行查看）</p>
-</blockquote>
-<blockquote>
-<p>如何查看已经删除的记录<br>git reflog</p>
-</blockquote>
-</li>
-</ol>
-<p><img src="/../img/Git/img_10.png" alt="img_10.png"></p>
-<ol start="6">
-<li>添加文件到忽略列表<br> 工作目录中的有些文件无需纳入到git仓库中，比如node_modules等文件，这时我们可以新建一个<code>.gitignore</code>文件，将需要忽略的文件名写入到该文件中即可。下面是一个<code>.gitignore</code>文件示例：<br> <img src="/../img/Git/img_9.png" alt="img_9.png"></li>
-</ol>
-<h2 id="2-4-分支"><a href="#2-4-分支" class="headerlink" title="2.4 分支"></a>2.4 分支</h2><p>使用分支以意味着你可以把你的工作从开发主线上分离开来进行重大的bug修改、开发新的功能，以免影响主线开发。</p>
-<h3 id="2-4-1-分支常用命令"><a href="#2-4-1-分支常用命令" class="headerlink" title="2.4.1 分支常用命令"></a>2.4.1 分支常用命令</h3><ol>
-<li><p>查看分支</p>
-<ul>
-<li><code>git branch</code></li>
-</ul>
-</li>
-<li><p><strong>创建分支</strong></p>
-<ul>
-<li><code>git branch 分支名</code></li>
-</ul>
-</li>
-<li><p>上面我们所配置的命令别名<code>git-log</code></p>
-</li>
-<li><p>切换分支</p>
-<ul>
-<li><code>git checkout 分支名</code>   </li>
-<li><code>git checkout -b 分支名</code>(可直接切换到一个不存在的分支名，Git会自动创建一个分支名并切换到该分支名)</li>
-</ul>
-<p>从Git 2.23版本开始，引入了<code>git switch</code> 命令来专门切换分支，这使得切换分支的命令更加清晰和直观。</p>
-<ul>
-<li><code>git switch 分支名</code></li>
-<li><code>git switch -c 分支名</code>   (创建并切换到新分支)</li>
-</ul>
-</li>
-<li><p>合并分支</p>
-<ul>
-<li>将分支名分支合并到当前分支</li>
-<li><code>git merge 分支名</code></li>
-</ul>
-<p><img src="/../img/Git/img_4.png" alt="img_4.png"></p>
-</li>
-<li><p>删除分支 </p>
-<ul>
-<li><code>git branch -d 分支名</code></li>
-</ul>
-</li>
-<li></li>
-</ol>
-<h2 id="2-4-2-开发中分支使用原则与流程"><a href="#2-4-2-开发中分支使用原则与流程" class="headerlink" title="2.4.2 开发中分支使用原则与流程"></a>2.4.2 开发中分支使用原则与流程</h2><p>使用分支可以将你的工作与主线分支分离开，避免在修改重大的bug、开发新的功能等情况下影响主线开发。</p>
-<ul>
-<li><strong><code>master</code></strong> 分支<ul>
-<li>主分支，中小项目上线运行时对应的分支</li>
-</ul>
-</li>
-<li><strong><code>develop</code></strong> 分支<ul>
-<li>是从master分支创建的分支，在有新需求或者重大修改时可以在此分支上进行改动，在开发完之后合并到master分支</li>
-</ul>
-</li>
-<li><strong><code>feature/xxx</code></strong> 分支 (开发完一般可以删掉)<ul>
-<li>是从develop创建的分支，一般是同期并行开发，但不同期上线时创建的分支，分支上的开发任务完成后合并到develop分支</li>
-<li>例： <code>feature/add-doc</code>  用于添加文档</li>
-</ul>
-</li>
-<li><strong><code>hotfix/xxx</code></strong> 分支 (开发完一般可以删掉)<ul>
-<li>从master分支派生，一般作为线上bug修复使用，修复bug完成后合并到master、test、develop分支</li>
-<li>例： <code>hotfix/fix-bug</code>  用于修复bug</li>
-</ul>
-</li>
-<li>还有一些其他分支，如 <strong><code>test</code></strong>(用于代码测试)、<strong><code>pre</code></strong>(预上线分支)等</li>
-</ul>
-<p><img src="/../img/Git/img_5.png" alt="img_5.png"></p>
-<h2 id="2-5-Git远程仓库"><a href="#2-5-Git远程仓库" class="headerlink" title="2.5 Git远程仓库"></a>2.5 Git远程仓库</h2><p>经过前面的学习我们知道了存在两种仓库：即<code>本地仓库</code>和<code>远程仓库</code>。那么如何搭建远程仓库呢？</p>
-<p>我们需要借助互联网上提供的代码托管服务，如<code>gitee</code>、<code>github</code>、<code>gitlab</code>，其中前两个我们在日常学习中很常见，第三个一般出现在企业、学校等内部网络搭建git私服，它是一个用于仓库管理系统的开源项目，使用git进行代码托管，并在此基础上搭建web服务。</p>
-<h3 id="2-5-1-搭建远程仓库"><a href="#2-5-1-搭建远程仓库" class="headerlink" title="2.5.1 搭建远程仓库"></a>2.5.1 搭建远程仓库</h3><p>给本地仓库添加远程仓库有两种方式，一种是添加https方式，另一种是ssh密钥方式（前者比较简单，这里我们不做赘述，主要学习一下ssh密钥方式）。</p>
-<ul>
-<li>首先生成ssh密钥<ul>
-<li>ssh-keygen -t rsa</li>
-<li>不断回车即可（若之前生成过密钥，则自动覆盖）</li>
-</ul>
-</li>
-<li>远程仓库设置密钥<ul>
-<li>获取本地密钥</li>
-<li>cat ~&#x2F;.ssh&#x2F;id_rsa.pub</li>
-<li>验证是否配置成功<ul>
-<li>ssh -T <a href="mailto:&#x67;&#x69;&#116;&#64;&#103;&#x69;&#x74;&#104;&#x75;&#98;&#46;&#x63;&#111;&#x6d;">git@github.com</a> 或者 ssh -T <a href="mailto:&#103;&#105;&#x74;&#64;&#x67;&#x69;&#116;&#101;&#x65;&#x2e;&#x63;&#x6f;&#109;">git@gitee.com</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p><img src="/../img/Git/img_11.png" alt="img_11.png"><br>出现图示输出则说明配置成功！</p>
-<h3 id="2-5-2-远程仓库相关命令"><a href="#2-5-2-远程仓库相关命令" class="headerlink" title="2.5.2 远程仓库相关命令"></a>2.5.2 远程仓库相关命令</h3><ol>
-<li>添加远程仓库<ul>
-<li><code>git add remote &lt;远端名称&gt; &lt;仓库地址&gt;</code><ul>
-<li>例：git remote add origin <a href="mailto:&#103;&#105;&#x74;&#64;&#x67;&#105;&#x74;&#104;&#117;&#x62;&#46;&#x63;&#x6f;&#109;">git@github.com</a>:zhangjunyi&#x2F;git.git</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>查看远程仓库<ul>
-<li><code>git remote</code></li>
-</ul>
-</li>
-<li>推送到远程仓库<ul>
-<li><code>git push [-f] [--set-upstream] [远程仓库] [本地分支]:[远程分支]</code></li>
-<li>例：git push origin master<ul>
-<li>若本地分支与远程分支名称一致这可只写本地分支 例：git push origin master</li>
-<li><code>-f</code> 强制推送 覆盖远程仓库</li>
-<li><code>--set-upstream</code> 讲本地分支与远程分支建立联系</li>
-</ul>
-</li>
-<li>如果当前分支和远程分支已经建立联系，则只需执行<code>git push</code>即可</li>
-</ul>
-</li>
-</ol>
-<h1 id="3-Git常见问题解决"><a href="#3-Git常见问题解决" class="headerlink" title="3. Git常见问题解决"></a>3. Git常见问题解决</h1><h2 id="3-1-首次添加远程仓库"><a href="#3-1-首次添加远程仓库" class="headerlink" title="3.1 首次添加远程仓库"></a>3.1 首次添加远程仓库</h2><p>首次添加远程仓库时，我们的本地分支与远程分支未能建立联系，从本地<code>master</code>切换到<code>远程master</code>时会出现<code>Git:fatal:a branch named &#39;master&#39;already exists</code>的错误！</p>
-]]></content>
-      <tags>
-        <tag>Git</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>01- this的指向规则</title>
     <url>/posts/d8cbe511.html</url>
     <content><![CDATA[<p><code>this</code> 到底指向谁? 箭头函数中的<code>this</code>还能使用吗? 如果能使用又要怎么使用呢? 与普通函数的<code>this</code>指向一致吗?</p>
@@ -433,6 +204,260 @@
       </tags>
   </entry>
   <entry>
+    <title>Git 分布式版本控制工具</title>
+    <url>/posts/92d95aa4.html</url>
+    <content><![CDATA[<h1 id="Git-概述"><a href="#Git-概述" class="headerlink" title="Git 概述"></a>Git 概述</h1><h2 id="Git-版本控制器的方式"><a href="#Git-版本控制器的方式" class="headerlink" title="Git 版本控制器的方式"></a>Git 版本控制器的方式</h2><ul>
+<li><p><strong><code>集中式版本控制</code></strong></p>
+<blockquote>
+<p>集中式版本控制工具的版本库是集中放置在中央服务器的，团队中的每个人先从版本库中下载代码（需要联网才能工作），个人修改后提交到中央版本库。<br>例：<code>SVN</code> 和 <code>CVS</code> </p>
+</blockquote>
+</li>
+<li><p><strong><code>分布式版本控制</code></strong></p>
+<blockquote>
+<p>分布式版本控制系统没有“中央版本库”，每个人电脑上都是一个完整的版本库，这样工作的时候就不需要联网了。版本都在自己电脑上，修改后只要提交到仓库就可以实现多人协作。<br>例：<code>Git</code></p>
+</blockquote>
+</li>
+</ul>
+<h2 id="Git-工作流程"><a href="#Git-工作流程" class="headerlink" title="Git 工作流程"></a>Git 工作流程</h2><p><img src="/../img/Git/img.png" alt="img.png"><br><strong>相关命令：</strong></p>
+<ol>
+<li><code>clone（克隆）</code>：从仓库代码中克隆代码到本地仓库</li>
+<li><code>checkout（检出）</code>：从本地仓库检出一个分支进行修订(也就是切换分支)</li>
+<li><code>add（添加）</code>：将修改的文件添加到暂存区</li>
+<li><code>commit（提交）</code>：将暂存区中的文件提交到本地仓库</li>
+<li><code>fetch（抓取）</code>：从远程库住去到本地仓库，不进行其他的合并动作</li>
+<li><code>pull（拉取）</code>：从远程库拉取最新代码，自动进行合并(merge)，相当于<code>fetch</code>和<code>merge</code></li>
+<li><code>push（推送）</code>：将本地仓库推送到远程仓库</li>
+</ol>
+<h1 id="Git-安装与常用命令"><a href="#Git-安装与常用命令" class="headerlink" title="Git 安装与常用命令"></a>Git 安装与常用命令</h1><p>常用Linux命令：</p>
+<ol>
+<li>ll &#x2F; ls：查看当前目录下的文件</li>
+<li>cat：查看文件内容</li>
+<li>touch：创建文件</li>
+</ol>
+<h2 id="Git-环境配置"><a href="#Git-环境配置" class="headerlink" title="Git 环境配置"></a>Git 环境配置</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><blockquote>
+<p>安装地址：<a href="https://git-scm.com/downloads">https://git-scm.com/downloads</a></p>
+</blockquote>
+<p>傻瓜式安装后后见点击桌面出现图示红框中内容即为成功安装。<br><img src="/../img/Git/img_1.png" alt="img_1.png"></p>
+<p><strong>注：</strong><br><code>Git GUI</code>：Git图形化管理工具<br><code>Git Bash</code>：Git命令行工具</p>
+<h3 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h3><p>安装完Git后首先是要全局配置email和用户名，每次提交代码时都会使用到！全局配置可以省去每次提交代码时都要输入email和用户名</p>
+<ol>
+<li><p>设置用户信息</p>
+<blockquote>
+<p>git config–global user.name “你的用户名”</p>
+</blockquote>
+<blockquote>
+<p>git config–global user.email “你的邮箱”</p>
+</blockquote>
+</li>
+<li><p>查看用户信息</p>
+<blockquote>
+<p>git config–global user.name</p>
+</blockquote>
+<blockquote>
+<p>git config–global user.email</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="常用命令配置"><a href="#常用命令配置" class="headerlink" title="常用命令配置"></a>常用命令配置</h3><ol>
+<li><p>打开电脑用户目录：C:\Users\你的用户名</p>
+<blockquote>
+<p>部分windows用户不允许用户创建点号开头的文件，可以打开<code>gitbash</code>执行: <code>touch ~/.bashrc</code></p>
+</blockquote>
+</li>
+<li><p>在<code>.bashrc</code>文件中添加如下内容：</p>
+<blockquote>
+<p>用于输出git提交日志<br>alias git-log&#x3D;”git log –pretty&#x3D;oneline –all –graph –abbrev-commit”  </p>
+</blockquote>
+</li>
+<li><p>打开gitBash，执行<code>source ~/.bashrc</code><br><img src="/../img/Git/img_2.png" alt="img_2.png"></p>
+</li>
+</ol>
+<h3 id="解决git乱码问题"><a href="#解决git乱码问题" class="headerlink" title="解决git乱码问题"></a>解决git乱码问题</h3><p><img src="/../img/Git/img_3.png" alt="img_3.png"></p>
+<h2 id="获取本地仓库"><a href="#获取本地仓库" class="headerlink" title="获取本地仓库"></a>获取本地仓库</h2><p>在工作目录打开git bash 输入<code>git init</code>，若出现.git文件夹这证明获取本地仓库成功。</p>
+<h2 id="基础操作指令"><a href="#基础操作指令" class="headerlink" title="基础操作指令"></a>基础操作指令</h2><p>Git工作目录下对于文件的修改（新增、更新、删除）会存在几种状态，这些修改的状态会随着我们执行Git命令而发生改变。<br><img src="/../img/Git/img_6.png" alt="img_6.png"></p>
+<ol>
+<li><p><strong>查看修改状态</strong>  —  查看修改的状态（暂存区、工作区）</p>
+<blockquote>
+<p>git status</p>
+</blockquote>
+</li>
+<li><p><strong>添加工作区到暂存区</strong></p>
+<blockquote>
+<p>将文件提交到当前仓库的暂存区<br>git add 文件名 | 通配符<br>例：git add ‘file01.txt’    或者    git add .</p>
+</blockquote>
+</li>
+<li><p><strong>提交暂存到本地仓库</strong></p>
+<blockquote>
+<p>将暂存区中的文件提交到当前仓库的当前分支<br>git commit -m ‘提交信息’</p>
+</blockquote>
+</li>
+</ol>
+<p><img src="/../img/Git/img_8.png" alt="img_8.png"></p>
+<ol start="4">
+<li><p><strong>查看提交日志</strong></p>
+<blockquote>
+<p>git log [options]</p>
+</blockquote>
+<blockquote>
+<p>options:</p>
+</blockquote>
+<pre><code>  &gt; --all  输出全部的提交日志
+  &gt; --pretty=oneline  提交日志在一行输出
+  &gt; --abbrev-commit  使得输出的commitId更简短
+  &gt; --graph  提交日志以图的形式显示
+</code></pre>
+</li>
+<li><p>版本回退</p>
+<blockquote>
+<p>git reset –hard commitId    （commitId可以通过<code>git log</code>或者之前设置的<code>git-log</code>进行查看）</p>
+</blockquote>
+<blockquote>
+<p>如何查看已经删除的记录<br>git reflog</p>
+</blockquote>
+</li>
+</ol>
+<p><img src="/../img/Git/img_10.png" alt="img_10.png"></p>
+<ol start="6">
+<li>添加文件到忽略列表<br> 工作目录中的有些文件无需纳入到git仓库中，比如node_modules等文件，这时我们可以新建一个<code>.gitignore</code>文件，将需要忽略的文件名写入到该文件中即可。下面是一个<code>.gitignore</code>文件示例：<br> <img src="/../img/Git/img_9.png" alt="img_9.png"></li>
+</ol>
+<h2 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h2><p>使用分支以意味着你可以把你的工作从开发主线上分离开来进行重大的bug修改、开发新的功能，以免影响主线开发。</p>
+<h3 id="分支常用命令"><a href="#分支常用命令" class="headerlink" title="分支常用命令"></a>分支常用命令</h3><ol>
+<li><p>查看分支</p>
+<ul>
+<li><code>git branch</code></li>
+</ul>
+</li>
+<li><p><strong>创建分支</strong></p>
+<ul>
+<li><code>git branch 分支名</code></li>
+</ul>
+</li>
+<li><p>上面我们所配置的命令别名<code>git-log</code></p>
+</li>
+<li><p>切换分支</p>
+<ul>
+<li><code>git checkout 分支名</code>   </li>
+<li><code>git checkout -b 分支名</code>(可直接切换到一个不存在的分支名，Git会自动创建一个分支名并切换到该分支名)</li>
+</ul>
+<p>从Git 2.23版本开始，引入了<code>git switch</code> 命令来专门切换分支，这使得切换分支的命令更加清晰和直观。</p>
+<ul>
+<li><code>git switch 分支名</code></li>
+<li><code>git switch -c 分支名</code>   (创建并切换到新分支)</li>
+</ul>
+</li>
+<li><p>合并分支</p>
+<ul>
+<li>将分支名分支合并到当前分支</li>
+<li><code>git merge 分支名</code></li>
+</ul>
+<p><img src="/../img/Git/img_4.png" alt="img_4.png"></p>
+</li>
+<li><p>删除分支 </p>
+<ul>
+<li><code>git branch -d 分支名</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="开发中分支使用原则与流程"><a href="#开发中分支使用原则与流程" class="headerlink" title="开发中分支使用原则与流程"></a>开发中分支使用原则与流程</h2><p>使用分支可以将你的工作与主线分支分离开，避免在修改重大的bug、开发新的功能等情况下影响主线开发。</p>
+<ul>
+<li><strong><code>master</code></strong> 分支<ul>
+<li>主分支，中小项目上线运行时对应的分支</li>
+</ul>
+</li>
+<li><strong><code>develop</code></strong> 分支<ul>
+<li>是从master分支创建的分支，在有新需求或者重大修改时可以在此分支上进行改动，在开发完之后合并到master分支</li>
+</ul>
+</li>
+<li><strong><code>feature/xxx</code></strong> 分支 (开发完一般可以删掉)<ul>
+<li>是从develop创建的分支，一般是同期并行开发，但不同期上线时创建的分支，分支上的开发任务完成后合并到develop分支</li>
+<li>例： <code>feature/add-doc</code>  用于添加文档</li>
+</ul>
+</li>
+<li><strong><code>hotfix/xxx</code></strong> 分支 (开发完一般可以删掉)<ul>
+<li>从master分支派生，一般作为线上bug修复使用，修复bug完成后合并到master、test、develop分支</li>
+<li>例： <code>hotfix/fix-bug</code>  用于修复bug</li>
+</ul>
+</li>
+<li>还有一些其他分支，如 <strong><code>test</code></strong>(用于代码测试)、<strong><code>pre</code></strong>(预上线分支)等</li>
+</ul>
+<p><img src="/../img/Git/img_5.png" alt="img_5.png"></p>
+<h2 id="Git远程仓库"><a href="#Git远程仓库" class="headerlink" title="Git远程仓库"></a>Git远程仓库</h2><p>经过前面的学习我们知道了存在两种仓库：即<code>本地仓库</code>和<code>远程仓库</code>。那么如何搭建远程仓库呢？</p>
+<p>我们需要借助互联网上提供的代码托管服务，如<code>gitee</code>、<code>github</code>、<code>gitlab</code>，其中前两个我们在日常学习中很常见，第三个一般出现在企业、学校等内部网络搭建git私服，它是一个用于仓库管理系统的开源项目，使用git进行代码托管，并在此基础上搭建web服务。</p>
+<h3 id="搭建远程仓库"><a href="#搭建远程仓库" class="headerlink" title="搭建远程仓库"></a>搭建远程仓库</h3><p>给本地仓库添加远程仓库有两种方式，一种是添加https方式，另一种是ssh密钥方式（前者比较简单，这里我们不做赘述，主要学习一下ssh密钥方式）。</p>
+<ul>
+<li>首先生成ssh密钥<ul>
+<li>ssh-keygen -t rsa</li>
+<li>不断回车即可（若之前生成过密钥，则自动覆盖）</li>
+</ul>
+</li>
+<li>远程仓库设置密钥<ul>
+<li>获取本地密钥</li>
+<li>cat ~&#x2F;.ssh&#x2F;id_rsa.pub</li>
+<li>验证是否配置成功<ul>
+<li>ssh -T <a href="mailto:&#x67;&#x69;&#x74;&#x40;&#103;&#105;&#116;&#104;&#117;&#x62;&#x2e;&#99;&#x6f;&#109;">git@github.com</a> 或者 ssh -T <a href="mailto:&#103;&#x69;&#116;&#x40;&#x67;&#105;&#x74;&#101;&#x65;&#46;&#x63;&#111;&#x6d;">git@gitee.com</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/../img/Git/img_11.png" alt="img_11.png"><br>出现图示输出则说明配置成功！</p>
+<h3 id="远程仓库相关命令"><a href="#远程仓库相关命令" class="headerlink" title="远程仓库相关命令"></a>远程仓库相关命令</h3><ol>
+<li>添加远程仓库<ul>
+<li><code>git add remote &lt;远端名称&gt; &lt;仓库地址&gt;</code><ul>
+<li>例：git remote add origin <a href="mailto:&#x67;&#x69;&#116;&#x40;&#x67;&#x69;&#116;&#x68;&#x75;&#x62;&#46;&#x63;&#111;&#109;">git@github.com</a>:zhangjunyi&#x2F;git.git</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>查看远程仓库<ul>
+<li><code>git remote</code></li>
+</ul>
+</li>
+<li>推送到远程仓库<ul>
+<li><code>git push [-f] [--set-upstream] [远程仓库] [本地分支]:[远程分支]</code></li>
+<li>例：git push origin master<ul>
+<li>若本地分支与远程分支名称一致这可只写本地分支 例：git push origin master</li>
+<li><code>-f</code> 强制推送 覆盖远程仓库</li>
+<li><code>--set-upstream</code> 讲本地分支与远程分支建立联系</li>
+</ul>
+</li>
+<li>如果当前分支和远程分支已经建立联系，则只需执行<code>git push</code>即可</li>
+</ul>
+</li>
+</ol>
+<h1 id="Git常见问题解决"><a href="#Git常见问题解决" class="headerlink" title="Git常见问题解决"></a>Git常见问题解决</h1><h2 id="首次添加远程仓库"><a href="#首次添加远程仓库" class="headerlink" title="首次添加远程仓库"></a>首次添加远程仓库</h2><blockquote>
+<p><strong>场景：本地分支已存在，远程分支也已存在，但未建立联系</strong></p>
+</blockquote>
+<p>首次添加远程仓库时，我们的本地分支与远程分支未能建立联系，从本地<code>master</code>切换到<code>远程master</code>时会出现<code>Git:fatal:a branch named &#39;master&#39;already exists</code>的错误！</p>
+<ol>
+<li><p>查看当前分支<br> 查看当前位于什么分支，保证下面之后操作的分支正确；</p>
+</li>
+<li><p>与远程分支建立联系<br>将当前分支与远程origin&#x2F;master分支建立联系</p>
+<blockquote>
+<p>git branch –set-upstream-to&#x3D;origin&#x2F;master</p>
+<p>简写：git branch -u origin&#x2F;master</p>
+</blockquote>
+</li>
+<li><p>查看是否建立联系</p>
+<blockquote>
+<p>查看所有分支的状态</p>
+<p>git branch -vv<br>查看当前分支的状态<br>git status</p>
+</blockquote>
+<p> <img src="/../img/Git/img_12.png" alt="img.png"></p>
+</li>
+<li><p>解决之后的错误<br>之后可能会出现<code>fatal: refusing to merge unrelated histories</code>的问题，解决方法如下：</p>
+<blockquote>
+<p>git pull origin master –allow-unrelated-histories</p>
+</blockquote>
+</li>
+</ol>
+<p>这样问题就基本解决了！</p>
+]]></content>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>03-javascript的运行原理</title>
     <url>/posts/4bc49eeb.html</url>
     <content><![CDATA[<p>上篇博客了解了一下浏览器的运行原理，那javascript的运行原理又是怎么样的呢？</p>
@@ -523,6 +548,34 @@
       </categories>
       <tags>
         <tag>javascript运行原理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>04-闭包</title>
+    <url>/posts/2f741396.html</url>
+    <content><![CDATA[<h1 id="javascript-内存管理"><a href="#javascript-内存管理" class="headerlink" title="javascript 内存管理"></a>javascript 内存管理</h1><blockquote>
+<p>认识内存管理</p>
+</blockquote>
+<p>不管什么样的编程语言，<strong>在代码执行过程中都需要进行内存分配</strong>，不同的是有些编程语言需要我们自己手动进行内存配置，有些则会自动帮我们进行内存分配。</p>
+<p>不管什么样的内存分配机制，<strong>内存的分配都会进入如下周期</strong>：</p>
+<ol>
+<li>申请分配内存</li>
+<li>使用分配的内存</li>
+<li>不需要使用时释放内存</li>
+</ol>
+<p>不同的语言会对第一步和第三步进行不同的处理：</p>
+<ul>
+<li>手动管理内存：比如<code>C</code>、<code>C++</code>，包括早期的<code>OC</code>，都是需要手动的进行内存的申请和释放（<code>malloc和free函数</code>）；</li>
+<li>自动管理内存：比如<code>java</code>、<code>javascript</code>、<code>Python</code>、<code>Swift</code>、<code>Dart</code>等，这些语言都有帮我们自动进行内存管理。</li>
+</ul>
+<p>也就是说，我们所使用的<code>javascript</code>会自动的对原始值、对象、函数等进行内存管理，我们并不需要进行多余的操作。</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/04-closure/img1.png" alt="img.png"></p>
+<h1 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h1><h1 id="闭包的概念理解"><a href="#闭包的概念理解" class="headerlink" title="闭包的概念理解"></a>闭包的概念理解</h1><h1 id="闭包的形成过程"><a href="#闭包的形成过程" class="headerlink" title="闭包的形成过程"></a>闭包的形成过程</h1><h1 id="闭包的内存泄漏"><a href="#闭包的内存泄漏" class="headerlink" title="闭包的内存泄漏"></a>闭包的内存泄漏</h1>]]></content>
+      <categories>
+        <category>js高级</category>
+      </categories>
+      <tags>
+        <tag>闭包</tag>
       </tags>
   </entry>
   <entry>
@@ -652,6 +705,44 @@
       </categories>
       <tags>
         <tag>浏览器</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>08-手写apply/call/bind</title>
+    <url>/posts/5be1151a.html</url>
+    <content><![CDATA[<p>手撕apply&#x2F;call&#x2F;bind</p>
+<ul>
+<li>apply()</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Function</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">myApply</span> = <span class="keyword">function</span> (<span class="params">context</span>) &#123;</span><br><span class="line">  <span class="comment">// 判断调用对象是否是函数</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable language_">this</span> !== <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;type error&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 判断this要绑定的对象是否为空</span></span><br><span class="line">  context = context || <span class="variable language_">window</span></span><br><span class="line"></span><br><span class="line">  context.<span class="property">fn</span> = <span class="variable language_">this</span></span><br><span class="line">  <span class="keyword">let</span> result = <span class="literal">null</span>, args = [...<span class="variable language_">arguments</span>].<span class="title function_">slice</span>(<span class="number">1</span>)</span><br><span class="line">  context.<span class="title function_">fn</span>(...args)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">delete</span> context.<span class="property">fn</span></span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>call()</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Function</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">myCall</span> = <span class="keyword">function</span> (<span class="params">context</span>) &#123;</span><br><span class="line">  <span class="comment">// 判断调用对象是否是函数</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable language_">this</span> !== <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;type error&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 判断this要绑定的对象是否为空</span></span><br><span class="line">  context = context || <span class="variable language_">window</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// context.fn = this   </span></span><br><span class="line">  <span class="comment">// 如果不想fn()被展示出来就使用Object.defineProperty()</span></span><br><span class="line">    <span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(context, <span class="string">&#x27;fn&#x27;</span>, &#123;</span><br><span class="line">        <span class="attr">value</span>: <span class="variable language_">this</span>,</span><br><span class="line">        <span class="attr">writable</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">    &#125;)</span><br><span class="line">    </span><br><span class="line">  <span class="keyword">let</span> result = <span class="literal">null</span>, args = [...<span class="variable language_">arguments</span>].<span class="title function_">slice</span>(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment">//  此处fn的调用方式与apply()不同，这个更适合call()风格</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="variable language_">arguments</span>[<span class="number">1</span>]) &#123;</span><br><span class="line">    context.<span class="title function_">fn</span>(...args)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    context.<span class="title function_">fn</span>()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">delete</span> context.<span class="property">fn</span></span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>bind()</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Function</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">myBind</span> = <span class="keyword">function</span>(<span class="params">context</span>) &#123;</span><br><span class="line">    <span class="comment">// 判断调用对象是否为函数</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable language_">this</span> !== <span class="string">&quot;function&quot;</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&quot;Error&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 获取参数</span></span><br><span class="line">    <span class="keyword">var</span> args = [...<span class="variable language_">arguments</span>].<span class="title function_">slice</span>(<span class="number">1</span>),</span><br><span class="line">        fn = <span class="variable language_">this</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> <span class="title function_">Fn</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="comment">// 根据调用方式，传入不同绑定值</span></span><br><span class="line">        <span class="keyword">return</span> fn.<span class="title function_">apply</span>(</span><br><span class="line">            <span class="variable language_">this</span> <span class="keyword">instanceof</span> <span class="title class_">Fn</span> ? <span class="variable language_">this</span> : context,</span><br><span class="line">            args.<span class="title function_">concat</span>(...<span class="variable language_">arguments</span>)</span><br><span class="line">        );</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>js高级</category>
+      </categories>
+      <tags>
+        <tag>apply/call/bind</tag>
       </tags>
   </entry>
   <entry>
@@ -840,72 +931,6 @@
       </categories>
       <tags>
         <tag>javascript函数和对象增强</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>08-手写apply/call/bind</title>
-    <url>/posts/5be1151a.html</url>
-    <content><![CDATA[<p>手撕apply&#x2F;call&#x2F;bind</p>
-<ul>
-<li>apply()</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Function</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">myApply</span> = <span class="keyword">function</span> (<span class="params">context</span>) &#123;</span><br><span class="line">  <span class="comment">// 判断调用对象是否是函数</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable language_">this</span> !== <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;type error&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 判断this要绑定的对象是否为空</span></span><br><span class="line">  context = context || <span class="variable language_">window</span></span><br><span class="line"></span><br><span class="line">  context.<span class="property">fn</span> = <span class="variable language_">this</span></span><br><span class="line">  <span class="keyword">let</span> result = <span class="literal">null</span>, args = [...<span class="variable language_">arguments</span>].<span class="title function_">slice</span>(<span class="number">1</span>)</span><br><span class="line">  context.<span class="title function_">fn</span>(...args)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">delete</span> context.<span class="property">fn</span></span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>call()</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Function</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">myCall</span> = <span class="keyword">function</span> (<span class="params">context</span>) &#123;</span><br><span class="line">  <span class="comment">// 判断调用对象是否是函数</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable language_">this</span> !== <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;type error&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 判断this要绑定的对象是否为空</span></span><br><span class="line">  context = context || <span class="variable language_">window</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// context.fn = this   </span></span><br><span class="line">  <span class="comment">// 如果不想fn()被展示出来就使用Object.defineProperty()</span></span><br><span class="line">    <span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(context, <span class="string">&#x27;fn&#x27;</span>, &#123;</span><br><span class="line">        <span class="attr">value</span>: <span class="variable language_">this</span>,</span><br><span class="line">        <span class="attr">writable</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">true</span></span><br><span class="line">    &#125;)</span><br><span class="line">    </span><br><span class="line">  <span class="keyword">let</span> result = <span class="literal">null</span>, args = [...<span class="variable language_">arguments</span>].<span class="title function_">slice</span>(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment">//  此处fn的调用方式与apply()不同，这个更适合call()风格</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="variable language_">arguments</span>[<span class="number">1</span>]) &#123;</span><br><span class="line">    context.<span class="title function_">fn</span>(...args)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    context.<span class="title function_">fn</span>()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">delete</span> context.<span class="property">fn</span></span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>bind()</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Function</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">myBind</span> = <span class="keyword">function</span>(<span class="params">context</span>) &#123;</span><br><span class="line">    <span class="comment">// 判断调用对象是否为函数</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable language_">this</span> !== <span class="string">&quot;function&quot;</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&quot;Error&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 获取参数</span></span><br><span class="line">    <span class="keyword">var</span> args = [...<span class="variable language_">arguments</span>].<span class="title function_">slice</span>(<span class="number">1</span>),</span><br><span class="line">        fn = <span class="variable language_">this</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> <span class="title function_">Fn</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="comment">// 根据调用方式，传入不同绑定值</span></span><br><span class="line">        <span class="keyword">return</span> fn.<span class="title function_">apply</span>(</span><br><span class="line">            <span class="variable language_">this</span> <span class="keyword">instanceof</span> <span class="title class_">Fn</span> ? <span class="variable language_">this</span> : context,</span><br><span class="line">            args.<span class="title function_">concat</span>(...<span class="variable language_">arguments</span>)</span><br><span class="line">        );</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>js高级</category>
-      </categories>
-      <tags>
-        <tag>apply/call/bind</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>04-闭包</title>
-    <url>/posts/2f741396.html</url>
-    <content><![CDATA[<h1 id="javascript-内存管理"><a href="#javascript-内存管理" class="headerlink" title="javascript 内存管理"></a>javascript 内存管理</h1><blockquote>
-<p>认识内存管理</p>
-</blockquote>
-<p>不管什么样的编程语言，<strong>在代码执行过程中都需要进行内存分配</strong>，不同的是有些编程语言需要我们自己手动进行内存配置，有些则会自动帮我们进行内存分配。</p>
-<p>不管什么样的内存分配机制，<strong>内存的分配都会进入如下周期</strong>：</p>
-<ol>
-<li>申请分配内存</li>
-<li>使用分配的内存</li>
-<li>不需要使用时释放内存</li>
-</ol>
-<p>不同的语言会对第一步和第三步进行不同的处理：</p>
-<ul>
-<li>手动管理内存：比如<code>C</code>、<code>C++</code>，包括早期的<code>OC</code>，都是需要手动的进行内存的申请和释放（<code>malloc和free函数</code>）；</li>
-<li>自动管理内存：比如<code>java</code>、<code>javascript</code>、<code>Python</code>、<code>Swift</code>、<code>Dart</code>等，这些语言都有帮我们自动进行内存管理。</li>
-</ul>
-<p>也就是说，我们所使用的<code>javascript</code>会自动的对原始值、对象、函数等进行内存管理，我们并不需要进行多余的操作。</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/04-closure/img1.png" alt="img.png"></p>
-<h1 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h1><h1 id="闭包的概念理解"><a href="#闭包的概念理解" class="headerlink" title="闭包的概念理解"></a>闭包的概念理解</h1><h1 id="闭包的形成过程"><a href="#闭包的形成过程" class="headerlink" title="闭包的形成过程"></a>闭包的形成过程</h1><h1 id="闭包的内存泄漏"><a href="#闭包的内存泄漏" class="headerlink" title="闭包的内存泄漏"></a>闭包的内存泄漏</h1>]]></content>
-      <categories>
-        <category>js高级</category>
-      </categories>
-      <tags>
-        <tag>闭包</tag>
       </tags>
   </entry>
   <entry>
@@ -1243,7 +1268,7 @@
 <li><p>另外，在使用<code>Proxy</code>时不操作原对象</p>
 </li>
 </ul>
-<h2 id="2-1-常用方法"><a href="#2-1-常用方法" class="headerlink" title="2.1 常用方法"></a>2.1 常用方法</h2><p><img src="/../../img/js%E9%AB%98%E7%BA%A7/10-proxy/img2.png" alt="img.png"></p>
+<h2 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h2><p><img src="/../../img/js%E9%AB%98%E7%BA%A7/10-proxy/img2.png" alt="img.png"></p>
 <p><strong><code>Reflect</code>和<code>Proxy</code>共同实现代理：</strong></p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>,</span><br><span class="line">    <span class="attr">age</span>: <span class="number">18</span>,</span><br><span class="line">    <span class="title function_">set</span>(<span class="params">newValue</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// 默认为   this ---&gt; obj</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> objProxy = <span class="keyword">new</span> <span class="title class_">Proxy</span>(obj, &#123;</span><br><span class="line">    <span class="title function_">get</span>(<span class="params">target, key, receiver</span>) &#123;</span><br><span class="line">        <span class="keyword">const</span> result = <span class="title class_">Reflect</span>.<span class="title function_">get</span>(target, key)</span><br><span class="line">        <span class="comment">// const result = Reflect.get(target, key, receiver)   // 将obj中set()的this指向receiver</span></span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title function_">set</span>(<span class="params">target, key, newValue, receiver</span>) &#123;</span><br><span class="line">        <span class="comment">// 之前  直接操作target对象</span></span><br><span class="line">        target[key] = newValue</span><br><span class="line">        <span class="comment">// 有了Reflect</span></span><br><span class="line">        <span class="keyword">const</span> result = <span class="title class_">Reflect</span>.<span class="title function_">set</span>(target, key, newValue)</span><br><span class="line">        <span class="keyword">if</span> (result) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;成功&quot;</span>);</span><br><span class="line">            target[key] = newValue</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;设置失败&#x27;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p>使用<code>Reflect</code>的好处：</p>
