@@ -1,6 +1,267 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Git 分布式版本控制工具</title>
+    <url>/posts/92d95aa4.html</url>
+    <content><![CDATA[<h1 id="Git-概述"><a href="#Git-概述" class="headerlink" title="Git 概述"></a>Git 概述</h1><h2 id="Git-版本控制器的方式"><a href="#Git-版本控制器的方式" class="headerlink" title="Git 版本控制器的方式"></a>Git 版本控制器的方式</h2><ul>
+<li><p><strong><code>集中式版本控制</code></strong></p>
+<blockquote>
+<p>集中式版本控制工具的版本库是集中放置在中央服务器的，团队中的每个人先从版本库中下载代码（需要联网才能工作），个人修改后提交到中央版本库。<br>例：<code>SVN</code> 和 <code>CVS</code> </p>
+</blockquote>
+</li>
+<li><p><strong><code>分布式版本控制</code></strong></p>
+<blockquote>
+<p>分布式版本控制系统没有“中央版本库”，每个人电脑上都是一个完整的版本库，这样工作的时候就不需要联网了。版本都在自己电脑上，修改后只要提交到仓库就可以实现多人协作。<br>例：<code>Git</code></p>
+</blockquote>
+</li>
+</ul>
+<h2 id="Git-工作流程"><a href="#Git-工作流程" class="headerlink" title="Git 工作流程"></a>Git 工作流程</h2><p><img src="/../img/Git/img.png" alt="img.png"><br><strong>相关命令：</strong></p>
+<ol>
+<li><code>clone（克隆）</code>：从仓库代码中克隆代码到本地仓库</li>
+<li><code>checkout（检出）</code>：从本地仓库检出一个分支进行修订(也就是切换分支)</li>
+<li><code>add（添加）</code>：将修改的文件添加到暂存区</li>
+<li><code>commit（提交）</code>：将暂存区中的文件提交到本地仓库</li>
+<li><code>fetch（抓取）</code>：从远程库住去到本地仓库，不进行其他的合并动作</li>
+<li><code>pull（拉取）</code>：从远程库拉取最新代码，自动进行合并(merge)，相当于<code>fetch</code>和<code>merge</code></li>
+<li><code>push（推送）</code>：将本地仓库推送到远程仓库</li>
+</ol>
+<h1 id="Git-安装与常用命令"><a href="#Git-安装与常用命令" class="headerlink" title="Git 安装与常用命令"></a>Git 安装与常用命令</h1><p>常用Linux命令：</p>
+<ol>
+<li>ll &#x2F; ls：查看当前目录下的文件</li>
+<li>cat：查看文件内容</li>
+<li>touch：创建文件</li>
+</ol>
+<h2 id="Git-环境配置"><a href="#Git-环境配置" class="headerlink" title="Git 环境配置"></a>Git 环境配置</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><blockquote>
+<p>安装地址：<a href="https://git-scm.com/downloads">https://git-scm.com/downloads</a></p>
+</blockquote>
+<p>傻瓜式安装后后见点击桌面出现图示红框中内容即为成功安装。<br><img src="/../img/Git/img_1.png" alt="img_1.png"></p>
+<p><strong>注：</strong><br><code>Git GUI</code>：Git图形化管理工具<br><code>Git Bash</code>：Git命令行工具</p>
+<h3 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h3><p>安装完Git后首先是要全局配置email和用户名，每次提交代码时都会使用到！全局配置可以省去每次提交代码时都要输入email和用户名</p>
+<ol>
+<li><p>设置用户信息</p>
+<blockquote>
+<p>git config–global user.name “你的用户名”</p>
+</blockquote>
+<blockquote>
+<p>git config–global user.email “你的邮箱”</p>
+</blockquote>
+</li>
+<li><p>查看用户信息</p>
+<blockquote>
+<p>git config–global user.name</p>
+</blockquote>
+<blockquote>
+<p>git config–global user.email</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="常用命令配置"><a href="#常用命令配置" class="headerlink" title="常用命令配置"></a>常用命令配置</h3><ol>
+<li><p>打开电脑用户目录：C:\Users\你的用户名</p>
+<blockquote>
+<p>部分windows用户不允许用户创建点号开头的文件，可以打开<code>gitbash</code>执行: <code>touch ~/.bashrc</code></p>
+</blockquote>
+</li>
+<li><p>在<code>.bashrc</code>文件中添加如下内容：</p>
+<blockquote>
+<p>用于输出git提交日志<br>alias git-log&#x3D;”git log –pretty&#x3D;oneline –all –graph –abbrev-commit”  </p>
+</blockquote>
+</li>
+<li><p>打开gitBash，执行<code>source ~/.bashrc</code><br><img src="/../img/Git/img_2.png" alt="img_2.png"></p>
+</li>
+</ol>
+<h3 id="解决git乱码问题"><a href="#解决git乱码问题" class="headerlink" title="解决git乱码问题"></a>解决git乱码问题</h3><p><img src="/../img/Git/img_3.png" alt="img_3.png"></p>
+<h2 id="获取本地仓库"><a href="#获取本地仓库" class="headerlink" title="获取本地仓库"></a>获取本地仓库</h2><p>在工作目录打开git bash 输入<code>git init</code>，若出现.git文件夹这证明获取本地仓库成功。</p>
+<h2 id="基础操作指令"><a href="#基础操作指令" class="headerlink" title="基础操作指令"></a>基础操作指令</h2><p>Git工作目录下对于文件的修改（新增、更新、删除）会存在几种状态，这些修改的状态会随着我们执行Git命令而发生改变。<br><img src="/../img/Git/img_6.png" alt="img_6.png"></p>
+<ol>
+<li><p><strong>查看修改状态</strong>  —  查看修改的状态（暂存区、工作区）</p>
+<blockquote>
+<p>git status</p>
+</blockquote>
+</li>
+<li><p><strong>添加工作区到暂存区</strong></p>
+<blockquote>
+<p>将文件提交到当前仓库的暂存区<br>git add 文件名 | 通配符<br>例：git add ‘file01.txt’    或者    git add .</p>
+</blockquote>
+</li>
+<li><p><strong>提交暂存到本地仓库</strong></p>
+<blockquote>
+<p>将暂存区中的文件提交到当前仓库的当前分支<br>git commit -m ‘提交信息’</p>
+</blockquote>
+</li>
+</ol>
+<p><img src="/../img/Git/img_8.png" alt="img_8.png"></p>
+<ol start="4">
+<li><p><strong>查看提交日志</strong></p>
+<blockquote>
+<p>git log [options]</p>
+</blockquote>
+<blockquote>
+<p>options:</p>
+</blockquote>
+<pre><code>  &gt; --all  输出全部的提交日志
+  &gt; --pretty=oneline  提交日志在一行输出
+  &gt; --abbrev-commit  使得输出的commitId更简短
+  &gt; --graph  提交日志以图的形式显示
+</code></pre>
+</li>
+<li><p>版本回退</p>
+<blockquote>
+<p>git reset –hard commitId    （commitId可以通过<code>git log</code>或者之前设置的<code>git-log</code>进行查看）</p>
+</blockquote>
+<blockquote>
+<p>如何查看已经删除的记录<br>git reflog</p>
+</blockquote>
+</li>
+</ol>
+<p><img src="/../img/Git/img_10.png" alt="img_10.png"></p>
+<ol start="6">
+<li>添加文件到忽略列表<br> 工作目录中的有些文件无需纳入到git仓库中，比如node_modules等文件，这时我们可以新建一个<code>.gitignore</code>文件，将需要忽略的文件名写入到该文件中即可。下面是一个<code>.gitignore</code>文件示例：<br> <img src="/../img/Git/img_9.png" alt="img_9.png"></li>
+</ol>
+<h2 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h2><p>使用分支以意味着你可以把你的工作从开发主线上分离开来进行重大的bug修改、开发新的功能，以免影响主线开发。</p>
+<h3 id="分支常用命令"><a href="#分支常用命令" class="headerlink" title="分支常用命令"></a>分支常用命令</h3><ol>
+<li><p>查看分支</p>
+<ul>
+<li><code>git branch</code></li>
+</ul>
+</li>
+<li><p><strong>创建分支</strong></p>
+<ul>
+<li><code>git branch 分支名</code></li>
+</ul>
+</li>
+<li><p>上面我们所配置的命令别名<code>git-log</code></p>
+</li>
+<li><p>切换分支</p>
+<ul>
+<li><code>git checkout 分支名</code>   </li>
+<li><code>git checkout -b 分支名</code>(可直接切换到一个不存在的分支名，Git会自动创建一个分支名并切换到该分支名)</li>
+</ul>
+<p>从Git 2.23版本开始，引入了<code>git switch</code> 命令来专门切换分支，这使得切换分支的命令更加清晰和直观。</p>
+<ul>
+<li><code>git switch 分支名</code></li>
+<li><code>git switch -c 分支名</code>   (创建并切换到新分支)</li>
+</ul>
+</li>
+<li><p>合并分支</p>
+<ul>
+<li>将分支名分支合并到当前分支</li>
+<li><code>git merge 分支名</code></li>
+</ul>
+<p><img src="/../img/Git/img_4.png" alt="img_4.png"></p>
+</li>
+<li><p>删除分支 </p>
+<ul>
+<li><code>git branch -d 分支名</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="开发中分支使用原则与流程"><a href="#开发中分支使用原则与流程" class="headerlink" title="开发中分支使用原则与流程"></a>开发中分支使用原则与流程</h2><p>使用分支可以将你的工作与主线分支分离开，避免在修改重大的bug、开发新的功能等情况下影响主线开发。</p>
+<ul>
+<li><strong><code>master</code></strong> 分支<ul>
+<li>主分支，中小项目上线运行时对应的分支</li>
+</ul>
+</li>
+<li><strong><code>develop</code></strong> 分支<ul>
+<li>是从master分支创建的分支，在有新需求或者重大修改时可以在此分支上进行改动，在开发完之后合并到master分支</li>
+</ul>
+</li>
+<li><strong><code>feature/xxx</code></strong> 分支 (开发完一般可以删掉)<ul>
+<li>是从develop创建的分支，一般是同期并行开发，但不同期上线时创建的分支，分支上的开发任务完成后合并到develop分支</li>
+<li>例： <code>feature/add-doc</code>  用于添加文档</li>
+</ul>
+</li>
+<li><strong><code>hotfix/xxx</code></strong> 分支 (开发完一般可以删掉)<ul>
+<li>从master分支派生，一般作为线上bug修复使用，修复bug完成后合并到master、test、develop分支</li>
+<li>例： <code>hotfix/fix-bug</code>  用于修复bug</li>
+</ul>
+</li>
+<li>还有一些其他分支，如 <strong><code>test</code></strong>(用于代码测试)、<strong><code>pre</code></strong>(预上线分支)等</li>
+</ul>
+<p><img src="/../img/Git/img_5.png" alt="img_5.png"></p>
+<h2 id="Git远程仓库"><a href="#Git远程仓库" class="headerlink" title="Git远程仓库"></a>Git远程仓库</h2><p>经过前面的学习我们知道了存在两种仓库：即<code>本地仓库</code>和<code>远程仓库</code>。那么如何搭建远程仓库呢？</p>
+<p>我们需要借助互联网上提供的代码托管服务，如<code>gitee</code>、<code>github</code>、<code>gitlab</code>，其中前两个我们在日常学习中很常见，第三个一般出现在企业、学校等内部网络搭建git私服，它是一个用于仓库管理系统的开源项目，使用git进行代码托管，并在此基础上搭建web服务。</p>
+<h3 id="搭建远程仓库"><a href="#搭建远程仓库" class="headerlink" title="搭建远程仓库"></a>搭建远程仓库</h3><p>给本地仓库添加远程仓库有两种方式，一种是添加https方式，另一种是ssh密钥方式（前者比较简单，这里我们不做赘述，主要学习一下ssh密钥方式）。</p>
+<ul>
+<li>首先生成ssh密钥<ul>
+<li>ssh-keygen -t rsa</li>
+<li>不断回车即可（若之前生成过密钥，则自动覆盖）</li>
+</ul>
+</li>
+<li>远程仓库设置密钥<ul>
+<li>获取本地密钥</li>
+<li>cat ~&#x2F;.ssh&#x2F;id_rsa.pub</li>
+<li>验证是否配置成功<ul>
+<li>ssh -T <a href="mailto:&#x67;&#x69;&#116;&#x40;&#103;&#x69;&#x74;&#104;&#117;&#x62;&#46;&#99;&#x6f;&#109;">git@github.com</a> 或者 ssh -T <a href="mailto:&#103;&#105;&#x74;&#64;&#103;&#105;&#116;&#101;&#x65;&#x2e;&#x63;&#111;&#109;">git@gitee.com</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/../img/Git/img_11.png" alt="img_11.png"><br>出现图示输出则说明配置成功！</p>
+<h3 id="远程仓库相关命令"><a href="#远程仓库相关命令" class="headerlink" title="远程仓库相关命令"></a>远程仓库相关命令</h3><ol>
+<li>添加远程仓库<ul>
+<li><code>git add remote &lt;远端名称&gt; &lt;仓库地址&gt;</code><ul>
+<li>例：git remote add origin <a href="mailto:&#x67;&#x69;&#116;&#x40;&#x67;&#x69;&#116;&#104;&#117;&#x62;&#x2e;&#x63;&#111;&#109;">git@github.com</a>:zhangjunyi&#x2F;git.git</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>查看远程仓库<ul>
+<li><code>git remote</code></li>
+</ul>
+</li>
+<li>推送到远程仓库<ul>
+<li><code>git push [-f] [--set-upstream] [远程仓库] [本地分支]:[远程分支]</code></li>
+<li>例：git push origin master<ul>
+<li>若本地分支与远程分支名称一致这可只写本地分支 例：git push origin master</li>
+<li><code>-f</code> 强制推送 覆盖远程仓库</li>
+<li><code>--set-upstream</code> 讲本地分支与远程分支建立联系</li>
+</ul>
+</li>
+<li>如果当前分支和远程分支已经建立联系，则只需执行<code>git push</code>即可</li>
+</ul>
+</li>
+</ol>
+<h1 id="Git常见问题解决"><a href="#Git常见问题解决" class="headerlink" title="Git常见问题解决"></a>Git常见问题解决</h1><h2 id="首次添加远程仓库"><a href="#首次添加远程仓库" class="headerlink" title="首次添加远程仓库"></a>首次添加远程仓库</h2><blockquote>
+<p><strong>场景：本地分支已存在，远程分支也已存在，但未建立联系</strong></p>
+</blockquote>
+<p>首次添加远程仓库时，我们的本地分支与远程分支未能建立联系，从本地<code>master</code>切换到<code>远程master</code>时会出现<code>Git:fatal:a branch named &#39;master&#39;already exists</code>的错误！</p>
+<ol>
+<li><p>查看当前分支<br> 查看当前位于什么分支，保证下面之后操作的分支正确；</p>
+</li>
+<li><p>与远程分支建立联系<br>将当前分支与远程origin&#x2F;master分支建立联系</p>
+<blockquote>
+<p>git branch –set-upstream-to&#x3D;origin&#x2F;master</p>
+<p>简写：git branch -u origin&#x2F;master</p>
+</blockquote>
+</li>
+<li><p>查看是否建立联系</p>
+<blockquote>
+<p>查看所有分支的状态</p>
+<p>git branch -vv<br>查看当前分支的状态<br>git status</p>
+</blockquote>
+<p> <img src="/../img/Git/img_12.png" alt="img.png"></p>
+</li>
+<li><p>解决之后的错误<br>之后可能会出现<code>fatal: refusing to merge unrelated histories</code>的问题，解决方法如下：</p>
+<blockquote>
+<p>git pull origin master –allow-unrelated-histories</p>
+</blockquote>
+</li>
+</ol>
+<p>这样问题就基本解决了！</p>
+<h2 id="connection-abort"><a href="#connection-abort" class="headerlink" title="connection abort"></a>connection abort</h2><p>有时候使用ssh方式推送代码的时候会出现下面的错误😅：</p>
+<p><img src="/../img/Git/img_13.png" alt="img.png"></p>
+<p>原因：代理服务商为了安全考虑，避免被别人当跳板，会限制22端口的连接，导致无法正确连接到Github的服务器。</p>
+<p>解决办法：<br>改走HTTPS协议，走443端口，这样不仅可以解决上面的问题，还可以提高代理的下载速度。<br>在<code>~/.ssh/config</code>中添加以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Host github.com</span><br><span class="line">    Hostname ssh.github.com</span><br><span class="line">    Port 443</span><br><span class="line">    User git</span><br></pre></td></tr></table></figure>
+
+<p>之后就可以正常拉取推送了！</p>
+]]></content>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>01- this的指向规则</title>
     <url>/posts/d8cbe511.html</url>
     <content><![CDATA[<p><code>this</code> 到底指向谁? 箭头函数中的<code>this</code>还能使用吗? 如果能使用又要怎么使用呢? 与普通函数的<code>this</code>指向一致吗?</p>
@@ -204,378 +465,46 @@
       </tags>
   </entry>
   <entry>
-    <title>Git 分布式版本控制工具</title>
-    <url>/posts/92d95aa4.html</url>
-    <content><![CDATA[<h1 id="Git-概述"><a href="#Git-概述" class="headerlink" title="Git 概述"></a>Git 概述</h1><h2 id="Git-版本控制器的方式"><a href="#Git-版本控制器的方式" class="headerlink" title="Git 版本控制器的方式"></a>Git 版本控制器的方式</h2><ul>
-<li><p><strong><code>集中式版本控制</code></strong></p>
-<blockquote>
-<p>集中式版本控制工具的版本库是集中放置在中央服务器的，团队中的每个人先从版本库中下载代码（需要联网才能工作），个人修改后提交到中央版本库。<br>例：<code>SVN</code> 和 <code>CVS</code> </p>
-</blockquote>
+    <title>Nginx安装与配置以及常用命令</title>
+    <url>/posts/4f72a7f4.html</url>
+    <content><![CDATA[<p>了解一下Nginx的安装与配置，以及常见的Nginx常用命令</p>
+<h1 id="1-安装与配置"><a href="#1-安装与配置" class="headerlink" title="1. 安装与配置"></a>1. 安装与配置</h1><ol>
+<li><p>阿里云申请免费云服务器，为Nginx练习使用</p>
 </li>
-<li><p><strong><code>分布式版本控制</code></strong></p>
-<blockquote>
-<p>分布式版本控制系统没有“中央版本库”，每个人电脑上都是一个完整的版本库，这样工作的时候就不需要联网了。版本都在自己电脑上，修改后只要提交到仓库就可以实现多人协作。<br>例：<code>Git</code></p>
-</blockquote>
-</li>
+<li><p>连接远程服务器</p>
+<ul>
+<li>首先重置root密码</li>
+<li>若是使用vscode 可安装 <code>remote ssh</code>插件 （用来连接远程服务器）</li>
+<li>连接到远程</li>
 </ul>
-<h2 id="Git-工作流程"><a href="#Git-工作流程" class="headerlink" title="Git 工作流程"></a>Git 工作流程</h2><p><img src="/../img/Git/img.png" alt="img.png"><br><strong>相关命令：</strong></p>
-<ol>
-<li><code>clone（克隆）</code>：从仓库代码中克隆代码到本地仓库</li>
-<li><code>checkout（检出）</code>：从本地仓库检出一个分支进行修订(也就是切换分支)</li>
-<li><code>add（添加）</code>：将修改的文件添加到暂存区</li>
-<li><code>commit（提交）</code>：将暂存区中的文件提交到本地仓库</li>
-<li><code>fetch（抓取）</code>：从远程库住去到本地仓库，不进行其他的合并动作</li>
-<li><code>pull（拉取）</code>：从远程库拉取最新代码，自动进行合并(merge)，相当于<code>fetch</code>和<code>merge</code></li>
-<li><code>push（推送）</code>：将本地仓库推送到远程仓库</li>
-</ol>
-<h1 id="Git-安装与常用命令"><a href="#Git-安装与常用命令" class="headerlink" title="Git 安装与常用命令"></a>Git 安装与常用命令</h1><p>常用Linux命令：</p>
-<ol>
-<li>ll &#x2F; ls：查看当前目录下的文件</li>
-<li>cat：查看文件内容</li>
-<li>touch：创建文件</li>
-</ol>
-<h2 id="Git-环境配置"><a href="#Git-环境配置" class="headerlink" title="Git 环境配置"></a>Git 环境配置</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><blockquote>
-<p>安装地址：<a href="https://git-scm.com/downloads">https://git-scm.com/downloads</a></p>
-</blockquote>
-<p>傻瓜式安装后后见点击桌面出现图示红框中内容即为成功安装。<br><img src="/../img/Git/img_1.png" alt="img_1.png"></p>
-<p><strong>注：</strong><br><code>Git GUI</code>：Git图形化管理工具<br><code>Git Bash</code>：Git命令行工具</p>
-<h3 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h3><p>安装完Git后首先是要全局配置email和用户名，每次提交代码时都会使用到！全局配置可以省去每次提交代码时都要输入email和用户名</p>
-<ol>
-<li><p>设置用户信息</p>
-<blockquote>
-<p>git config–global user.name “你的用户名”</p>
-</blockquote>
-<blockquote>
-<p>git config–global user.email “你的邮箱”</p>
-</blockquote>
 </li>
-<li><p>查看用户信息</p>
-<blockquote>
-<p>git config–global user.name</p>
-</blockquote>
-<blockquote>
-<p>git config–global user.email</p>
-</blockquote>
+<li><p>下载Nginx </p>
+<ul>
+<li>cd &#x2F;usr&#x2F;local</li>
+<li>wget <a href="https://nginx.org/download/Nginx-1.28.0.tar.gz">https://nginx.org/download/Nginx-1.28.0.tar.gz</a> (若下载不成功可通过命令 <code>su</code> 切换到root用户)</li>
+</ul>
 </li>
 </ol>
-<h3 id="常用命令配置"><a href="#常用命令配置" class="headerlink" title="常用命令配置"></a>常用命令配置</h3><ol>
-<li><p>打开电脑用户目录：C:\Users\你的用户名</p>
-<blockquote>
-<p>部分windows用户不允许用户创建点号开头的文件，可以打开<code>gitbash</code>执行: <code>touch ~/.bashrc</code></p>
-</blockquote>
-</li>
-<li><p>在<code>.bashrc</code>文件中添加如下内容：</p>
-<blockquote>
-<p>用于输出git提交日志<br>alias git-log&#x3D;”git log –pretty&#x3D;oneline –all –graph –abbrev-commit”  </p>
-</blockquote>
-</li>
-<li><p>打开gitBash，执行<code>source ~/.bashrc</code><br><img src="/../img/Git/img_2.png" alt="img_2.png"></p>
-</li>
-</ol>
-<h3 id="解决git乱码问题"><a href="#解决git乱码问题" class="headerlink" title="解决git乱码问题"></a>解决git乱码问题</h3><p><img src="/../img/Git/img_3.png" alt="img_3.png"></p>
-<h2 id="获取本地仓库"><a href="#获取本地仓库" class="headerlink" title="获取本地仓库"></a>获取本地仓库</h2><p>在工作目录打开git bash 输入<code>git init</code>，若出现.git文件夹这证明获取本地仓库成功。</p>
-<h2 id="基础操作指令"><a href="#基础操作指令" class="headerlink" title="基础操作指令"></a>基础操作指令</h2><p>Git工作目录下对于文件的修改（新增、更新、删除）会存在几种状态，这些修改的状态会随着我们执行Git命令而发生改变。<br><img src="/../img/Git/img_6.png" alt="img_6.png"></p>
-<ol>
-<li><p><strong>查看修改状态</strong>  —  查看修改的状态（暂存区、工作区）</p>
-<blockquote>
-<p>git status</p>
-</blockquote>
-</li>
-<li><p><strong>添加工作区到暂存区</strong></p>
-<blockquote>
-<p>将文件提交到当前仓库的暂存区<br>git add 文件名 | 通配符<br>例：git add ‘file01.txt’    或者    git add .</p>
-</blockquote>
-</li>
-<li><p><strong>提交暂存到本地仓库</strong></p>
-<blockquote>
-<p>将暂存区中的文件提交到当前仓库的当前分支<br>git commit -m ‘提交信息’</p>
-</blockquote>
-</li>
-</ol>
-<p><img src="/../img/Git/img_8.png" alt="img_8.png"></p>
-<ol start="4">
-<li><p><strong>查看提交日志</strong></p>
-<blockquote>
-<p>git log [options]</p>
-</blockquote>
-<blockquote>
-<p>options:</p>
-</blockquote>
-<pre><code>  &gt; --all  输出全部的提交日志
-  &gt; --pretty=oneline  提交日志在一行输出
-  &gt; --abbrev-commit  使得输出的commitId更简短
-  &gt; --graph  提交日志以图的形式显示
+<img src="../../img/Nginx/img.png">
+
+<pre><code>- tar -zxvf Nginx-1.28.0.tar.gz
+- cd ./Nginx-1.28.0
 </code></pre>
-</li>
-<li><p>版本回退</p>
-<blockquote>
-<p>git reset –hard commitId    （commitId可以通过<code>git log</code>或者之前设置的<code>git-log</code>进行查看）</p>
-</blockquote>
-<blockquote>
-<p>如何查看已经删除的记录<br>git reflog</p>
-</blockquote>
-</li>
-</ol>
-<p><img src="/../img/Git/img_10.png" alt="img_10.png"></p>
-<ol start="6">
-<li>添加文件到忽略列表<br> 工作目录中的有些文件无需纳入到git仓库中，比如node_modules等文件，这时我们可以新建一个<code>.gitignore</code>文件，将需要忽略的文件名写入到该文件中即可。下面是一个<code>.gitignore</code>文件示例：<br> <img src="/../img/Git/img_9.png" alt="img_9.png"></li>
-</ol>
-<h2 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h2><p>使用分支以意味着你可以把你的工作从开发主线上分离开来进行重大的bug修改、开发新的功能，以免影响主线开发。</p>
-<h3 id="分支常用命令"><a href="#分支常用命令" class="headerlink" title="分支常用命令"></a>分支常用命令</h3><ol>
-<li><p>查看分支</p>
-<ul>
-<li><code>git branch</code></li>
-</ul>
-</li>
-<li><p><strong>创建分支</strong></p>
-<ul>
-<li><code>git branch 分支名</code></li>
-</ul>
-</li>
-<li><p>上面我们所配置的命令别名<code>git-log</code></p>
-</li>
-<li><p>切换分支</p>
-<ul>
-<li><code>git checkout 分支名</code>   </li>
-<li><code>git checkout -b 分支名</code>(可直接切换到一个不存在的分支名，Git会自动创建一个分支名并切换到该分支名)</li>
-</ul>
-<p>从Git 2.23版本开始，引入了<code>git switch</code> 命令来专门切换分支，这使得切换分支的命令更加清晰和直观。</p>
-<ul>
-<li><code>git switch 分支名</code></li>
-<li><code>git switch -c 分支名</code>   (创建并切换到新分支)</li>
-</ul>
-</li>
-<li><p>合并分支</p>
-<ul>
-<li>将分支名分支合并到当前分支</li>
-<li><code>git merge 分支名</code></li>
-</ul>
-<p><img src="/../img/Git/img_4.png" alt="img_4.png"></p>
-</li>
-<li><p>删除分支 </p>
-<ul>
-<li><code>git branch -d 分支名</code></li>
+<ol start="4">
+<li>初始配置及编译安装<ul>
+<li>初始配置 .&#x2F;configure</li>
+<li>编译源码 安装 make &amp;&amp; make install</li>
 </ul>
 </li>
 </ol>
-<h2 id="开发中分支使用原则与流程"><a href="#开发中分支使用原则与流程" class="headerlink" title="开发中分支使用原则与流程"></a>开发中分支使用原则与流程</h2><p>使用分支可以将你的工作与主线分支分离开，避免在修改重大的bug、开发新的功能等情况下影响主线开发。</p>
-<ul>
-<li><strong><code>master</code></strong> 分支<ul>
-<li>主分支，中小项目上线运行时对应的分支</li>
-</ul>
-</li>
-<li><strong><code>develop</code></strong> 分支<ul>
-<li>是从master分支创建的分支，在有新需求或者重大修改时可以在此分支上进行改动，在开发完之后合并到master分支</li>
-</ul>
-</li>
-<li><strong><code>feature/xxx</code></strong> 分支 (开发完一般可以删掉)<ul>
-<li>是从develop创建的分支，一般是同期并行开发，但不同期上线时创建的分支，分支上的开发任务完成后合并到develop分支</li>
-<li>例： <code>feature/add-doc</code>  用于添加文档</li>
-</ul>
-</li>
-<li><strong><code>hotfix/xxx</code></strong> 分支 (开发完一般可以删掉)<ul>
-<li>从master分支派生，一般作为线上bug修复使用，修复bug完成后合并到master、test、develop分支</li>
-<li>例： <code>hotfix/fix-bug</code>  用于修复bug</li>
-</ul>
-</li>
-<li>还有一些其他分支，如 <strong><code>test</code></strong>(用于代码测试)、<strong><code>pre</code></strong>(预上线分支)等</li>
-</ul>
-<p><img src="/../img/Git/img_5.png" alt="img_5.png"></p>
-<h2 id="Git远程仓库"><a href="#Git远程仓库" class="headerlink" title="Git远程仓库"></a>Git远程仓库</h2><p>经过前面的学习我们知道了存在两种仓库：即<code>本地仓库</code>和<code>远程仓库</code>。那么如何搭建远程仓库呢？</p>
-<p>我们需要借助互联网上提供的代码托管服务，如<code>gitee</code>、<code>github</code>、<code>gitlab</code>，其中前两个我们在日常学习中很常见，第三个一般出现在企业、学校等内部网络搭建git私服，它是一个用于仓库管理系统的开源项目，使用git进行代码托管，并在此基础上搭建web服务。</p>
-<h3 id="搭建远程仓库"><a href="#搭建远程仓库" class="headerlink" title="搭建远程仓库"></a>搭建远程仓库</h3><p>给本地仓库添加远程仓库有两种方式，一种是添加https方式，另一种是ssh密钥方式（前者比较简单，这里我们不做赘述，主要学习一下ssh密钥方式）。</p>
-<ul>
-<li>首先生成ssh密钥<ul>
-<li>ssh-keygen -t rsa</li>
-<li>不断回车即可（若之前生成过密钥，则自动覆盖）</li>
-</ul>
-</li>
-<li>远程仓库设置密钥<ul>
-<li>获取本地密钥</li>
-<li>cat ~&#x2F;.ssh&#x2F;id_rsa.pub</li>
-<li>验证是否配置成功<ul>
-<li>ssh -T <a href="mailto:&#x67;&#x69;&#x74;&#x40;&#103;&#105;&#116;&#104;&#117;&#x62;&#x2e;&#99;&#x6f;&#109;">git@github.com</a> 或者 ssh -T <a href="mailto:&#103;&#x69;&#116;&#x40;&#x67;&#105;&#x74;&#101;&#x65;&#46;&#x63;&#111;&#x6d;">git@gitee.com</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p><img src="/../img/Git/img_11.png" alt="img_11.png"><br>出现图示输出则说明配置成功！</p>
-<h3 id="远程仓库相关命令"><a href="#远程仓库相关命令" class="headerlink" title="远程仓库相关命令"></a>远程仓库相关命令</h3><ol>
-<li>添加远程仓库<ul>
-<li><code>git add remote &lt;远端名称&gt; &lt;仓库地址&gt;</code><ul>
-<li>例：git remote add origin <a href="mailto:&#x67;&#x69;&#116;&#x40;&#x67;&#x69;&#116;&#x68;&#x75;&#x62;&#46;&#x63;&#111;&#109;">git@github.com</a>:zhangjunyi&#x2F;git.git</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>查看远程仓库<ul>
-<li><code>git remote</code></li>
-</ul>
-</li>
-<li>推送到远程仓库<ul>
-<li><code>git push [-f] [--set-upstream] [远程仓库] [本地分支]:[远程分支]</code></li>
-<li>例：git push origin master<ul>
-<li>若本地分支与远程分支名称一致这可只写本地分支 例：git push origin master</li>
-<li><code>-f</code> 强制推送 覆盖远程仓库</li>
-<li><code>--set-upstream</code> 讲本地分支与远程分支建立联系</li>
-</ul>
-</li>
-<li>如果当前分支和远程分支已经建立联系，则只需执行<code>git push</code>即可</li>
-</ul>
-</li>
-</ol>
-<h1 id="Git常见问题解决"><a href="#Git常见问题解决" class="headerlink" title="Git常见问题解决"></a>Git常见问题解决</h1><h2 id="首次添加远程仓库"><a href="#首次添加远程仓库" class="headerlink" title="首次添加远程仓库"></a>首次添加远程仓库</h2><blockquote>
-<p><strong>场景：本地分支已存在，远程分支也已存在，但未建立联系</strong></p>
-</blockquote>
-<p>首次添加远程仓库时，我们的本地分支与远程分支未能建立联系，从本地<code>master</code>切换到<code>远程master</code>时会出现<code>Git:fatal:a branch named &#39;master&#39;already exists</code>的错误！</p>
-<ol>
-<li><p>查看当前分支<br> 查看当前位于什么分支，保证下面之后操作的分支正确；</p>
-</li>
-<li><p>与远程分支建立联系<br>将当前分支与远程origin&#x2F;master分支建立联系</p>
-<blockquote>
-<p>git branch –set-upstream-to&#x3D;origin&#x2F;master</p>
-<p>简写：git branch -u origin&#x2F;master</p>
-</blockquote>
-</li>
-<li><p>查看是否建立联系</p>
-<blockquote>
-<p>查看所有分支的状态</p>
-<p>git branch -vv<br>查看当前分支的状态<br>git status</p>
-</blockquote>
-<p> <img src="/../img/Git/img_12.png" alt="img.png"></p>
-</li>
-<li><p>解决之后的错误<br>之后可能会出现<code>fatal: refusing to merge unrelated histories</code>的问题，解决方法如下：</p>
-<blockquote>
-<p>git pull origin master –allow-unrelated-histories</p>
-</blockquote>
-</li>
-</ol>
-<p>这样问题就基本解决了！</p>
-]]></content>
-      <tags>
-        <tag>Git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>03-javascript的运行原理</title>
-    <url>/posts/4bc49eeb.html</url>
-    <content><![CDATA[<p>上篇博客了解了一下浏览器的运行原理，那javascript的运行原理又是怎么样的呢？</p>
-<h1 id="V8引擎"><a href="#V8引擎" class="headerlink" title="V8引擎"></a>V8引擎</h1><p>先来了解一下V8引擎:</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image1.png" alt="在这里插入图片描述"></p>
-<p>简单来说，V8引擎就是在做<strong>将<code>javascript</code>代码转换成机器语言</strong>，从而被cpu识别继而运行的工作。</p>
-<h2 id="执行原理与架构（了解）"><a href="#执行原理与架构（了解）" class="headerlink" title="执行原理与架构（了解）"></a>执行原理与架构（了解）</h2><p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image2.png" alt="在这里插入图片描述"><br>V8引擎本身的源码非常复杂，大概有超过100w行C++代码，通过了解它的架构，我们可以知道它是如何对)vaScript执行的：</p>
-<ul>
-<li><p><code>Parse</code>：将<code>javascript</code>代码转换成<code>AST抽象语法树</code>，因为解释器并不直接认识js代码；</p>
-<ul>
-<li>如果函数没有被调用，那么就不会被转成<code>AST</code></li>
-</ul>
-</li>
-<li><p><code>lgnition</code>：是一个解释器，会将<code>AST</code>转换成字节码；</p>
-<ul>
-<li>同时会收集<code>TurboFan</code>需要的类型信息（比如函数参数的类型信息，有了类型才能进行真实的运算）</li>
-<li>如果函数只执行一次，那么将直接解释执行字节码</li>
-</ul>
-</li>
-<li><p><code>TurboFan</code>：是一个编译器，可以将<code>AST</code>转换成CPU直接能运行的机器码；</p>
-<ul>
-<li>如果一个函数被多次调用，那么将会被标记为<code>热点函数</code>，那么就会经过<code>TurboFan</code>编译成优化的机器码，提高代码的执行性能；</li>
-<li>但是，<strong>机器码实际上也会被还原成字节码</strong>，这是因为如果后续执行过程中类型发生了变化，之前优化的机器码并不能正确的运算，就会逆向的转成字节码</li>
-</ul>
-</li>
-</ul>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image3.png" alt="在这里插入图片描述"></p>
-<h1 id="javascript-执行过程"><a href="#javascript-执行过程" class="headerlink" title="javascript 执行过程"></a>javascript 执行过程</h1><p>假设现在有段这样的代码，它应该是怎样执行的呢？<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image4.png" alt="在这里插入图片描述"></p>
-<p>我们先来了解一下相关的基础知识！</p>
-<h2 id="初始化全局对象"><a href="#初始化全局对象" class="headerlink" title="初始化全局对象"></a>初始化全局对象</h2><ul>
-<li>首先，<code>js</code> 在执行代码前，会创建一个全局对象：<code>Global Object</code><ul>
-<li>该对象 所有的作用域都可以访问；</li>
-<li>里面还会包含<code>Date</code>、<code>Array</code>、<code>Number</code>、<code>setTimeout</code>、<code>setInterval</code>等；</li>
-<li>其中还有一个属性指向<code>window</code></li>
-</ul>
-</li>
-</ul>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image5.png" alt="在这里插入图片描述"></p>
-<h2 id="执行上下文栈"><a href="#执行上下文栈" class="headerlink" title="执行上下文栈"></a>执行上下文栈</h2><p>js 引擎内部有一个<code>执行上下文栈</code>（Excution Context Stack，简称ECS），是用于执行代码的调用栈。</p>
-<ul>
-<li><p>那么现在要执行的是谁呢？是全局的代码块：</p>
-<ul>
-<li>全局的代码块在执行前会创建一个<code>Global Excution Context（GEC）</code>；</li>
-<li><code>GEC</code>会被放到<code>ECS</code>中执行</li>
-</ul>
-</li>
-<li><p><code>GEC</code>被放到<code>ECS</code>中包含两部分内容：</p>
-<ul>
-<li>第一部分：在代码执行前，在<code>parser</code>转成<code>AST</code>的过程中，会将全局定义的变量、函数等加入到<code>Global Object</code>中，但并不会赋值；（这个过程也叫做变量的作用域提升）</li>
-<li>在代码执行中，对变量赋值，或者执行其他的函数；</li>
-</ul>
-</li>
-</ul>
-<h1 id="全局代码的执行"><a href="#全局代码的执行" class="headerlink" title="全局代码的执行"></a>全局代码的执行</h1><p>先来认识一下<code>VO对象</code>：</p>
-<ul>
-<li>每个执行上下文都会关联一个VO（Variable Object，变量对象），变量和函数声明会被添加到这个VO对象中；</li>
-<li>当全局代码被执行的时候，VO就是GO对象了。</li>
-</ul>
-<p>❗️❗️❗️问题来了！<strong>全局代码如何被执行呢？</strong></p>
-<p><strong>执行前：</strong><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image6.png" alt="在这里插入图片描述"><br><strong>执行后：</strong><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image7.png" alt="在这里插入图片描述"><br>现在更改代码为：<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image8.png" alt="在这里插入图片描述"></p>
-<p>那就又有一个问题：<strong>函数代码如何执行呢？</strong></p>
-<h1 id="函数代码的执行"><a href="#函数代码的执行" class="headerlink" title="函数代码的执行"></a>函数代码的执行</h1><ul>
-<li>执行代码遇到函数体时，就会根据函数体创建一个函数体上下文（Functional Excution Context），并且压入到ECS中；</li>
-<li>当进入函数体执行代码时，就会创建一个<code>AO（Activation Obejct）</code>；</li>
-<li>这个<code>AO</code>会使用<code>arguments</code>作为初始化，并且初始值是传入的参数；</li>
-<li>这个<code>AO</code>对象会作为该函数体的执行上下文的<code>VO</code>来存放变量的初始化</li>
-</ul>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image9.png" alt="在这里插入图片描述"></p>
-<p>执行函数上下文之后：</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image10.png" alt="在这里插入图片描述"></p>
-<p>之后，函数执行上下文将会被压出栈外：</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image11.png" alt="在这里插入图片描述"></p>
-<p>❗️在函数作用域中可能遇到这样的情况：</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image12.png" alt="在这里插入图片描述"></p>
-<blockquote>
-<p><code>message</code>变量的声明存在于全局作用域，但在局部作用域进行了调用，<strong>那局部作用域又是怎么找到全距作用与中的变量呢？</strong></p>
-</blockquote>
-<p>这就涉及到了<code>javascript</code>的作用域和作用链！</p>
-<h1 id="作用域和作用链"><a href="#作用域和作用链" class="headerlink" title="作用域和作用链"></a>作用域和作用链</h1><p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image13.png" alt="在这里插入图片描述"></p>
-<p>上面说到，但我们进入一个执行上下文时，执行上下文会关联一个VO对象，其实，同时它也会关联一个 <strong><code>作用域链（Scope Chain）</code></strong>。</p>
-<ul>
-<li>作用域链是一个对象列表，用于表示变量标识符的求值；</li>
-<li>当进入一个执行上下文时，这个作用域链就会被创建，并且根据代码类型，添加一系列的对象</li>
-</ul>
+<h1 id="2-Nginx常见命令"><a href="#2-Nginx常见命令" class="headerlink" title="2. Nginx常见命令"></a>2. Nginx常见命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">user admin; # 规定启动Nginx的用户</span><br><span class="line">worker_processes 1; # Nginx 启动一个工作进程，适用于轻量部署或开发环境。</span><br><span class="line">events &#123;</span><br><span class="line">   worker_connections 1024; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http&#123;</span><br><span class="line">   include mime.types; # 文件类型映射</span><br><span class="line">   default_type application/octet-stream; # 默认MIME类型</span><br><span class="line">   sendfile        on;                            # 启用 sendfile 加速</span><br><span class="line">   tcp_nopush      on;                            # 优化发送数据包</span><br><span class="line">   keepalive_timeout  65;                         # 长连接超时</span><br><span class="line">   client_max_body_size 10m;                      # 请求体大小限制</span><br><span class="line"></span><br><span class="line">   include /etc/nginx/conf.d/*.conf;              # 引入子配置文件</span><br><span class="line">   </span><br><span class="line">   # 静态文件配置</span><br><span class="line">   server &#123;</span><br><span class="line">      listen 8080 ssl;</span><br><span class="line">      server_name localhost myTest.com;</span><br><span class="line">      </span><br><span class="line">      # 申请ssl证书 配置ssl证书</span><br><span class="line">      ssl_certificate /path/to/cert.pem;</span><br><span class="line">      ssl_certificate_key /path/to/cert.key;</span><br><span class="line">      </span><br><span class="line">      location / &#123;</span><br><span class="line">         root /usr/local/nginx/html/dist; # 相对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      location /api &#123;</span><br><span class="line">         # 设置CORS配置</span><br><span class="line">         add_header Access-Control-Allow-Origin *;</span><br><span class="line">         add_header Access-Control-Allow-Methods &#x27;GET, POST, OPTIONS&#x27;;</span><br><span class="line">         add_header Access-Control-Allow-Headers &#x27;Content-Type, Authorization&#x27;;</span><br><span class="line">         </span><br><span class="line">         alias /usr/local/nginx/html/dist/api; # 绝对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">         </span><br><span class="line">         if ($request_method = &#x27;OPTIONS&#x27;) &#123;</span><br><span class="line">            return 204;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
-        <category>js高级</category>
+        <category>Nginx</category>
       </categories>
       <tags>
-        <tag>javascript运行原理</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>04-闭包</title>
-    <url>/posts/2f741396.html</url>
-    <content><![CDATA[<h1 id="javascript-内存管理"><a href="#javascript-内存管理" class="headerlink" title="javascript 内存管理"></a>javascript 内存管理</h1><blockquote>
-<p>认识内存管理</p>
-</blockquote>
-<p>不管什么样的编程语言，<strong>在代码执行过程中都需要进行内存分配</strong>，不同的是有些编程语言需要我们自己手动进行内存配置，有些则会自动帮我们进行内存分配。</p>
-<p>不管什么样的内存分配机制，<strong>内存的分配都会进入如下周期</strong>：</p>
-<ol>
-<li>申请分配内存</li>
-<li>使用分配的内存</li>
-<li>不需要使用时释放内存</li>
-</ol>
-<p>不同的语言会对第一步和第三步进行不同的处理：</p>
-<ul>
-<li>手动管理内存：比如<code>C</code>、<code>C++</code>，包括早期的<code>OC</code>，都是需要手动的进行内存的申请和释放（<code>malloc和free函数</code>）；</li>
-<li>自动管理内存：比如<code>java</code>、<code>javascript</code>、<code>Python</code>、<code>Swift</code>、<code>Dart</code>等，这些语言都有帮我们自动进行内存管理。</li>
-</ul>
-<p>也就是说，我们所使用的<code>javascript</code>会自动的对原始值、对象、函数等进行内存管理，我们并不需要进行多余的操作。</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/04-closure/img1.png" alt="img.png"></p>
-<h1 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h1><h1 id="闭包的概念理解"><a href="#闭包的概念理解" class="headerlink" title="闭包的概念理解"></a>闭包的概念理解</h1><h1 id="闭包的形成过程"><a href="#闭包的形成过程" class="headerlink" title="闭包的形成过程"></a>闭包的形成过程</h1><h1 id="闭包的内存泄漏"><a href="#闭包的内存泄漏" class="headerlink" title="闭包的内存泄漏"></a>闭包的内存泄漏</h1>]]></content>
-      <categories>
-        <category>js高级</category>
-      </categories>
-      <tags>
-        <tag>闭包</tag>
+        <tag>Nginx</tag>
       </tags>
   </entry>
   <entry>
@@ -708,6 +637,127 @@
       </tags>
   </entry>
   <entry>
+    <title>04-闭包</title>
+    <url>/posts/2f741396.html</url>
+    <content><![CDATA[<h1 id="javascript-内存管理"><a href="#javascript-内存管理" class="headerlink" title="javascript 内存管理"></a>javascript 内存管理</h1><blockquote>
+<p>认识内存管理</p>
+</blockquote>
+<p>不管什么样的编程语言，<strong>在代码执行过程中都需要进行内存分配</strong>，不同的是有些编程语言需要我们自己手动进行内存配置，有些则会自动帮我们进行内存分配。</p>
+<p>不管什么样的内存分配机制，<strong>内存的分配都会进入如下周期</strong>：</p>
+<ol>
+<li>申请分配内存</li>
+<li>使用分配的内存</li>
+<li>不需要使用时释放内存</li>
+</ol>
+<p>不同的语言会对第一步和第三步进行不同的处理：</p>
+<ul>
+<li>手动管理内存：比如<code>C</code>、<code>C++</code>，包括早期的<code>OC</code>，都是需要手动的进行内存的申请和释放（<code>malloc和free函数</code>）；</li>
+<li>自动管理内存：比如<code>java</code>、<code>javascript</code>、<code>Python</code>、<code>Swift</code>、<code>Dart</code>等，这些语言都有帮我们自动进行内存管理。</li>
+</ul>
+<p>也就是说，我们所使用的<code>javascript</code>会自动的对原始值、对象、函数等进行内存管理，我们并不需要进行多余的操作。</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/04-closure/img1.png" alt="img.png"></p>
+<h1 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h1><h1 id="闭包的概念理解"><a href="#闭包的概念理解" class="headerlink" title="闭包的概念理解"></a>闭包的概念理解</h1><h1 id="闭包的形成过程"><a href="#闭包的形成过程" class="headerlink" title="闭包的形成过程"></a>闭包的形成过程</h1><h1 id="闭包的内存泄漏"><a href="#闭包的内存泄漏" class="headerlink" title="闭包的内存泄漏"></a>闭包的内存泄漏</h1>]]></content>
+      <categories>
+        <category>js高级</category>
+      </categories>
+      <tags>
+        <tag>闭包</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>03-javascript的运行原理</title>
+    <url>/posts/4bc49eeb.html</url>
+    <content><![CDATA[<p>上篇博客了解了一下浏览器的运行原理，那javascript的运行原理又是怎么样的呢？</p>
+<h1 id="V8引擎"><a href="#V8引擎" class="headerlink" title="V8引擎"></a>V8引擎</h1><p>先来了解一下V8引擎:</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image1.png" alt="在这里插入图片描述"></p>
+<p>简单来说，V8引擎就是在做<strong>将<code>javascript</code>代码转换成机器语言</strong>，从而被cpu识别继而运行的工作。</p>
+<h2 id="执行原理与架构（了解）"><a href="#执行原理与架构（了解）" class="headerlink" title="执行原理与架构（了解）"></a>执行原理与架构（了解）</h2><p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image2.png" alt="在这里插入图片描述"><br>V8引擎本身的源码非常复杂，大概有超过100w行C++代码，通过了解它的架构，我们可以知道它是如何对)vaScript执行的：</p>
+<ul>
+<li><p><code>Parse</code>：将<code>javascript</code>代码转换成<code>AST抽象语法树</code>，因为解释器并不直接认识js代码；</p>
+<ul>
+<li>如果函数没有被调用，那么就不会被转成<code>AST</code></li>
+</ul>
+</li>
+<li><p><code>lgnition</code>：是一个解释器，会将<code>AST</code>转换成字节码；</p>
+<ul>
+<li>同时会收集<code>TurboFan</code>需要的类型信息（比如函数参数的类型信息，有了类型才能进行真实的运算）</li>
+<li>如果函数只执行一次，那么将直接解释执行字节码</li>
+</ul>
+</li>
+<li><p><code>TurboFan</code>：是一个编译器，可以将<code>AST</code>转换成CPU直接能运行的机器码；</p>
+<ul>
+<li>如果一个函数被多次调用，那么将会被标记为<code>热点函数</code>，那么就会经过<code>TurboFan</code>编译成优化的机器码，提高代码的执行性能；</li>
+<li>但是，<strong>机器码实际上也会被还原成字节码</strong>，这是因为如果后续执行过程中类型发生了变化，之前优化的机器码并不能正确的运算，就会逆向的转成字节码</li>
+</ul>
+</li>
+</ul>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image3.png" alt="在这里插入图片描述"></p>
+<h1 id="javascript-执行过程"><a href="#javascript-执行过程" class="headerlink" title="javascript 执行过程"></a>javascript 执行过程</h1><p>假设现在有段这样的代码，它应该是怎样执行的呢？<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image4.png" alt="在这里插入图片描述"></p>
+<p>我们先来了解一下相关的基础知识！</p>
+<h2 id="初始化全局对象"><a href="#初始化全局对象" class="headerlink" title="初始化全局对象"></a>初始化全局对象</h2><ul>
+<li>首先，<code>js</code> 在执行代码前，会创建一个全局对象：<code>Global Object</code><ul>
+<li>该对象 所有的作用域都可以访问；</li>
+<li>里面还会包含<code>Date</code>、<code>Array</code>、<code>Number</code>、<code>setTimeout</code>、<code>setInterval</code>等；</li>
+<li>其中还有一个属性指向<code>window</code></li>
+</ul>
+</li>
+</ul>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image5.png" alt="在这里插入图片描述"></p>
+<h2 id="执行上下文栈"><a href="#执行上下文栈" class="headerlink" title="执行上下文栈"></a>执行上下文栈</h2><p>js 引擎内部有一个<code>执行上下文栈</code>（Excution Context Stack，简称ECS），是用于执行代码的调用栈。</p>
+<ul>
+<li><p>那么现在要执行的是谁呢？是全局的代码块：</p>
+<ul>
+<li>全局的代码块在执行前会创建一个<code>Global Excution Context（GEC）</code>；</li>
+<li><code>GEC</code>会被放到<code>ECS</code>中执行</li>
+</ul>
+</li>
+<li><p><code>GEC</code>被放到<code>ECS</code>中包含两部分内容：</p>
+<ul>
+<li>第一部分：在代码执行前，在<code>parser</code>转成<code>AST</code>的过程中，会将全局定义的变量、函数等加入到<code>Global Object</code>中，但并不会赋值；（这个过程也叫做变量的作用域提升）</li>
+<li>在代码执行中，对变量赋值，或者执行其他的函数；</li>
+</ul>
+</li>
+</ul>
+<h1 id="全局代码的执行"><a href="#全局代码的执行" class="headerlink" title="全局代码的执行"></a>全局代码的执行</h1><p>先来认识一下<code>VO对象</code>：</p>
+<ul>
+<li>每个执行上下文都会关联一个VO（Variable Object，变量对象），变量和函数声明会被添加到这个VO对象中；</li>
+<li>当全局代码被执行的时候，VO就是GO对象了。</li>
+</ul>
+<p>❗️❗️❗️问题来了！<strong>全局代码如何被执行呢？</strong></p>
+<p><strong>执行前：</strong><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image6.png" alt="在这里插入图片描述"><br><strong>执行后：</strong><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image7.png" alt="在这里插入图片描述"><br>现在更改代码为：<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image8.png" alt="在这里插入图片描述"></p>
+<p>那就又有一个问题：<strong>函数代码如何执行呢？</strong></p>
+<h1 id="函数代码的执行"><a href="#函数代码的执行" class="headerlink" title="函数代码的执行"></a>函数代码的执行</h1><ul>
+<li>执行代码遇到函数体时，就会根据函数体创建一个函数体上下文（Functional Excution Context），并且压入到ECS中；</li>
+<li>当进入函数体执行代码时，就会创建一个<code>AO（Activation Obejct）</code>；</li>
+<li>这个<code>AO</code>会使用<code>arguments</code>作为初始化，并且初始值是传入的参数；</li>
+<li>这个<code>AO</code>对象会作为该函数体的执行上下文的<code>VO</code>来存放变量的初始化</li>
+</ul>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image9.png" alt="在这里插入图片描述"></p>
+<p>执行函数上下文之后：</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image10.png" alt="在这里插入图片描述"></p>
+<p>之后，函数执行上下文将会被压出栈外：</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image11.png" alt="在这里插入图片描述"></p>
+<p>❗️在函数作用域中可能遇到这样的情况：</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image12.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p><code>message</code>变量的声明存在于全局作用域，但在局部作用域进行了调用，<strong>那局部作用域又是怎么找到全距作用与中的变量呢？</strong></p>
+</blockquote>
+<p>这就涉及到了<code>javascript</code>的作用域和作用链！</p>
+<h1 id="作用域和作用链"><a href="#作用域和作用链" class="headerlink" title="作用域和作用链"></a>作用域和作用链</h1><p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image13.png" alt="在这里插入图片描述"></p>
+<p>上面说到，但我们进入一个执行上下文时，执行上下文会关联一个VO对象，其实，同时它也会关联一个 <strong><code>作用域链（Scope Chain）</code></strong>。</p>
+<ul>
+<li>作用域链是一个对象列表，用于表示变量标识符的求值；</li>
+<li>当进入一个执行上下文时，这个作用域链就会被创建，并且根据代码类型，添加一系列的对象</li>
+</ul>
+]]></content>
+      <categories>
+        <category>js高级</category>
+      </categories>
+      <tags>
+        <tag>javascript运行原理</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>08-手写apply/call/bind</title>
     <url>/posts/5be1151a.html</url>
     <content><![CDATA[<p>手撕apply&#x2F;call&#x2F;bind</p>
@@ -746,191 +796,121 @@
       </tags>
   </entry>
   <entry>
-    <title>06-javascript函数和对象增强</title>
-    <url>/posts/2f741396.html</url>
-    <content><![CDATA[<p>了解一下<code>js</code>函数和对象的相关增强知识。</p>
-<h1 id="1-javascript函数增强"><a href="#1-javascript函数增强" class="headerlink" title="1. javascript函数增强"></a>1. javascript函数增强</h1><h2 id="1-1-函数基本概念掌握"><a href="#1-1-函数基本概念掌握" class="headerlink" title="1.1 函数基本概念掌握"></a>1.1 函数基本概念掌握</h2><h3 id="1-1-1-函数对象的属性"><a href="#1-1-1-函数对象的属性" class="headerlink" title="1.1.1 函数对象的属性"></a>1.1.1 函数对象的属性</h3><p>现定义一个函数：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params">a, b</span>)&#123;</span><br><span class="line">        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <title>10-Proxy-Reflect</title>
+    <url>/posts/9d935f.html</url>
+    <content><![CDATA[<p><code>Proxy</code>详解。</p>
+<h1 id="1-Proxy"><a href="#1-Proxy" class="headerlink" title="1. Proxy"></a>1. Proxy</h1><p><strong>现在有一个问题：我们如何监听对象的操作？</strong></p>
 <ol>
-<li>自定义属性 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">foo.<span class="property">title</span> = <span class="string">&quot;foo title&quot;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(foo.<span class="property">title</span>) <span class="comment">// foo title</span></span><br></pre></td></tr></table></figure></li>
-<li>默认属性<ul>
-<li><code>name</code><br> <code>console.log(foo.name) // foo</code></li>
-<li><code>length</code> (指的是函数参数的个数,但不包括有默认值的参数和可变参数)<br><code>console.log(foo.length) // 2</code></li>
+<li><p><code>Object.defineProperty()</code><br> 之前我们会通过<code>Object.defineProperty()</code>来进行监听，</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(obj, <span class="string">&quot;name&quot;</span>, &#123;</span><br><span class="line">  <span class="title function_">get</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> obj.<span class="property">name</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">set</span>(<span class="params">value</span>) &#123;</span><br><span class="line">    obj.<span class="property">name</span> = value</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>Vue2</code>实现响应式原理的核心就是通过<code>Object.defineProperty()</code>来实现的；</li>
+<li>但是<code>Object.defineProperty()</code>设计之初并不是为了监听某个属性；</li>
+<li>我们在定义某个属性时，初衷是定义某个普通属性，但是我们后面强行把它变成了数据属性描述符；</li>
+<li>而且<code>Object.defineProperty()</code>无法监听到新增属性和删除属性等操作</li>
 </ul>
 </li>
+<li><p>Proxy</p>
+<blockquote>
+<p>new Proxy(target, handler)</p>
+<ul>
+<li>target: 目标对象</li>
+<li>handler: 处理函数</li>
+</ul>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> objProxy = <span class="keyword">new</span> <span class="title class_">Proxy</span>(obj, &#123;</span><br><span class="line">  <span class="title function_">get</span>(<span class="params">target, key</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> target[key]</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">set</span>(<span class="params">target, key, newValue</span>) &#123;</span><br><span class="line">    target[key] = newValue</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line">objProxy.<span class="property">name</span> = <span class="string">&#x27;hello world&#x27;</span></span><br><span class="line"><span class="comment">// 之后操作obj可以通过objProxy来操作，可达到监听的目的</span></span><br></pre></td></tr></table></figure></li>
 </ol>
-<h3 id="1-1-2-函数的arguments"><a href="#1-1-2-函数的arguments" class="headerlink" title="1.1.2 函数的arguments"></a>1.1.2 函数的<code>arguments</code></h3><ol>
-<li><p>三种获取方式</p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo1</span>(<span class="params">a, b, c</span>) &#123;</span><br><span class="line">   <span class="comment">// 获取arguments</span></span><br><span class="line">   <span class="comment">// 1. arguments是一个伪数组对象，可通过[]字面量继续进行获取</span></span><br><span class="line">   <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">arguments</span>[<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 2.for循环遍历</span></span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="variable language_">arguments</span>.<span class="property">length</span>; i++) &#123;</span><br><span class="line">       <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">arguments</span>[i]);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 3. for of 遍历   （for of 可用来遍历可迭代对象）</span></span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">let</span> item <span class="keyword">of</span> <span class="variable language_">arguments</span>) &#123;</span><br><span class="line">       <span class="variable language_">console</span>.<span class="title function_">log</span>(item);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>三种转换为数组的方式</p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo2</span>(<span class="params">a, b</span>)&#123;</span><br><span class="line">   <span class="comment">// 转换成数组</span></span><br><span class="line">   <span class="comment">// 1. 将数据放入新数组</span></span><br><span class="line">   <span class="keyword">let</span> arr1 = []</span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="variable language_">arguments</span>.<span class="property">length</span>; i++) &#123;</span><br><span class="line">       arr1.<span class="title function_">push</span>(<span class="variable language_">arguments</span>[i])</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 2. [].slice()</span></span><br><span class="line">   <span class="keyword">let</span> arr2 = [].<span class="property">slice</span>.<span class="title function_">call</span>(<span class="variable language_">arguments</span>)</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 3. Array.from()</span></span><br><span class="line">   <span class="keyword">let</span> arr3 = <span class="title class_">Array</span>.<span class="title function_">from</span>(<span class="variable language_">arguments</span>)</span><br><span class="line">   <span class="keyword">let</span> arr4 = [...<span class="variable language_">arguments</span>]</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="1-1-3-箭头函数的arguments"><a href="#1-1-3-箭头函数的arguments" class="headerlink" title="1.1.3 箭头函数的arguments"></a>1.1.3 箭头函数的<code>arguments</code></h3><p>箭头函数没有<code>arguments</code>，若在箭头函数内部使用，那么<code>arguments</code>将会向外寻找父级作用域的<code>arguments</code></p>
-<h3 id="1-1-4-函数的剩余参数rest"><a href="#1-1-4-函数的剩余参数rest" class="headerlink" title="1.1.4 函数的剩余参数rest"></a>1.1.4 函数的剩余参数<code>rest</code></h3><p>如果最后一个参数以…为前缀，那么该参数将以数组的形式接收剩余的参数。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">rest</span>(<span class="params">a, ...args</span>)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(a)</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(args)</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">rest</span>(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>) <span class="comment">// 1 [2,3,4,5]</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>对某个对象行进行其他操作时，我们通过<code>Proxy</code>也可以监听到！<br>上面我们介绍了<code>set()</code>和<code>get()</code>两种<code>handler</code>，<code>handler</code>有13种捕获器（handler）：</li>
+</ul>
+<p>除了上面两种常用的捕获器，还有以下两种常用的捕获器：</p>
+<ul>
+<li><code>has()</code>：拦截<code>in</code>操作符；</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">    <span class="keyword">const</span> objProxy = <span class="keyword">new</span> <span class="title class_">Proxy</span>(obj, &#123;</span><br><span class="line">   <span class="comment">// ...</span></span><br><span class="line">   <span class="title function_">has</span>(<span class="params">target, key</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;has&quot;</span>);</span><br><span class="line">      <span class="keyword">return</span> key <span class="keyword">in</span> target</span><br><span class="line">   &#125;,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;in&#x27;</span>, name <span class="keyword">in</span> objProxy); <span class="comment">// in true</span></span><br></pre></td></tr></table></figure>
 
-<p><strong>注：剩余参数必须放在最后一个形参位置，否则会报错。</strong></p>
-<p>剩余参数<code>rest</code>和<code>arguments</code>的区别：</p>
-<ol>
-<li><code>rest</code>以数组形式接收参数，<code>arguments</code>以伪数组对象形式接收参数；</li>
-<li><code>rest</code>接收没有对应形参的实参，<code>arguments</code>接收所有实参</li>
-<li><code>arguments</code>是早期<code>ECMAScript</code>为方便获取参数定义的一个属性，而<code>rest</code>是<code>ECMAScript6</code>新增的希望替代arguments的语法，。</li>
-</ol>
-<h2 id="1-2-纯函数"><a href="#1-2-纯函数" class="headerlink" title="1.2 纯函数"></a>1.2 纯函数</h2><h3 id="1-2-2-概念理解"><a href="#1-2-2-概念理解" class="headerlink" title="1.2.2 概念理解"></a>1.2.2 概念理解</h3><blockquote>
-<p>简单来说，满足有相同输入时总是有相同输出，并且没有任何副作用的函数叫做纯函数。</p>
-</blockquote>
-<ol>
-<li>输入相同时有相同输出<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> b = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">add1</span>(<span class="params">a</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-这个函数就不是一个纯函数，因为函数内部存在外部变量b，输出可能不一致。</li>
-<li>没有产生任何副作用<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> a,b = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">add1</span>(<span class="params">a,b</span>)&#123;</span><br><span class="line">    b = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-这个函数修改了外部变量b，也就是产生了副作用，所以这个函数也不是纯函数。</li>
-</ol>
-<h3 id="1-2-2-纯函数案例"><a href="#1-2-2-纯函数案例" class="headerlink" title="1.2.2 纯函数案例"></a>1.2.2 纯函数案例</h3><blockquote>
-<p>let arr &#x3D; [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</p>
-</blockquote>
 <ul>
-<li><code>slice()</code><blockquote>
-<p>console.log(arr.slice(0, 5), arr);   &#x2F;&#x2F;截取数组</p>
-</blockquote>
-</li>
+<li><code>deleteProperty()</code>：拦截<code>delete</code>操作符；</li>
 </ul>
-<p>输出：[1, 2, 3, 4, 5]   [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</p>
-<ul>
-<li><code>splice()</code><blockquote>
-<p>console.log(arr.splice(0, 5), arr);</p>
-</blockquote>
-</li>
-</ul>
-<p>输出：[ 1, 2, 3, 4, 5 ] [ 6, 7, 8, 9, 10 ]</p>
-<p>根据输出结果可以知道slice()是纯函数，但splice()不是纯函数，因为splice()修改了arr，产生了外部影响。</p>
-<p><strong>纯函数在函数式编程中很重要，它保证了函数的纯度，只单纯实现自己的业务逻辑，不会对外部变量产生影响。</strong></p>
-<h2 id="1-3-函数柯里化"><a href="#1-3-函数柯里化" class="headerlink" title="1.3 函数柯里化"></a>1.3 函数柯里化</h2><h2 id="1-3-1-基本了解"><a href="#1-3-1-基本了解" class="headerlink" title="1.3.1 基本了解"></a>1.3.1 基本了解</h2><blockquote>
-<p><code>柯里化（Currying）</code>是把接受多个参数的函数变换成接受一个参数的函数，并且返回接受多个参数的函数的函数。</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params">a, b, c</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b + c;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">foo</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
-<p>柯里化后：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params">a</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">b</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">c</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> a + b + c;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">foo</span>(<span class="number">1</span>)(<span class="number">2</span>)(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> objProxy = <span class="keyword">new</span> <span class="title class_">Proxy</span>(obj, &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="title function_">defineProperty</span>(<span class="params">target, key, descriptor</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;defineProperty&quot;</span>);</span><br><span class="line">    <span class="keyword">delete</span> target[key]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span> objProxy.<span class="property">name</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(objProxy); <span class="comment">// &#123;age: 20&#125;</span></span><br></pre></td></tr></table></figure>
 
-<p>箭头函数写法：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">foo</span> = a =&gt; <span class="function"><span class="params">b</span> =&gt;</span> <span class="function"><span class="params">c</span> =&gt;</span> a + b + c;</span><br></pre></td></tr></table></figure>
-
-<p>柯里化优势：</p>
+<p>下面几种了解即可：<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/10-proxy/img.png" alt="img.png"></p>
+<h1 id="2-Reflect"><a href="#2-Reflect" class="headerlink" title="2. Reflect"></a>2. Reflect</h1><p><code>Reflect</code>对象是<code>ES6</code>新增的对象。</p>
 <ul>
-<li>职责单一</li>
-<li>参数复用</li>
-</ul>
-<h2 id="1-4-with语句和eval函数的使用（了解即可）"><a href="#1-4-with语句和eval函数的使用（了解即可）" class="headerlink" title="1.4 with语句和eval函数的使用（了解即可）"></a>1.4 with语句和eval函数的使用（了解即可）</h2><ol>
-<li><code>with</code>语句  –  可以访问对象属性<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;zf&#x27;</span>,</span><br><span class="line">    <span class="attr">age</span>: <span class="number">18</span>,</span><br><span class="line">    <span class="attr">height</span>: <span class="number">1.88</span>,</span><br><span class="line">    <span class="attr">address</span>: <span class="string">&#x27;北京&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">with</span> (obj) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(name, age, height, address);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><code>eval</code>函数  –  可将字符串转换成可执行的js语句<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> testStr = <span class="string">&#x27;全局变量&#x27;</span></span><br><span class="line"><span class="keyword">const</span> str = <span class="string">&quot;const msg = &#x27;hello world&#x27;;console.log(msg);console.log(testStr);&quot;</span></span><br><span class="line"><span class="built_in">eval</span>(str)</span><br></pre></td></tr></table></figure>
-不建议在开发中使用<code>eval</code>函数：</li>
-</ol>
+<li><p><code>Reflect</code>主要提供了一些操作<code>javascript</code>对象的方法，跟<code>Object</code>操作对象的方法类似；</p>
 <ul>
-<li>可读性差</li>
-<li>字符串容易被篡改，可能造成被攻击的风险；</li>
-<li>eval的执行需要经过javascript解释器，不能优化</li>
+<li>比如<code>Object.defineProperty()</code>和<code>Reflect.defineProperty()</code></li>
+<li><code>Object.getPrototypeOf()</code>和<code>Reflect.getPrototypeOf()</code></li>
 </ul>
-<h2 id="1-5-严格模式"><a href="#1-5-严格模式" class="headerlink" title="1.5 严格模式"></a>1.5 严格模式</h2><h3 id="1-5-1-严格模式的理解"><a href="#1-5-1-严格模式的理解" class="headerlink" title="1.5.1 严格模式的理解"></a>1.5.1 严格模式的理解</h3><p>长久以来，javascript不断发展，且没有出现兼容性问题，新特性的加入也会兼容旧代码，但是一些错误或者不完善的地方仍然被保留；<br>在ECMAScript5中，<code>严格模式</code>被提出，在严格模式下：</p>
-<ul>
-<li>严格模式下，一些静默错误会被抛出；</li>
-<li>js解释器会对代码进行更多的优化；</li>
-<li>（禁用一些可能在ECMAScript未来版本中的语法）</li>
+</li>
+<li><p>早期的ECMA规范没有考虑到这种对对象的操作是否规范就将这些API加在了<code>Object</code>上；</p>
+</li>
+<li><p>但是<code>Object</code>作为一个构造函数，这样设计是不安全的，所以ES6中新增了<code>Rfelct</code>，把这些对对象的操作方法都集中起来；</p>
+</li>
+<li><p>另外，在使用<code>Proxy</code>时不操作原对象</p>
+</li>
 </ul>
-<p><strong>严格模式的开启</strong><br>在<code>script</code>标签、js文件或函数中使用<code>use strict</code>开启严格模式</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="meta">&quot;use strict&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="string">&quot;use strict&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>注：</p>
-<ul>
-<li>在<code>class</code>、<code>module</code>等模块中默认启用严格模式；</li>
-<li>打包过后的文件默认也是严格模式；</li>
-</ul>
-<h3 id="1-5-2-严格模式的一些限制"><a href="#1-5-2-严格模式的一些限制" class="headerlink" title="1.5.2 严格模式的一些限制"></a>1.5.2 严格模式的一些限制</h3><ol>
-<li><p>严格模式无法意外创建全局变量</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="meta">&quot;use strict&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params"></span>)&#123;</span><br><span class="line">    message = <span class="string">&#x27;xuexi javascript&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(message) <span class="comment">// 报错：message is not defined</span></span><br></pre></td></tr></table></figure></li>
-<li><p>静默操作抛出异常</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="meta">&quot;use strict&quot;</span></span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;zf&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(obj, <span class="string">&quot;name&quot;</span>,&#123;</span><br><span class="line">    <span class="attr">writable</span>:<span class="literal">false</span>,</span><br><span class="line">    <span class="attr">configurable</span>:<span class="literal">false</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">obj.<span class="property">name</span>=<span class="string">&#x27;xuexi&#x27;</span>  <span class="comment">//  Cannot assign to read only property &#x27;name&#x27; of object &#x27;#&lt;Object&gt;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span> obj.<span class="property">name</span>   <span class="comment">//  Cannot delete property &#x27;name&#x27; of #&lt;Object&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>函数形参名称不能相同</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo1</span>(<span class="params">num, num</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> num + num</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">foo1</span>(<span class="number">1</span>, <span class="number">1</span>));  <span class="comment">// Duplicate parameter name not allowed in this context</span></span><br></pre></td></tr></table></figure></li>
-<li><p>严格模式不允许函数参数有相同的名称</p>
-</li>
-<li><p>不允许0的八进制语法</p>
-</li>
-<li><p>在严格模式下，不允许使用with</p>
-</li>
-<li><p>在严格模式下，eva不再为上层引用变量</p>
-</li>
-<li><p>严格模式下，this绑定不会默认转为对象</p>
-</li>
-</ol>
-<h1 id="2-javascript对象增强"><a href="#2-javascript对象增强" class="headerlink" title="2. javascript对象增强"></a>2. javascript对象增强</h1><h2 id="2-1-属性描述符"><a href="#2-1-属性描述符" class="headerlink" title="2.1 属性描述符"></a>2.1 属性描述符</h2><table>
-<thead>
-<tr>
-<th>属性描述符</th>
-<th>configurable</th>
-<th>enumerable</th>
-<th>writable</th>
-<th>value</th>
-<th>get</th>
-<th>set</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>数据属性描述符</td>
-<td>可以</td>
-<td>可以</td>
-<td>可以</td>
-<td>可以</td>
-<td>-</td>
-<td>-</td>
-</tr>
-<tr>
-<td>存取属性描述符</td>
-<td>可以</td>
-<td>可以</td>
-<td>-</td>
-<td>-</td>
-<td>可以</td>
-<td>可以</td>
-</tr>
-</tbody></table>
+<h2 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h2><p><img src="/../../img/js%E9%AB%98%E7%BA%A7/10-proxy/img2.png" alt="img.png"></p>
+<p><strong><code>Reflect</code>和<code>Proxy</code>共同实现代理：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>,</span><br><span class="line">    <span class="attr">age</span>: <span class="number">18</span>,</span><br><span class="line">    <span class="title function_">set</span>(<span class="params">newValue</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// 默认为   this ---&gt; obj</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> objProxy = <span class="keyword">new</span> <span class="title class_">Proxy</span>(obj, &#123;</span><br><span class="line">    <span class="title function_">get</span>(<span class="params">target, key, receiver</span>) &#123;</span><br><span class="line">        <span class="keyword">const</span> result = <span class="title class_">Reflect</span>.<span class="title function_">get</span>(target, key)</span><br><span class="line">        <span class="comment">// const result = Reflect.get(target, key, receiver)   // 将obj中set()的this指向receiver</span></span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title function_">set</span>(<span class="params">target, key, newValue, receiver</span>) &#123;</span><br><span class="line">        <span class="comment">// 之前  直接操作target对象</span></span><br><span class="line">        target[key] = newValue</span><br><span class="line">        <span class="comment">// 有了Reflect</span></span><br><span class="line">        <span class="keyword">const</span> result = <span class="title class_">Reflect</span>.<span class="title function_">set</span>(target, key, newValue)</span><br><span class="line">        <span class="keyword">if</span> (result) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;成功&quot;</span>);</span><br><span class="line">            target[key] = newValue</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;设置失败&#x27;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>使用<code>Reflect</code>的好处：</p>
 <ol>
-<li><p>数据属性描述符 （默认都为true）</p>
-<ul>
-<li><code>[configurable]</code>  – 是否可以删除属性，是否可以修改属性，或者是否可以修改为存取属性描述符;</li>
-<li><code>[enumerable]</code>  – 是否可以枚举，即是否可以通过for..in 或者Object.keys()获取到属性;</li>
-<li><code>[writable]</code> – 是否可以修改数据;</li>
-<li><code>[value]</code> – 是否可以返回属性值;</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line"> <span class="attr">name</span>:<span class="string">&#x27;xuexi&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(obj, <span class="string">&quot;name&quot;</span>, &#123;</span><br><span class="line">     <span class="attr">configurable</span>: <span class="literal">false</span>,</span><br><span class="line">     <span class="attr">writable</span>: <span class="literal">false</span>,</span><br><span class="line">     <span class="attr">enumerable</span>: <span class="literal">true</span>,</span><br><span class="line">     <span class="attr">value</span>: <span class="string">&#x27;xuexi&#x27;</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
-<li><p>存取属性描述符</p>
-<ul>
-<li><code>[configurable]</code>  – 是否可以删除属性，是否可以修改属性，或者是否可以修改为存取属性描述符;</li>
-<li><code>[enumerable]</code>  – 是否可以枚举，即是否可以通过for..in 或者Object.keys()获取到属性;</li>
-<li><code>[get]</code> – 获取属性值,默认为undefined;</li>
-<li><code>[set]</code> – 设置属性值,默认为undefined;</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(obj, <span class="string">&quot;name&quot;</span>, &#123;</span><br><span class="line">  <span class="attr">configurable</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">writable</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">get</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;getter&#x27;</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">set</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;setter&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
-</ol>
-<p><strong>同时定义多个属性</strong></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperties</span>(obj, &#123;</span><br><span class="line">    <span class="attr">name</span>: &#123;</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">writable</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">get</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;getter&#x27;</span>);&#125;,</span><br><span class="line">        <span class="attr">set</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;setter&#x27;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;&#125;)</span><br></pre></td></tr></table></figure>
-
-<p><strong>其他属性</strong>(了解即可)</p>
-<ol>
-<li>获取对象属性的属性描述符<ul>
-<li><code>Object.getOwnPropertyDescriptor(obj, &#39;name&#39;)</code>  – 获取对象的单个属性的属性描述符<br><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Object</span>.<span class="title function_">getOwnPropertyDescriptor</span>(obj, <span class="string">&#x27;name&#x27;</span>));</span><br><span class="line"><span class="comment">// 输出：&#123;</span></span><br><span class="line"><span class="comment">//    value: &#x27;xuexi&#x27;,</span></span><br><span class="line"><span class="comment">//            writable: true,</span></span><br><span class="line"><span class="comment">//         enumerable: true,</span></span><br><span class="line"><span class="comment">//         configurable: true</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br></pre></td></tr></table></figure></li>
-<li><code>Object.getOwnPropertyDescriptors(obj, &#39;name&#39;)</code>  – 获取对象全部属性的属性描述符</li>
-</ul>
-</li>
-<li>阻止对象的扩展<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 阻止扩展</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">preventExtensions</span>(obj)</span><br><span class="line">obj.<span class="property">address</span> = <span class="string">&#x27;beijing&#x27;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj);</span><br></pre></td></tr></table></figure></li>
-<li>密封对象 – 禁止删除操作<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 密封对象</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">seal</span>(obj)</span><br><span class="line"><span class="keyword">delete</span> obj.<span class="property">name</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj);</span><br></pre></td></tr></table></figure></li>
-<li>冻结对象 – 禁止修改操作<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 冻结对象</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">freeze</span>(obj)</span><br><span class="line">obj.<span class="property">name</span> = <span class="string">&#x27;renzhenxuexi&#x27;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj);</span><br></pre></td></tr></table></figure></li>
+<li>不再直接操作<code>target</code>对象；</li>
+<li><code>Reflect</code>的set等方法会返回boolean值，可以判断是否操作成功；</li>
+<li><code>Reflect.get(target, key, receiver) </code>可将obj中set()的<code>this</code>指向<strong>receiver</strong>(所创建的proxy对象)</li>
 </ol>
 ]]></content>
       <categories>
         <category>js高级</category>
       </categories>
       <tags>
-        <tag>javascript函数和对象增强</tag>
+        <tag>Proxy / Reflect</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>09-let-const</title>
+    <url>/posts/abd5a0df.html</url>
+    <content><![CDATA[<p>let &#x2F; const 注意事项</p>
+<ol>
+<li><p>重复声明</p>
+<ul>
+<li><code>var</code> 可重复声明</li>
+<li><code>let</code> &#x2F; <code>const</code> 不可重复声明</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> message = <span class="string">&#x27;hello world&#x27;</span></span><br><span class="line"><span class="keyword">var</span> message = <span class="string">&#x27;hello world!&#x27;</span> <span class="comment">// 不报错</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> address = <span class="string">&#x27;beijing&#x27;</span></span><br><span class="line"><span class="keyword">let</span> address = <span class="string">&#x27;shanghai&#x27;</span> <span class="comment">// 报错</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> age = <span class="number">18</span></span><br><span class="line"><span class="keyword">const</span> age = <span class="number">19</span>  <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>作用域提升</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(message) <span class="comment">// undefined</span></span><br><span class="line"><span class="keyword">var</span> message = <span class="string">&#x27;hello world&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(address) <span class="comment">// 报错</span></span><br><span class="line"><span class="keyword">let</span> address = <span class="string">&#x27;beijing&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(age)  <span class="comment">// 报错</span></span><br><span class="line"><span class="keyword">const</span> age = <span class="number">18</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>在创建执行上下文时，词法环境被创建，变量也被创建，但<code>var</code>定义的变量被初始化为<code>undefined</code>，<code>let</code>&#x2F;<code>const</code>定义的变量未赋值，访问会报错。</p>
+</li>
+<li><p>暂时性死区</p>
+<ul>
+<li>变量未被声明之前到作用域顶部，这块区域不能访问变量，会报错（叫做<code>暂时性死区</code>）。</li>
+</ul>
+</li>
+<li><p>window对象添加属性</p>
+<ul>
+<li><code>var</code>定义的变量会添加在<code>window</code>对象上;</li>
+<li><code>let</code>&#x2F;<code>const</code>定义的变量不会添加在<code>window</code>对象上</li>
+</ul>
+<img src="../../img/js高级/09-let-const/img.png" alt="">
+
+<p>在全局语法环境中存在<code>obejct Environment Record</code> 和<code>declarative Environment Record</code>两个对象，前者是<code>window</code>对象，后者身上添加了<code>let</code>和<code>const</code>声明的变量。</p>
+</li>
+<li><p>块级作用域</p>
+<ul>
+<li><code>ES6</code>中新增了块级作用域 <code>&#123; ... &#125;</code> ，并且通过<code>let</code>、<code>const</code>、<code>function</code>、<code>class</code>声明的标识符是具备块级作用域限制的。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">     <span class="keyword">let</span> message = <span class="string">&#x27;hello world&#x27;</span></span><br><span class="line">     <span class="keyword">const</span> age = <span class="number">18</span></span><br><span class="line">     <span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params"></span>)&#123;</span><br><span class="line">         <span class="variable language_">console</span>.<span class="title function_">log</span>(message)</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">class</span> <span class="title class_">Person</span> &#123;  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码中只有<code>function</code> 可以在外部被访问到，这是因为引擎会对函数的声明进行特殊的处理，允许像<code>var</code>那样可以在外接访问 。</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>js高级</category>
+      </categories>
+      <tags>
+        <tag>let-const</tag>
       </tags>
   </entry>
   <entry>
@@ -1125,164 +1105,191 @@
       </tags>
   </entry>
   <entry>
-    <title>09-let-const</title>
-    <url>/posts/abd5a0df.html</url>
-    <content><![CDATA[<p>let &#x2F; const 注意事项</p>
+    <title>06-javascript函数和对象增强</title>
+    <url>/posts/2f741396.html</url>
+    <content><![CDATA[<p>了解一下<code>js</code>函数和对象的相关增强知识。</p>
+<h1 id="1-javascript函数增强"><a href="#1-javascript函数增强" class="headerlink" title="1. javascript函数增强"></a>1. javascript函数增强</h1><h2 id="1-1-函数基本概念掌握"><a href="#1-1-函数基本概念掌握" class="headerlink" title="1.1 函数基本概念掌握"></a>1.1 函数基本概念掌握</h2><h3 id="1-1-1-函数对象的属性"><a href="#1-1-1-函数对象的属性" class="headerlink" title="1.1.1 函数对象的属性"></a>1.1.1 函数对象的属性</h3><p>现定义一个函数：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params">a, b</span>)&#123;</span><br><span class="line">        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ol>
-<li><p>重复声明</p>
-<ul>
-<li><code>var</code> 可重复声明</li>
-<li><code>let</code> &#x2F; <code>const</code> 不可重复声明</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> message = <span class="string">&#x27;hello world&#x27;</span></span><br><span class="line"><span class="keyword">var</span> message = <span class="string">&#x27;hello world!&#x27;</span> <span class="comment">// 不报错</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> address = <span class="string">&#x27;beijing&#x27;</span></span><br><span class="line"><span class="keyword">let</span> address = <span class="string">&#x27;shanghai&#x27;</span> <span class="comment">// 报错</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> age = <span class="number">18</span></span><br><span class="line"><span class="keyword">const</span> age = <span class="number">19</span>  <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>作用域提升</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(message) <span class="comment">// undefined</span></span><br><span class="line"><span class="keyword">var</span> message = <span class="string">&#x27;hello world&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(address) <span class="comment">// 报错</span></span><br><span class="line"><span class="keyword">let</span> address = <span class="string">&#x27;beijing&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(age)  <span class="comment">// 报错</span></span><br><span class="line"><span class="keyword">const</span> age = <span class="number">18</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>在创建执行上下文时，词法环境被创建，变量也被创建，但<code>var</code>定义的变量被初始化为<code>undefined</code>，<code>let</code>&#x2F;<code>const</code>定义的变量未赋值，访问会报错。</p>
-</li>
-<li><p>暂时性死区</p>
-<ul>
-<li>变量未被声明之前到作用域顶部，这块区域不能访问变量，会报错（叫做<code>暂时性死区</code>）。</li>
-</ul>
-</li>
-<li><p>window对象添加属性</p>
-<ul>
-<li><code>var</code>定义的变量会添加在<code>window</code>对象上;</li>
-<li><code>let</code>&#x2F;<code>const</code>定义的变量不会添加在<code>window</code>对象上</li>
-</ul>
-<img src="../../img/js高级/09-let-const/img.png" alt="">
-
-<p>在全局语法环境中存在<code>obejct Environment Record</code> 和<code>declarative Environment Record</code>两个对象，前者是<code>window</code>对象，后者身上添加了<code>let</code>和<code>const</code>声明的变量。</p>
-</li>
-<li><p>块级作用域</p>
-<ul>
-<li><code>ES6</code>中新增了块级作用域 <code>&#123; ... &#125;</code> ，并且通过<code>let</code>、<code>const</code>、<code>function</code>、<code>class</code>声明的标识符是具备块级作用域限制的。</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">     <span class="keyword">let</span> message = <span class="string">&#x27;hello world&#x27;</span></span><br><span class="line">     <span class="keyword">const</span> age = <span class="number">18</span></span><br><span class="line">     <span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params"></span>)&#123;</span><br><span class="line">         <span class="variable language_">console</span>.<span class="title function_">log</span>(message)</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">class</span> <span class="title class_">Person</span> &#123;  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面代码中只有<code>function</code> 可以在外部被访问到，这是因为引擎会对函数的声明进行特殊的处理，允许像<code>var</code>那样可以在外接访问 。</p>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>js高级</category>
-      </categories>
-      <tags>
-        <tag>let-const</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Nginx安装与配置以及常用命令</title>
-    <url>/posts/4f72a7f4.html</url>
-    <content><![CDATA[<p>了解一下Nginx的安装与配置，以及常见的Nginx常用命令</p>
-<h1 id="1-安装与配置"><a href="#1-安装与配置" class="headerlink" title="1. 安装与配置"></a>1. 安装与配置</h1><ol>
-<li><p>阿里云申请免费云服务器，为Nginx练习使用</p>
-</li>
-<li><p>连接远程服务器</p>
-<ul>
-<li>首先重置root密码</li>
-<li>若是使用vscode 可安装 <code>remote ssh</code>插件 （用来连接远程服务器）</li>
-<li>连接到远程</li>
-</ul>
-</li>
-<li><p>下载Nginx </p>
-<ul>
-<li>cd &#x2F;usr&#x2F;local</li>
-<li>wget <a href="https://nginx.org/download/Nginx-1.28.0.tar.gz">https://nginx.org/download/Nginx-1.28.0.tar.gz</a> (若下载不成功可通过命令 <code>su</code> 切换到root用户)</li>
+<li>自定义属性 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">foo.<span class="property">title</span> = <span class="string">&quot;foo title&quot;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(foo.<span class="property">title</span>) <span class="comment">// foo title</span></span><br></pre></td></tr></table></figure></li>
+<li>默认属性<ul>
+<li><code>name</code><br> <code>console.log(foo.name) // foo</code></li>
+<li><code>length</code> (指的是函数参数的个数,但不包括有默认值的参数和可变参数)<br><code>console.log(foo.length) // 2</code></li>
 </ul>
 </li>
 </ol>
-<img src="../../img/Nginx/img.png">
-
-<pre><code>- tar -zxvf Nginx-1.28.0.tar.gz
-- cd ./Nginx-1.28.0
-</code></pre>
-<ol start="4">
-<li>初始配置及编译安装<ul>
-<li>初始配置 .&#x2F;configure</li>
-<li>编译源码 安装 make &amp;&amp; make install</li>
-</ul>
+<h3 id="1-1-2-函数的arguments"><a href="#1-1-2-函数的arguments" class="headerlink" title="1.1.2 函数的arguments"></a>1.1.2 函数的<code>arguments</code></h3><ol>
+<li><p>三种获取方式</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo1</span>(<span class="params">a, b, c</span>) &#123;</span><br><span class="line">   <span class="comment">// 获取arguments</span></span><br><span class="line">   <span class="comment">// 1. arguments是一个伪数组对象，可通过[]字面量继续进行获取</span></span><br><span class="line">   <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">arguments</span>[<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 2.for循环遍历</span></span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="variable language_">arguments</span>.<span class="property">length</span>; i++) &#123;</span><br><span class="line">       <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">arguments</span>[i]);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 3. for of 遍历   （for of 可用来遍历可迭代对象）</span></span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">let</span> item <span class="keyword">of</span> <span class="variable language_">arguments</span>) &#123;</span><br><span class="line">       <span class="variable language_">console</span>.<span class="title function_">log</span>(item);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
+<li><p>三种转换为数组的方式</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo2</span>(<span class="params">a, b</span>)&#123;</span><br><span class="line">   <span class="comment">// 转换成数组</span></span><br><span class="line">   <span class="comment">// 1. 将数据放入新数组</span></span><br><span class="line">   <span class="keyword">let</span> arr1 = []</span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="variable language_">arguments</span>.<span class="property">length</span>; i++) &#123;</span><br><span class="line">       arr1.<span class="title function_">push</span>(<span class="variable language_">arguments</span>[i])</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 2. [].slice()</span></span><br><span class="line">   <span class="keyword">let</span> arr2 = [].<span class="property">slice</span>.<span class="title function_">call</span>(<span class="variable language_">arguments</span>)</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 3. Array.from()</span></span><br><span class="line">   <span class="keyword">let</span> arr3 = <span class="title class_">Array</span>.<span class="title function_">from</span>(<span class="variable language_">arguments</span>)</span><br><span class="line">   <span class="keyword">let</span> arr4 = [...<span class="variable language_">arguments</span>]</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></li>
 </ol>
-<h1 id="2-Nginx常见命令"><a href="#2-Nginx常见命令" class="headerlink" title="2. Nginx常见命令"></a>2. Nginx常见命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">user admin; # 规定启动Nginx的用户</span><br><span class="line">worker_processes 1; # Nginx 启动一个工作进程，适用于轻量部署或开发环境。</span><br><span class="line">events &#123;</span><br><span class="line">   worker_connections 1024; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http&#123;</span><br><span class="line">   include mime.types; # 文件类型映射</span><br><span class="line">   default_type application/octet-stream; # 默认MIME类型</span><br><span class="line">   sendfile        on;                            # 启用 sendfile 加速</span><br><span class="line">   tcp_nopush      on;                            # 优化发送数据包</span><br><span class="line">   keepalive_timeout  65;                         # 长连接超时</span><br><span class="line">   client_max_body_size 10m;                      # 请求体大小限制</span><br><span class="line"></span><br><span class="line">   include /etc/nginx/conf.d/*.conf;              # 引入子配置文件</span><br><span class="line">   </span><br><span class="line">   # 静态文件配置</span><br><span class="line">   server &#123;</span><br><span class="line">      listen 8080 ssl;</span><br><span class="line">      server_name localhost myTest.com;</span><br><span class="line">      </span><br><span class="line">      # 申请ssl证书 配置ssl证书</span><br><span class="line">      ssl_certificate /path/to/cert.pem;</span><br><span class="line">      ssl_certificate_key /path/to/cert.key;</span><br><span class="line">      </span><br><span class="line">      location / &#123;</span><br><span class="line">         root /usr/local/nginx/html/dist; # 相对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      location /api &#123;</span><br><span class="line">         # 设置CORS配置</span><br><span class="line">         add_header Access-Control-Allow-Origin *;</span><br><span class="line">         add_header Access-Control-Allow-Methods &#x27;GET, POST, OPTIONS&#x27;;</span><br><span class="line">         add_header Access-Control-Allow-Headers &#x27;Content-Type, Authorization&#x27;;</span><br><span class="line">         </span><br><span class="line">         alias /usr/local/nginx/html/dist/api; # 绝对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">         </span><br><span class="line">         if ($request_method = &#x27;OPTIONS&#x27;) &#123;</span><br><span class="line">            return 204;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="1-1-3-箭头函数的arguments"><a href="#1-1-3-箭头函数的arguments" class="headerlink" title="1.1.3 箭头函数的arguments"></a>1.1.3 箭头函数的<code>arguments</code></h3><p>箭头函数没有<code>arguments</code>，若在箭头函数内部使用，那么<code>arguments</code>将会向外寻找父级作用域的<code>arguments</code></p>
+<h3 id="1-1-4-函数的剩余参数rest"><a href="#1-1-4-函数的剩余参数rest" class="headerlink" title="1.1.4 函数的剩余参数rest"></a>1.1.4 函数的剩余参数<code>rest</code></h3><p>如果最后一个参数以…为前缀，那么该参数将以数组的形式接收剩余的参数。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">rest</span>(<span class="params">a, ...args</span>)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(a)</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(args)</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">rest</span>(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>) <span class="comment">// 1 [2,3,4,5]</span></span><br></pre></td></tr></table></figure>
 
-]]></content>
-      <categories>
-        <category>Nginx</category>
-      </categories>
-      <tags>
-        <tag>Nginx</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>10-Proxy-Reflect</title>
-    <url>/posts/9d935f.html</url>
-    <content><![CDATA[<p><code>Proxy</code>详解。</p>
-<h1 id="1-Proxy"><a href="#1-Proxy" class="headerlink" title="1. Proxy"></a>1. Proxy</h1><p><strong>现在有一个问题：我们如何监听对象的操作？</strong></p>
+<p><strong>注：剩余参数必须放在最后一个形参位置，否则会报错。</strong></p>
+<p>剩余参数<code>rest</code>和<code>arguments</code>的区别：</p>
 <ol>
-<li><p><code>Object.defineProperty()</code><br> 之前我们会通过<code>Object.defineProperty()</code>来进行监听，</p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(obj, <span class="string">&quot;name&quot;</span>, &#123;</span><br><span class="line">  <span class="title function_">get</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> obj.<span class="property">name</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">set</span>(<span class="params">value</span>) &#123;</span><br><span class="line">    obj.<span class="property">name</span> = value</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>Vue2</code>实现响应式原理的核心就是通过<code>Object.defineProperty()</code>来实现的；</li>
-<li>但是<code>Object.defineProperty()</code>设计之初并不是为了监听某个属性；</li>
-<li>我们在定义某个属性时，初衷是定义某个普通属性，但是我们后面强行把它变成了数据属性描述符；</li>
-<li>而且<code>Object.defineProperty()</code>无法监听到新增属性和删除属性等操作</li>
-</ul>
-</li>
-<li><p>Proxy</p>
-<blockquote>
-<p>new Proxy(target, handler)</p>
-<ul>
-<li>target: 目标对象</li>
-<li>handler: 处理函数</li>
-</ul>
+<li><code>rest</code>以数组形式接收参数，<code>arguments</code>以伪数组对象形式接收参数；</li>
+<li><code>rest</code>接收没有对应形参的实参，<code>arguments</code>接收所有实参</li>
+<li><code>arguments</code>是早期<code>ECMAScript</code>为方便获取参数定义的一个属性，而<code>rest</code>是<code>ECMAScript6</code>新增的希望替代arguments的语法，。</li>
+</ol>
+<h2 id="1-2-纯函数"><a href="#1-2-纯函数" class="headerlink" title="1.2 纯函数"></a>1.2 纯函数</h2><h3 id="1-2-2-概念理解"><a href="#1-2-2-概念理解" class="headerlink" title="1.2.2 概念理解"></a>1.2.2 概念理解</h3><blockquote>
+<p>简单来说，满足有相同输入时总是有相同输出，并且没有任何副作用的函数叫做纯函数。</p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> objProxy = <span class="keyword">new</span> <span class="title class_">Proxy</span>(obj, &#123;</span><br><span class="line">  <span class="title function_">get</span>(<span class="params">target, key</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> target[key]</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">set</span>(<span class="params">target, key, newValue</span>) &#123;</span><br><span class="line">    target[key] = newValue</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line">objProxy.<span class="property">name</span> = <span class="string">&#x27;hello world&#x27;</span></span><br><span class="line"><span class="comment">// 之后操作obj可以通过objProxy来操作，可达到监听的目的</span></span><br></pre></td></tr></table></figure></li>
+<ol>
+<li>输入相同时有相同输出<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> b = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">add1</span>(<span class="params">a</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+这个函数就不是一个纯函数，因为函数内部存在外部变量b，输出可能不一致。</li>
+<li>没有产生任何副作用<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> a,b = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">add1</span>(<span class="params">a,b</span>)&#123;</span><br><span class="line">    b = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+这个函数修改了外部变量b，也就是产生了副作用，所以这个函数也不是纯函数。</li>
+</ol>
+<h3 id="1-2-2-纯函数案例"><a href="#1-2-2-纯函数案例" class="headerlink" title="1.2.2 纯函数案例"></a>1.2.2 纯函数案例</h3><blockquote>
+<p>let arr &#x3D; [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</p>
+</blockquote>
+<ul>
+<li><code>slice()</code><blockquote>
+<p>console.log(arr.slice(0, 5), arr);   &#x2F;&#x2F;截取数组</p>
+</blockquote>
+</li>
+</ul>
+<p>输出：[1, 2, 3, 4, 5]   [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</p>
+<ul>
+<li><code>splice()</code><blockquote>
+<p>console.log(arr.splice(0, 5), arr);</p>
+</blockquote>
+</li>
+</ul>
+<p>输出：[ 1, 2, 3, 4, 5 ] [ 6, 7, 8, 9, 10 ]</p>
+<p>根据输出结果可以知道slice()是纯函数，但splice()不是纯函数，因为splice()修改了arr，产生了外部影响。</p>
+<p><strong>纯函数在函数式编程中很重要，它保证了函数的纯度，只单纯实现自己的业务逻辑，不会对外部变量产生影响。</strong></p>
+<h2 id="1-3-函数柯里化"><a href="#1-3-函数柯里化" class="headerlink" title="1.3 函数柯里化"></a>1.3 函数柯里化</h2><h2 id="1-3-1-基本了解"><a href="#1-3-1-基本了解" class="headerlink" title="1.3.1 基本了解"></a>1.3.1 基本了解</h2><blockquote>
+<p><code>柯里化（Currying）</code>是把接受多个参数的函数变换成接受一个参数的函数，并且返回接受多个参数的函数的函数。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params">a, b, c</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b + c;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">foo</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p>柯里化后：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params">a</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">b</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">c</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> a + b + c;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">foo</span>(<span class="number">1</span>)(<span class="number">2</span>)(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+<p>箭头函数写法：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">foo</span> = a =&gt; <span class="function"><span class="params">b</span> =&gt;</span> <span class="function"><span class="params">c</span> =&gt;</span> a + b + c;</span><br></pre></td></tr></table></figure>
+
+<p>柯里化优势：</p>
+<ul>
+<li>职责单一</li>
+<li>参数复用</li>
+</ul>
+<h2 id="1-4-with语句和eval函数的使用（了解即可）"><a href="#1-4-with语句和eval函数的使用（了解即可）" class="headerlink" title="1.4 with语句和eval函数的使用（了解即可）"></a>1.4 with语句和eval函数的使用（了解即可）</h2><ol>
+<li><code>with</code>语句  –  可以访问对象属性<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;zf&#x27;</span>,</span><br><span class="line">    <span class="attr">age</span>: <span class="number">18</span>,</span><br><span class="line">    <span class="attr">height</span>: <span class="number">1.88</span>,</span><br><span class="line">    <span class="attr">address</span>: <span class="string">&#x27;北京&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">with</span> (obj) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(name, age, height, address);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><code>eval</code>函数  –  可将字符串转换成可执行的js语句<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> testStr = <span class="string">&#x27;全局变量&#x27;</span></span><br><span class="line"><span class="keyword">const</span> str = <span class="string">&quot;const msg = &#x27;hello world&#x27;;console.log(msg);console.log(testStr);&quot;</span></span><br><span class="line"><span class="built_in">eval</span>(str)</span><br></pre></td></tr></table></figure>
+不建议在开发中使用<code>eval</code>函数：</li>
 </ol>
 <ul>
-<li>对某个对象行进行其他操作时，我们通过<code>Proxy</code>也可以监听到！<br>上面我们介绍了<code>set()</code>和<code>get()</code>两种<code>handler</code>，<code>handler</code>有13种捕获器（handler）：</li>
+<li>可读性差</li>
+<li>字符串容易被篡改，可能造成被攻击的风险；</li>
+<li>eval的执行需要经过javascript解释器，不能优化</li>
 </ul>
-<p>除了上面两种常用的捕获器，还有以下两种常用的捕获器：</p>
+<h2 id="1-5-严格模式"><a href="#1-5-严格模式" class="headerlink" title="1.5 严格模式"></a>1.5 严格模式</h2><h3 id="1-5-1-严格模式的理解"><a href="#1-5-1-严格模式的理解" class="headerlink" title="1.5.1 严格模式的理解"></a>1.5.1 严格模式的理解</h3><p>长久以来，javascript不断发展，且没有出现兼容性问题，新特性的加入也会兼容旧代码，但是一些错误或者不完善的地方仍然被保留；<br>在ECMAScript5中，<code>严格模式</code>被提出，在严格模式下：</p>
 <ul>
-<li><code>has()</code>：拦截<code>in</code>操作符；</li>
+<li>严格模式下，一些静默错误会被抛出；</li>
+<li>js解释器会对代码进行更多的优化；</li>
+<li>（禁用一些可能在ECMAScript未来版本中的语法）</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">    <span class="keyword">const</span> objProxy = <span class="keyword">new</span> <span class="title class_">Proxy</span>(obj, &#123;</span><br><span class="line">   <span class="comment">// ...</span></span><br><span class="line">   <span class="title function_">has</span>(<span class="params">target, key</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;has&quot;</span>);</span><br><span class="line">      <span class="keyword">return</span> key <span class="keyword">in</span> target</span><br><span class="line">   &#125;,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;in&#x27;</span>, name <span class="keyword">in</span> objProxy); <span class="comment">// in true</span></span><br></pre></td></tr></table></figure>
-
+<p><strong>严格模式的开启</strong><br>在<code>script</code>标签、js文件或函数中使用<code>use strict</code>开启严格模式</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="meta">&quot;use strict&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="string">&quot;use strict&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注：</p>
 <ul>
-<li><code>deleteProperty()</code>：拦截<code>delete</code>操作符；</li>
+<li>在<code>class</code>、<code>module</code>等模块中默认启用严格模式；</li>
+<li>打包过后的文件默认也是严格模式；</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> objProxy = <span class="keyword">new</span> <span class="title class_">Proxy</span>(obj, &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="title function_">defineProperty</span>(<span class="params">target, key, descriptor</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;defineProperty&quot;</span>);</span><br><span class="line">    <span class="keyword">delete</span> target[key]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span> objProxy.<span class="property">name</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(objProxy); <span class="comment">// &#123;age: 20&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>下面几种了解即可：<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/10-proxy/img.png" alt="img.png"></p>
-<h1 id="2-Reflect"><a href="#2-Reflect" class="headerlink" title="2. Reflect"></a>2. Reflect</h1><p><code>Reflect</code>对象是<code>ES6</code>新增的对象。</p>
-<ul>
-<li><p><code>Reflect</code>主要提供了一些操作<code>javascript</code>对象的方法，跟<code>Object</code>操作对象的方法类似；</p>
-<ul>
-<li>比如<code>Object.defineProperty()</code>和<code>Reflect.defineProperty()</code></li>
-<li><code>Object.getPrototypeOf()</code>和<code>Reflect.getPrototypeOf()</code></li>
-</ul>
+<h3 id="1-5-2-严格模式的一些限制"><a href="#1-5-2-严格模式的一些限制" class="headerlink" title="1.5.2 严格模式的一些限制"></a>1.5.2 严格模式的一些限制</h3><ol>
+<li><p>严格模式无法意外创建全局变量</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="meta">&quot;use strict&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params"></span>)&#123;</span><br><span class="line">    message = <span class="string">&#x27;xuexi javascript&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(message) <span class="comment">// 报错：message is not defined</span></span><br></pre></td></tr></table></figure></li>
+<li><p>静默操作抛出异常</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="meta">&quot;use strict&quot;</span></span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;zf&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(obj, <span class="string">&quot;name&quot;</span>,&#123;</span><br><span class="line">    <span class="attr">writable</span>:<span class="literal">false</span>,</span><br><span class="line">    <span class="attr">configurable</span>:<span class="literal">false</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">obj.<span class="property">name</span>=<span class="string">&#x27;xuexi&#x27;</span>  <span class="comment">//  Cannot assign to read only property &#x27;name&#x27; of object &#x27;#&lt;Object&gt;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span> obj.<span class="property">name</span>   <span class="comment">//  Cannot delete property &#x27;name&#x27; of #&lt;Object&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p>早期的ECMA规范没有考虑到这种对对象的操作是否规范就将这些API加在了<code>Object</code>上；</p>
+<li><p>函数形参名称不能相同</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo1</span>(<span class="params">num, num</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> num + num</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">foo1</span>(<span class="number">1</span>, <span class="number">1</span>));  <span class="comment">// Duplicate parameter name not allowed in this context</span></span><br></pre></td></tr></table></figure></li>
+<li><p>严格模式不允许函数参数有相同的名称</p>
 </li>
-<li><p>但是<code>Object</code>作为一个构造函数，这样设计是不安全的，所以ES6中新增了<code>Rfelct</code>，把这些对对象的操作方法都集中起来；</p>
+<li><p>不允许0的八进制语法</p>
 </li>
-<li><p>另外，在使用<code>Proxy</code>时不操作原对象</p>
+<li><p>在严格模式下，不允许使用with</p>
 </li>
-</ul>
-<h2 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h2><p><img src="/../../img/js%E9%AB%98%E7%BA%A7/10-proxy/img2.png" alt="img.png"></p>
-<p><strong><code>Reflect</code>和<code>Proxy</code>共同实现代理：</strong></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>,</span><br><span class="line">    <span class="attr">age</span>: <span class="number">18</span>,</span><br><span class="line">    <span class="title function_">set</span>(<span class="params">newValue</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// 默认为   this ---&gt; obj</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> objProxy = <span class="keyword">new</span> <span class="title class_">Proxy</span>(obj, &#123;</span><br><span class="line">    <span class="title function_">get</span>(<span class="params">target, key, receiver</span>) &#123;</span><br><span class="line">        <span class="keyword">const</span> result = <span class="title class_">Reflect</span>.<span class="title function_">get</span>(target, key)</span><br><span class="line">        <span class="comment">// const result = Reflect.get(target, key, receiver)   // 将obj中set()的this指向receiver</span></span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title function_">set</span>(<span class="params">target, key, newValue, receiver</span>) &#123;</span><br><span class="line">        <span class="comment">// 之前  直接操作target对象</span></span><br><span class="line">        target[key] = newValue</span><br><span class="line">        <span class="comment">// 有了Reflect</span></span><br><span class="line">        <span class="keyword">const</span> result = <span class="title class_">Reflect</span>.<span class="title function_">set</span>(target, key, newValue)</span><br><span class="line">        <span class="keyword">if</span> (result) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;成功&quot;</span>);</span><br><span class="line">            target[key] = newValue</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;设置失败&#x27;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>使用<code>Reflect</code>的好处：</p>
+<li><p>在严格模式下，eva不再为上层引用变量</p>
+</li>
+<li><p>严格模式下，this绑定不会默认转为对象</p>
+</li>
+</ol>
+<h1 id="2-javascript对象增强"><a href="#2-javascript对象增强" class="headerlink" title="2. javascript对象增强"></a>2. javascript对象增强</h1><h2 id="2-1-属性描述符"><a href="#2-1-属性描述符" class="headerlink" title="2.1 属性描述符"></a>2.1 属性描述符</h2><table>
+<thead>
+<tr>
+<th>属性描述符</th>
+<th>configurable</th>
+<th>enumerable</th>
+<th>writable</th>
+<th>value</th>
+<th>get</th>
+<th>set</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据属性描述符</td>
+<td>可以</td>
+<td>可以</td>
+<td>可以</td>
+<td>可以</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>存取属性描述符</td>
+<td>可以</td>
+<td>可以</td>
+<td>-</td>
+<td>-</td>
+<td>可以</td>
+<td>可以</td>
+</tr>
+</tbody></table>
 <ol>
-<li>不再直接操作<code>target</code>对象；</li>
-<li><code>Reflect</code>的set等方法会返回boolean值，可以判断是否操作成功；</li>
-<li><code>Reflect.get(target, key, receiver) </code>可将obj中set()的<code>this</code>指向<strong>receiver</strong>(所创建的proxy对象)</li>
+<li><p>数据属性描述符 （默认都为true）</p>
+<ul>
+<li><code>[configurable]</code>  – 是否可以删除属性，是否可以修改属性，或者是否可以修改为存取属性描述符;</li>
+<li><code>[enumerable]</code>  – 是否可以枚举，即是否可以通过for..in 或者Object.keys()获取到属性;</li>
+<li><code>[writable]</code> – 是否可以修改数据;</li>
+<li><code>[value]</code> – 是否可以返回属性值;</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line"> <span class="attr">name</span>:<span class="string">&#x27;xuexi&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(obj, <span class="string">&quot;name&quot;</span>, &#123;</span><br><span class="line">     <span class="attr">configurable</span>: <span class="literal">false</span>,</span><br><span class="line">     <span class="attr">writable</span>: <span class="literal">false</span>,</span><br><span class="line">     <span class="attr">enumerable</span>: <span class="literal">true</span>,</span><br><span class="line">     <span class="attr">value</span>: <span class="string">&#x27;xuexi&#x27;</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+<li><p>存取属性描述符</p>
+<ul>
+<li><code>[configurable]</code>  – 是否可以删除属性，是否可以修改属性，或者是否可以修改为存取属性描述符;</li>
+<li><code>[enumerable]</code>  – 是否可以枚举，即是否可以通过for..in 或者Object.keys()获取到属性;</li>
+<li><code>[get]</code> – 获取属性值,默认为undefined;</li>
+<li><code>[set]</code> – 设置属性值,默认为undefined;</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(obj, <span class="string">&quot;name&quot;</span>, &#123;</span><br><span class="line">  <span class="attr">configurable</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">writable</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">get</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;getter&#x27;</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">set</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;setter&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>同时定义多个属性</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperties</span>(obj, &#123;</span><br><span class="line">    <span class="attr">name</span>: &#123;</span><br><span class="line">        <span class="attr">configurable</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">writable</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">get</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;getter&#x27;</span>);&#125;,</span><br><span class="line">        <span class="attr">set</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;setter&#x27;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>其他属性</strong>(了解即可)</p>
+<ol>
+<li>获取对象属性的属性描述符<ul>
+<li><code>Object.getOwnPropertyDescriptor(obj, &#39;name&#39;)</code>  – 获取对象的单个属性的属性描述符<br><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Object</span>.<span class="title function_">getOwnPropertyDescriptor</span>(obj, <span class="string">&#x27;name&#x27;</span>));</span><br><span class="line"><span class="comment">// 输出：&#123;</span></span><br><span class="line"><span class="comment">//    value: &#x27;xuexi&#x27;,</span></span><br><span class="line"><span class="comment">//            writable: true,</span></span><br><span class="line"><span class="comment">//         enumerable: true,</span></span><br><span class="line"><span class="comment">//         configurable: true</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br></pre></td></tr></table></figure></li>
+<li><code>Object.getOwnPropertyDescriptors(obj, &#39;name&#39;)</code>  – 获取对象全部属性的属性描述符</li>
+</ul>
+</li>
+<li>阻止对象的扩展<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 阻止扩展</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">preventExtensions</span>(obj)</span><br><span class="line">obj.<span class="property">address</span> = <span class="string">&#x27;beijing&#x27;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj);</span><br></pre></td></tr></table></figure></li>
+<li>密封对象 – 禁止删除操作<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 密封对象</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">seal</span>(obj)</span><br><span class="line"><span class="keyword">delete</span> obj.<span class="property">name</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj);</span><br></pre></td></tr></table></figure></li>
+<li>冻结对象 – 禁止修改操作<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 冻结对象</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">freeze</span>(obj)</span><br><span class="line">obj.<span class="property">name</span> = <span class="string">&#x27;renzhenxuexi&#x27;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj);</span><br></pre></td></tr></table></figure></li>
 </ol>
 ]]></content>
       <categories>
         <category>js高级</category>
       </categories>
       <tags>
-        <tag>Proxy / Reflect</tag>
+        <tag>javascript函数和对象增强</tag>
       </tags>
   </entry>
 </search>
