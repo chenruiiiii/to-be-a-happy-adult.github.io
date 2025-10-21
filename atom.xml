@@ -6,7 +6,7 @@
   <link href="http://to-be-a-happy-adult.xyz/atom.xml" rel="self"/>
   
   <link href="http://to-be-a-happy-adult.xyz/"/>
-  <updated>2025-09-26T14:08:50.013Z</updated>
+  <updated>2025-10-21T12:22:40.124Z</updated>
   <id>http://to-be-a-happy-adult.xyz/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>craco更改webpack配置</title>
+    <link href="http://to-be-a-happy-adult.xyz/posts/89b86ab2.html"/>
+    <id>http://to-be-a-happy-adult.xyz/posts/89b86ab2.html</id>
+    <published>2025-10-21T12:03:23.825Z</published>
+    <updated>2025-10-21T12:22:40.124Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;&lt;code&gt;React&lt;/code&gt;官方文档推荐使用&lt;code&gt;CRA ( create-react-app )&lt;/code&gt;来创建项目，其中会隐藏起有关&lt;code&gt;webpack&lt;/code&gt;的配置，可以通过&lt;code&gt;npm run</summary>
+        
+      
+    
+    
+    
+    <category term="webpack" scheme="http://to-be-a-happy-adult.xyz/categories/webpack/"/>
+    
+    
+    <category term="webpack配置" scheme="http://to-be-a-happy-adult.xyz/tags/webpack%E9%85%8D%E7%BD%AE/"/>
+    
+  </entry>
   
   <entry>
     <title>面试经典题汇总</title>
@@ -73,7 +98,7 @@
     <link href="http://to-be-a-happy-adult.xyz/posts/92d95aa4.html"/>
     <id>http://to-be-a-happy-adult.xyz/posts/92d95aa4.html</id>
     <published>2025-08-19T02:30:30.000Z</published>
-    <updated>2025-10-11T13:32:52.864Z</updated>
+    <updated>2025-10-11T13:36:01.247Z</updated>
     
     
       
