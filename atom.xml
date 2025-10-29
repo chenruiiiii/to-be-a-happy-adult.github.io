@@ -6,7 +6,7 @@
   <link href="http://to-be-a-happy-adult.xyz/atom.xml" rel="self"/>
   
   <link href="http://to-be-a-happy-adult.xyz/"/>
-  <updated>2025-10-21T12:22:40.124Z</updated>
+  <updated>2025-10-29T13:59:03.162Z</updated>
   <id>http://to-be-a-happy-adult.xyz/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>为什么要选择 Monorepo ❓</title>
+    <link href="http://to-be-a-happy-adult.xyz/posts/ff3db4a4.html"/>
+    <id>http://to-be-a-happy-adult.xyz/posts/ff3db4a4.html</id>
+    <published>2025-10-22T08:18:05.000Z</published>
+    <updated>2025-10-29T13:59:03.162Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;在软件开发中，代码仓库的管理对项目的开发🧐和协作👥有着很重要的作用。常见的管理方式有&lt;code&gt;Monorepo（单体仓库）&lt;/code&gt;和&lt;code&gt;Multirepo（多体仓库）&lt;/code&gt;两种。&lt;/p&gt;
+&lt;h1 id=&quot;Multirepo的痛点😖&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="pnpm" scheme="http://to-be-a-happy-adult.xyz/categories/pnpm/"/>
+    
+    
+    <category term="Monorepo" scheme="http://to-be-a-happy-adult.xyz/tags/Monorepo/"/>
+    
+    <category term="pnpm" scheme="http://to-be-a-happy-adult.xyz/tags/pnpm/"/>
+    
+  </entry>
   
   <entry>
     <title>craco更改webpack配置</title>
@@ -98,7 +126,7 @@
     <link href="http://to-be-a-happy-adult.xyz/posts/92d95aa4.html"/>
     <id>http://to-be-a-happy-adult.xyz/posts/92d95aa4.html</id>
     <published>2025-08-19T02:30:30.000Z</published>
-    <updated>2025-10-11T13:36:01.247Z</updated>
+    <updated>2025-10-29T13:58:49.664Z</updated>
     
     
       
