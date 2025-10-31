@@ -1,6 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>为什么要选择 Monorepo ❓</title>
+    <url>/posts/ff3db4a4.html</url>
+    <content><![CDATA[<p>在软件开发中，代码仓库的管理对项目的开发🧐和协作👥有着很重要的作用。常见的管理方式有<code>Monorepo（单体仓库）</code>和<code>Multirepo（多体仓库）</code>两种。</p>
+<h1 id="Multirepo的痛点😖"><a href="#Multirepo的痛点😖" class="headerlink" title="Multirepo的痛点😖"></a><code>Multirepo</code>的痛点😖</h1><p><code>Multirepo</code>是使用单独仓库对单独项目进行管理，项目中的文件被放在不同的仓库中，这正是我们大多数开发所使用的代码管理方式；</p>
+<p>痛点：</p>
+<ol>
+<li><p>依赖问题😖</p>
+<p> 如果每个项目代码都安装依赖，都会产生<code>node_modules</code>这样的文件，项目体积变大；</p>
+<p> 如果更新依赖需要每个项目都进行更新，其中一个出现错误，其他项目可能也会出现相同的错误❌，需要同时更改多个文件；</p>
+</li>
+<li><p>重复配置</p>
+<p><code>package.json</code>、Eslint、Prettier、Typescript等多种工具或语言的配置需要在每个项目都进行配置，特别麻烦❗️</p>
+</li>
+<li><p>跨仓库重构困难</p>
+<p> 当遇到重构某个接口任务时需要同时修改多个项目的代码，一个简单的重构任务变成了跨仓库的大工程🏗️</p>
+</li>
+</ol>
+<h1 id="Monorepo介绍"><a href="#Monorepo介绍" class="headerlink" title="Monorepo介绍"></a><code>Monorepo</code>介绍</h1><p>而<code>Monorepo</code>是使用一个仓库对多个项目进行管理的项目管理策略，嫩个很好的解决<code>Muitirepo</code>的这些痛点❗️</p>
+<ol>
+<li><p>共享依赖，统一版本<br><code>Monorepo</code>项目的依赖统一在根目录下，所以相关的项目使用<code>硬链接</code>链接到根目录下的<code>node_modules</code>;</p>
+<p>当依赖更新时，所有项目的依赖都会更新，不需要单独更新；</p>
+</li>
+<li><p>统一配置<br>我们都知道代码环境的配置是很麻烦的，使用<code>Multirepo</code>就需要重复配置多次，而<code>Monorepo</code>只需配置一次就可多个项目共享。</p>
+</li>
+<li><p>一次重构，原子提交<br>当修改了一个共享工具函数之后，可能需要更新多个地方，但是在<code>Monorepo</code>就可以一次更新（原子提交），就可以同时修改所有依赖它的项目。</p>
+</li>
+</ol>
+<p>比如说一个项目同时有<code>UI</code>组件库，工具库，服务器端代码，客户端代码等多项目代码，那么这个项目的结构就是这样的</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">my-project/</span><br><span class="line">├──  node_modules</span><br><span class="line">├──  ui-compoonents # UI组件库</span><br><span class="line">| ├──<span class="keyword">package</span>.json</span><br><span class="line">├──  utils-library # 工具库</span><br><span class="line">| ├──<span class="keyword">package</span>.json</span><br><span class="line">├──  shared-types # 共享类型</span><br><span class="line">| ├──<span class="keyword">package</span>.json</span><br><span class="line">├──  admin-dashboard # 后台管理</span><br><span class="line">| ├──<span class="keyword">package</span>.json</span><br><span class="line">└──  marketing-site # 官网</span><br><span class="line">| ├──<span class="keyword">package</span>.json</span><br><span class="line">├── pnpm-workspace.yaml</span><br><span class="line">└── <span class="keyword">package</span>.json</span><br></pre></td></tr></table></figure>
+
+<h1 id="创建Monorepo项目"><a href="#创建Monorepo项目" class="headerlink" title="创建Monorepo项目"></a>创建<code>Monorepo</code>项目</h1><p>首先创建项目：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> my-monorepo</span><br><span class="line"><span class="built_in">cd</span> my-monorepo</span><br><span class="line">pnpm init</span><br></pre></td></tr></table></figure>
+
+<h2 id="🫀核心文件-pnpm-workspace-yaml"><a href="#🫀核心文件-pnpm-workspace-yaml" class="headerlink" title="🫀核心文件 pnpm-workspace.yaml"></a>🫀核心文件 <code>pnpm-workspace.yaml</code></h2><p>接着创建文件<code>pnpm-worspace.yaml</code>，这个是<code>Monorepo</code>的🫀核心文件，它告诉<code>pnpm</code>哪些是要管理的子项目。配置：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">packages:</span><br><span class="line">- <span class="string">&#x27;packages/*&#x27;</span></span><br><span class="line">- <span class="string">&#x27;app/*&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>得到：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">my-monorepo/</span><br><span class="line">├── <span class="keyword">package</span>.json</span><br><span class="line">└── pnpm-workspace.yaml</span><br></pre></td></tr></table></figure>
+
+<p>好，现在来创建子项目：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> packages/utils</span><br><span class="line"><span class="built_in">cd</span> packages/utils</span><br><span class="line">pnpm init</span><br></pre></td></tr></table></figure>
+
+<p>进行<code>packages.json</code>的配置：<br><code>name</code>我们统一配置为<code>@[项目名]/[子项目名]</code>，这样更规范一点</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;@my-monorepo/utils&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1.0.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;main&quot;</span><span class="punctuation">:</span> <span class="string">&quot;index.js&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;keywords&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;author&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;license&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ISC&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;packageManager&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pnpm@10.18.3&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>现在可以再创建一个子项目：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> packages/web-app</span><br><span class="line"><span class="built_in">cd</span> packages/utils</span><br><span class="line">pnpm init</span><br></pre></td></tr></table></figure>
+
+<p>同样地，进行<code>packages.json</code>的配置：<br><code>name</code>我们统一配置为<code>@[项目名]/[子项目名]</code>，这样更规范一点</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;@my-monorepo/web-app&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1.0.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;main&quot;</span><span class="punctuation">:</span> <span class="string">&quot;index.js&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">     <span class="attr">&quot;dev&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vite --mode dev&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;dependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">     <span class="attr">&quot;@my-monorepo/utils&quot;</span><span class="punctuation">:</span> <span class="string">&quot;workspace:*&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;keywords&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;author&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;license&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ISC&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;packageManager&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pnpm@10.18.3&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>像这样，我们直接在子项目中通过<code>dependencies</code>引入，就可以使用了。</p>
+<h2 id="增加便捷命令："><a href="#增加便捷命令：" class="headerlink" title="增加便捷命令："></a>增加便捷命令：</h2><p>在根目录下的<code>packages.json</code></p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">   <span class="attr">&quot;script&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;dev&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pnpm -F react-app dev&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pnpm -F react-app build&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;preview&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pnpm -F react-app preview&quot;</span></span><br><span class="line">   <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>这样在根目下就能直接启动某个子项目了。</p>
+<p>我们接着来认识一下<code>Turborepo</code>🔧</p>
+<h2 id="Turborepo"><a href="#Turborepo" class="headerlink" title="Turborepo"></a><code>Turborepo</code></h2><p><code>Turborepo</code>是<code>Vercel</code>出品的高性能<code>Monorepo</code>构建工具，可以用来管理多项目依赖，并行任务，完美适配React&#x2F;Vue&#x2F;Next.js框架</p>
+<p>对比直接使用<code>pnpm</code>，<code>Turborepo</code>的优点有：</p>
+<ol>
+<li>多任务并行 – 可同时启动多个子项目</li>
+<li>构建速度快 – <code>Turborepo</code>有缓存机制，能够更快的启动和打包</li>
+<li>…</li>
+</ol>
+<p>所以更推荐选择使用<code>pnpm</code>+<code>Turborepo</code>来构建和管理我们的<code>Monorepo</code>项目。</p>
+<h2 id="引入Turborepo"><a href="#引入Turborepo" class="headerlink" title="引入Turborepo"></a>引入<code>Turborepo</code></h2><p>如果跟我一样先创建了项目，又想使用<code>Turborepo</code>，那么就可以跟着我这样做：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># monorepo 根目录</span></span><br><span class="line">pnpm add -D @turbo/gen turbo -w</span><br></pre></td></tr></table></figure>
+
+<p>接着在根目录<code>package.json</code>中配置：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;my-monorepo&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;workspace&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;app/*&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;packages/*&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;dev&quot;</span><span class="punctuation">:</span> <span class="string">&quot;turbo run dev&quot;</span><span class="punctuation">,</span> <span class="comment">// 启动所有项目</span></span><br><span class="line">      <span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;turbo run build&quot;</span><span class="punctuation">,</span> <span class="comment">// 构建所有项目</span></span><br><span class="line">      <span class="attr">&quot;dev:web&quot;</span><span class="punctuation">:</span> <span class="string">&quot;turbo run dev --filter=\&quot;&#123;@my-monorepo/web_app&#125;\&quot;&quot;</span><span class="punctuation">,</span> <span class="comment">// 启动@my-monorepo/web_app子项目</span></span><br><span class="line">      <span class="attr">&quot;build:web&quot;</span><span class="punctuation">:</span> <span class="string">&quot;turbo run build --filter=\&quot;&#123;@my-monorepo/web_app&#125;\&quot;&quot;</span> <span class="comment">// 构建@my-monorepo/web_app子项目</span></span><br><span class="line">   <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;devDependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;@turbo/gen&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.5.8&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;turbo&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.5.8&quot;</span></span><br><span class="line">   <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>但也可以只配置子项目的<code>package.json</code>，当在根目录执行<code>turbo [xxx]</code>，turbo会自动在所有子项目中<code>package.json</code>中寻找名为<code>...</code>的命令，比如某子包的<code>package.json</code>：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">   <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;start&quot;</span><span class="punctuation">:</span> <span class="string">&quot;react-scripts start&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;react-scripts build&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;test&quot;</span><span class="punctuation">:</span> <span class="string">&quot;react-scripts test&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;eject&quot;</span><span class="punctuation">:</span> <span class="string">&quot;react-scripts eject&quot;</span></span><br><span class="line">   <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>就可以在根目录下执行</p>
+<h2 id="在子项目引入工具包"><a href="#在子项目引入工具包" class="headerlink" title="在子项目引入工具包"></a>在子项目引入工具包</h2><p>在子项目<code>package.json</code>中添加依赖：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;devDependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;@my-monorepo/utils&quot;</span><span class="punctuation">:</span> <span class="string">&quot;workspace:*&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>之后执行<code>pnpm install</code>，就会发现依赖已经被链接到<code>node_modules</code>中了。<br><img src="/img.png" alt="img.png"></p>
+<h1 id="❗️注意"><a href="#❗️注意" class="headerlink" title="❗️注意"></a>❗️注意</h1><ol>
+<li><code>Monorepo</code>结构下所有子项目都必须安装<code>eslint</code>，而且最好在8.x版本，不然可能会有<code>unmet peer</code>警告<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pnpm add eslint@latest -w --save-dev <span class="comment"># 为所有子项目安装eslint到最新版本     -w / --workspace表示“对工作区内所有子包执行安装”</span></span><br><span class="line">npx eslint --init <span class="comment"># 选择 React/TypeScript 等配置，生成 .eslintrc.js</span></span><br><span class="line">pnpm add eslint@8.57.0 --save-dev</span><br></pre></td></tr></table></figure></li>
+</ol>
+]]></content>
+      <categories>
+        <category>pnpm</category>
+      </categories>
+      <tags>
+        <tag>Monorepo</tag>
+        <tag>pnpm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>面试经典题汇总</title>
+    <url>/posts/5a01a153.html</url>
+    <content><![CDATA[<p><strong>面试经典题汇总</strong>📝</p>
+<h1 id="输入网址之后发生了什么？"><a href="#输入网址之后发生了什么？" class="headerlink" title="输入网址之后发生了什么？"></a>输入网址之后发生了什么？</h1><p>我们在浏览器输入网址之后发生了什么，为什么我们能收到这个页面呢？</p>
+<h2 id="路径纠错"><a href="#路径纠错" class="headerlink" title="路径纠错"></a>路径纠错</h2><p><strong>第一步❗️路径纠错</strong></p>
+<p>我们输入的路径可能有错，也可能缺少协议等东西，就比如我们输入了<code>www..baidu.com</code>，那么浏览器就会自动加上协议，变成<code>http://www.baidu.com</code>，路径补全后变成<code>http://www.baidu.com/</code></p>
+<h2 id="DNS解析"><a href="#DNS解析" class="headerlink" title="DNS解析"></a>DNS解析</h2><p><strong>第二步❗️DNS解析</strong><br>DNS解析，就是把域名解析成IP地址，比如<code>www.baidu.com</code>，那么DNS解析之后，就会变成<code>192.168.3.11</code></p>
+<details>
+<summary>
+❗️这里需要注意DNS缓存和DNS载荷均衡❗️
+</summary>
+<div>
+  <ol>
+    <li>DNS缓存
+      <ul>
+        <li>本地缓存</li>
+        <li>浏览器缓存</li>
+        <li>系统缓存</li>
+      </ul>
+    </li>
+    <li>
+    DNS载荷均衡
+      我们知道`DNS解析`后会获取到一个IP地址，这个地址对应网站服务器地址；但是一个大公司可能有上千台服务器，那么返回的到底是哪台服务器呢？
+      这里就需要到DNS负载均衡了，所谓的负载均衡是**根据我们的地理位置距离服务器的距离**来决定解析出的IP地址，这样就很好的分散了服务器的压力，提高我们的访问速度。
+    </li>
+  </ol>
+</div>
+  
+</details>
+
+<h2 id="TCP连接"><a href="#TCP连接" class="headerlink" title="TCP连接"></a>TCP连接</h2><p><strong>第三步❗️TCP连接</strong><br>简单来说，<code>TCP</code>连接就是我们为发送和接受数据建立的通道，而TCP连接的建立需要三次握手和四次挥手。</p>
+<p><strong>三次握手</strong></p>
+<ol>
+<li>客户端向服务端发送一个<code>SYN包</code></li>
+<li>服务端在接收到<code>SYN包</code>之后，向客户端发送一个<code>SYN+ACK包</code></li>
+<li>客户端在接收到<code>SYN+ACK包</code>之后，向服务端发送一个<code>ACK包</code></li>
+</ol>
+<p>经过这三次握手，TCP连接就建立起来了。</p>
+<h2 id="发送HTTP请求"><a href="#发送HTTP请求" class="headerlink" title="发送HTTP请求"></a>发送HTTP请求</h2><p><strong>第四步❗️发送HTTP请求</strong><br>客户端向服务端发送一个HTTP请求，请求包括请求行，请求头，请求体</p>
+<ul>
+<li>请求行<ul>
+<li>请求方法: GET&#x2F;POST&#x2F;PUT&#x2F;DELETE</li>
+<li>请求路径</li>
+</ul>
+</li>
+<li>请求头</li>
+<li>请求体（GET请求没有）</li>
+</ul>
+<h2 id="服务端响应数据"><a href="#服务端响应数据" class="headerlink" title="服务端响应数据"></a>服务端响应数据</h2><p><strong>第五步❗️服务端响应数据</strong><br>服务端接收到http请求后会返回一个http响应：</p>
+<ul>
+<li>状态行<ul>
+<li>响应码</li>
+</ul>
+</li>
+<li>响应头<ul>
+<li>content-type: <code>text/html;charset=utf-8</code>等</li>
+</ul>
+</li>
+<li>响应体</li>
+</ul>
+<h2 id="渲染"><a href="#渲染" class="headerlink" title="渲染"></a>渲染</h2><p>关于浏览器渲染可以看这篇博客<a href="https://blog.csdn.net/2302_79523175/article/details/140614526?spm=1011.2415.3001.5331">浏览器渲染原理</a></p>
+<h2 id="断开连接"><a href="#断开连接" class="headerlink" title="断开连接"></a>断开连接</h2><p><strong>第六步❗️断开连接</strong></p>
+]]></content>
+      <categories>
+        <category>面经</category>
+      </categories>
+      <tags>
+        <tag>面经</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Git 分布式版本控制工具</title>
     <url>/posts/92d95aa4.html</url>
     <content><![CDATA[<h1 id="Git-概述"><a href="#Git-概述" class="headerlink" title="Git 概述"></a>Git 概述</h1><h2 id="Git-版本控制器的方式"><a href="#Git-版本控制器的方式" class="headerlink" title="Git 版本控制器的方式"></a>Git 版本控制器的方式</h2><ul>
@@ -191,7 +351,7 @@
 <li>获取本地密钥</li>
 <li>cat ~&#x2F;.ssh&#x2F;id_rsa.pub</li>
 <li>验证是否配置成功<ul>
-<li>ssh -T <a href="mailto:&#x67;&#105;&#116;&#x40;&#103;&#105;&#116;&#104;&#117;&#x62;&#46;&#99;&#111;&#109;">git@github.com</a> 或者 ssh -T <a href="mailto:&#x67;&#x69;&#116;&#x40;&#x67;&#x69;&#116;&#101;&#101;&#46;&#99;&#x6f;&#x6d;">git@gitee.com</a></li>
+<li>ssh -T <a href="mailto:&#103;&#105;&#116;&#x40;&#x67;&#x69;&#x74;&#104;&#117;&#x62;&#46;&#x63;&#x6f;&#109;">git@github.com</a> 或者 ssh -T <a href="mailto:&#103;&#105;&#116;&#x40;&#103;&#105;&#116;&#101;&#x65;&#x2e;&#99;&#111;&#109;">git@gitee.com</a></li>
 </ul>
 </li>
 </ul>
@@ -201,7 +361,7 @@
 <h3 id="远程仓库相关命令"><a href="#远程仓库相关命令" class="headerlink" title="远程仓库相关命令"></a>远程仓库相关命令</h3><ol>
 <li>添加远程仓库<ul>
 <li><code>git add remote &lt;远端名称&gt; &lt;仓库地址&gt;</code><ul>
-<li>例：git remote add origin <a href="mailto:&#103;&#105;&#x74;&#64;&#x67;&#105;&#116;&#x68;&#x75;&#x62;&#46;&#x63;&#111;&#x6d;">git@github.com</a>:zhangjunyi&#x2F;git.git</li>
+<li>例：git remote add origin <a href="mailto:&#x67;&#105;&#116;&#x40;&#103;&#x69;&#116;&#x68;&#x75;&#x62;&#x2e;&#99;&#111;&#109;">git@github.com</a>:zhangjunyi&#x2F;git.git</li>
 </ul>
 </li>
 </ul>
@@ -288,162 +448,261 @@
       </tags>
   </entry>
   <entry>
-    <title>为什么要选择 Monorepo ❓</title>
-    <url>/posts/ff3db4a4.html</url>
-    <content><![CDATA[<p>在软件开发中，代码仓库的管理对项目的开发🧐和协作👥有着很重要的作用。常见的管理方式有<code>Monorepo（单体仓库）</code>和<code>Multirepo（多体仓库）</code>两种。</p>
-<h1 id="Multirepo的痛点😖"><a href="#Multirepo的痛点😖" class="headerlink" title="Multirepo的痛点😖"></a><code>Multirepo</code>的痛点😖</h1><p><code>Multirepo</code>是使用单独仓库对单独项目进行管理，项目中的文件被放在不同的仓库中，这正是我们大多数开发所使用的代码管理方式；</p>
-<p>痛点：</p>
-<ol>
-<li><p>依赖问题😖</p>
-<p> 如果每个项目代码都安装依赖，都会产生<code>node_modules</code>这样的文件，项目体积变大；</p>
-<p> 如果更新依赖需要每个项目都进行更新，其中一个出现错误，其他项目可能也会出现相同的错误❌，需要同时更改多个文件；</p>
+    <title>Nginx安装与配置以及常用命令</title>
+    <url>/posts/4f72a7f4.html</url>
+    <content><![CDATA[<p>了解一下Nginx的安装与配置，以及常见的Nginx常用命令</p>
+<h1 id="1-安装与配置"><a href="#1-安装与配置" class="headerlink" title="1. 安装与配置"></a>1. 安装与配置</h1><ol>
+<li><p>阿里云申请免费云服务器，为Nginx练习使用</p>
 </li>
-<li><p>重复配置</p>
-<p><code>package.json</code>、Eslint、Prettier、Typescript等多种工具或语言的配置需要在每个项目都进行配置，特别麻烦❗️</p>
+<li><p>连接远程服务器</p>
+<ul>
+<li>首先重置root密码</li>
+<li>若是使用vscode 可安装 <code>remote ssh</code>插件 （用来连接远程服务器）</li>
+<li>连接到远程</li>
+</ul>
 </li>
-<li><p>跨仓库重构困难</p>
-<p> 当遇到重构某个接口任务时需要同时修改多个项目的代码，一个简单的重构任务变成了跨仓库的大工程🏗️</p>
-</li>
-</ol>
-<h1 id="Monorepo介绍"><a href="#Monorepo介绍" class="headerlink" title="Monorepo介绍"></a><code>Monorepo</code>介绍</h1><p>而<code>Monorepo</code>是使用一个仓库对多个项目进行管理的项目管理策略，嫩个很好的解决<code>Muitirepo</code>的这些痛点❗️</p>
-<ol>
-<li><p>共享依赖，统一版本<br><code>Monorepo</code>项目的依赖统一在根目录下，所以相关的项目使用<code>硬链接</code>链接到根目录下的<code>node_modules</code>;</p>
-<p>当依赖更新时，所有项目的依赖都会更新，不需要单独更新；</p>
-</li>
-<li><p>统一配置<br>我们都知道代码环境的配置是很麻烦的，使用<code>Multirepo</code>就需要重复配置多次，而<code>Monorepo</code>只需配置一次就可多个项目共享。</p>
-</li>
-<li><p>一次重构，原子提交<br>当修改了一个共享工具函数之后，可能需要更新多个地方，但是在<code>Monorepo</code>就可以一次更新（原子提交），就可以同时修改所有依赖它的项目。</p>
+<li><p>下载Nginx </p>
+<ul>
+<li>cd &#x2F;usr&#x2F;local</li>
+<li>wget <a href="https://nginx.org/download/Nginx-1.28.0.tar.gz">https://nginx.org/download/Nginx-1.28.0.tar.gz</a> (若下载不成功可通过命令 <code>su</code> 切换到root用户)</li>
+</ul>
 </li>
 </ol>
-<p>比如说一个项目同时有<code>UI</code>组件库，工具库，服务器端代码，客户端代码等多项目代码，那么这个项目的结构就是这样的</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">my-project/</span><br><span class="line">├──  node_modules</span><br><span class="line">├──  ui-compoonents # UI组件库</span><br><span class="line">| ├──<span class="keyword">package</span>.json</span><br><span class="line">├──  utils-library # 工具库</span><br><span class="line">| ├──<span class="keyword">package</span>.json</span><br><span class="line">├──  shared-types # 共享类型</span><br><span class="line">| ├──<span class="keyword">package</span>.json</span><br><span class="line">├──  admin-dashboard # 后台管理</span><br><span class="line">| ├──<span class="keyword">package</span>.json</span><br><span class="line">└──  marketing-site # 官网</span><br><span class="line">| ├──<span class="keyword">package</span>.json</span><br><span class="line">├── pnpm-workspace.yaml</span><br><span class="line">└── <span class="keyword">package</span>.json</span><br></pre></td></tr></table></figure>
+<img src="../../img/Nginx/img.png">
 
-<h1 id="创建Monorepo项目"><a href="#创建Monorepo项目" class="headerlink" title="创建Monorepo项目"></a>创建<code>Monorepo</code>项目</h1><p>首先创建项目：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> my-monorepo</span><br><span class="line"><span class="built_in">cd</span> my-monorepo</span><br><span class="line">pnpm init</span><br></pre></td></tr></table></figure>
-
-<h2 id="🫀核心文件-pnpm-workspace-yaml"><a href="#🫀核心文件-pnpm-workspace-yaml" class="headerlink" title="🫀核心文件 pnpm-workspace.yaml"></a>🫀核心文件 <code>pnpm-workspace.yaml</code></h2><p>接着创建文件<code>pnpm-worspace.yaml</code>，这个是<code>Monorepo</code>的🫀核心文件，它告诉<code>pnpm</code>哪些是要管理的子项目。配置：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">packages:</span><br><span class="line">- <span class="string">&#x27;packages/*&#x27;</span></span><br><span class="line">- <span class="string">&#x27;app/*&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>得到：</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">my-monorepo/</span><br><span class="line">├── <span class="keyword">package</span>.json</span><br><span class="line">└── pnpm-workspace.yaml</span><br></pre></td></tr></table></figure>
-
-<p>好，现在来创建子项目：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> packages/utils</span><br><span class="line"><span class="built_in">cd</span> packages/utils</span><br><span class="line">pnpm init</span><br></pre></td></tr></table></figure>
-
-<p>进行<code>packages.json</code>的配置：<br><code>name</code>我们统一配置为<code>@[项目名]/[子项目名]</code>，这样更规范一点</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;@my-monorepo/utils&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1.0.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;main&quot;</span><span class="punctuation">:</span> <span class="string">&quot;index.js&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;keywords&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;author&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;license&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ISC&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;packageManager&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pnpm@10.18.3&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>现在可以再创建一个子项目：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> packages/web-app</span><br><span class="line"><span class="built_in">cd</span> packages/utils</span><br><span class="line">pnpm init</span><br></pre></td></tr></table></figure>
-
-<p>同样地，进行<code>packages.json</code>的配置：<br><code>name</code>我们统一配置为<code>@[项目名]/[子项目名]</code>，这样更规范一点</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;@my-monorepo/web-app&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1.0.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;main&quot;</span><span class="punctuation">:</span> <span class="string">&quot;index.js&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">     <span class="attr">&quot;dev&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vite --mode dev&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;dependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">     <span class="attr">&quot;@my-monorepo/utils&quot;</span><span class="punctuation">:</span> <span class="string">&quot;workspace:*&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;keywords&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;author&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;license&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ISC&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;packageManager&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pnpm@10.18.3&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>像这样，我们直接在子项目中通过<code>dependencies</code>引入，就可以使用了。</p>
-<h2 id="增加便捷命令："><a href="#增加便捷命令：" class="headerlink" title="增加便捷命令："></a>增加便捷命令：</h2><p>在根目录下的<code>packages.json</code></p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">   <span class="attr">&quot;script&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;dev&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pnpm -F react-app dev&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pnpm -F react-app build&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;preview&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pnpm -F react-app preview&quot;</span></span><br><span class="line">   <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-<p>这样在根目下就能直接启动某个子项目了。</p>
-<p>我们接着来认识一下<code>Turborepo</code>🔧</p>
-<h2 id="Turborepo"><a href="#Turborepo" class="headerlink" title="Turborepo"></a><code>Turborepo</code></h2><p><code>Turborepo</code>是<code>Vercel</code>出品的高性能<code>Monorepo</code>构建工具，可以用来管理多项目依赖，并行任务，完美适配React&#x2F;Vue&#x2F;Next.js框架</p>
-<p>对比直接使用<code>pnpm</code>，<code>Turborepo</code>的优点有：</p>
-<ol>
-<li>多任务并行 – 可同时启动多个子项目</li>
-<li>构建速度快 – <code>Turborepo</code>有缓存机制，能够更快的启动和打包</li>
-<li>…</li>
-</ol>
-<p>所以更推荐选择使用<code>pnpm</code>+<code>Turborepo</code>来构建和管理我们的<code>Monorepo</code>项目。</p>
-<h2 id="引入Turborepo"><a href="#引入Turborepo" class="headerlink" title="引入Turborepo"></a>引入<code>Turborepo</code></h2><p>如果跟我一样先创建了项目，又想使用<code>Turborepo</code>，那么就可以跟着我这样做：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># monorepo 根目录</span></span><br><span class="line">pnpm add -D @turbo/gen turbo -w</span><br></pre></td></tr></table></figure>
-
-<p>接着在根目录<code>package.json</code>中配置：</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;my-monorepo&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;workspace&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;app/*&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;packages/*&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;dev&quot;</span><span class="punctuation">:</span> <span class="string">&quot;turbo run dev&quot;</span><span class="punctuation">,</span> <span class="comment">// 启动所有项目</span></span><br><span class="line">      <span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;turbo run build&quot;</span><span class="punctuation">,</span> <span class="comment">// 构建所有项目</span></span><br><span class="line">      <span class="attr">&quot;dev:web&quot;</span><span class="punctuation">:</span> <span class="string">&quot;turbo run dev --filter=\&quot;&#123;@my-monorepo/web_app&#125;\&quot;&quot;</span><span class="punctuation">,</span> <span class="comment">// 启动@my-monorepo/web_app子项目</span></span><br><span class="line">      <span class="attr">&quot;build:web&quot;</span><span class="punctuation">:</span> <span class="string">&quot;turbo run build --filter=\&quot;&#123;@my-monorepo/web_app&#125;\&quot;&quot;</span> <span class="comment">// 构建@my-monorepo/web_app子项目</span></span><br><span class="line">   <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;devDependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;@turbo/gen&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.5.8&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;turbo&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.5.8&quot;</span></span><br><span class="line">   <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-<p>但也可以只配置子项目的<code>package.json</code>，当在根目录执行<code>turbo [xxx]</code>，turbo会自动在所有子项目中<code>package.json</code>中寻找名为<code>...</code>的命令，比如某子包的<code>package.json</code>：</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">   <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;start&quot;</span><span class="punctuation">:</span> <span class="string">&quot;react-scripts start&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;react-scripts build&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;test&quot;</span><span class="punctuation">:</span> <span class="string">&quot;react-scripts test&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;eject&quot;</span><span class="punctuation">:</span> <span class="string">&quot;react-scripts eject&quot;</span></span><br><span class="line">   <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-<p>就可以在根目录下执行</p>
-<h1 id="❗️注意"><a href="#❗️注意" class="headerlink" title="❗️注意"></a>❗️注意</h1><ol>
-<li><p><code>Monorepo</code>结构下所有子项目都必须安装<code>eslint</code>，而且最好在8.x版本，不然可能会有<code>unmet peer</code>警告</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pnpm add eslint@latest -w --save-dev <span class="comment"># 为所有子项目安装eslint到最新版本     -w / --workspace表示“对工作区内所有子包执行安装”</span></span><br><span class="line">npx eslint --init <span class="comment"># 选择 React/TypeScript 等配置，生成 .eslintrc.js</span></span><br><span class="line">pnpm add eslint@8.57.0 --save-dev</span><br></pre></td></tr></table></figure>
+<pre><code>- tar -zxvf Nginx-1.28.0.tar.gz
+- cd ./Nginx-1.28.0
+</code></pre>
+<ol start="4">
+<li>初始配置及编译安装<ul>
+<li>初始配置 .&#x2F;configure</li>
+<li>编译源码 安装 make &amp;&amp; make install</li>
+</ul>
 </li>
-<li></li>
 </ol>
+<h1 id="2-Nginx常见命令"><a href="#2-Nginx常见命令" class="headerlink" title="2. Nginx常见命令"></a>2. Nginx常见命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">user admin; # 规定启动Nginx的用户</span><br><span class="line">worker_processes 1; # Nginx 启动一个工作进程，适用于轻量部署或开发环境。</span><br><span class="line">events &#123;</span><br><span class="line">   worker_connections 1024; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http&#123;</span><br><span class="line">   include mime.types; # 文件类型映射</span><br><span class="line">   default_type application/octet-stream; # 默认MIME类型</span><br><span class="line">   sendfile        on;                            # 启用 sendfile 加速</span><br><span class="line">   tcp_nopush      on;                            # 优化发送数据包</span><br><span class="line">   keepalive_timeout  65;                         # 长连接超时</span><br><span class="line">   client_max_body_size 10m;                      # 请求体大小限制</span><br><span class="line"></span><br><span class="line">   include /etc/nginx/conf.d/*.conf;              # 引入子配置文件</span><br><span class="line">   </span><br><span class="line">   # 静态文件配置</span><br><span class="line">   server &#123;</span><br><span class="line">      listen 8080 ssl;</span><br><span class="line">      server_name localhost myTest.com;</span><br><span class="line">      </span><br><span class="line">      # 申请ssl证书 配置ssl证书</span><br><span class="line">      ssl_certificate /path/to/cert.pem;</span><br><span class="line">      ssl_certificate_key /path/to/cert.key;</span><br><span class="line">      </span><br><span class="line">      location / &#123;</span><br><span class="line">         root /usr/local/nginx/html/dist; # 相对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      location /api &#123;</span><br><span class="line">         # 设置CORS配置</span><br><span class="line">         add_header Access-Control-Allow-Origin *;</span><br><span class="line">         add_header Access-Control-Allow-Methods &#x27;GET, POST, OPTIONS&#x27;;</span><br><span class="line">         add_header Access-Control-Allow-Headers &#x27;Content-Type, Authorization&#x27;;</span><br><span class="line">         </span><br><span class="line">         alias /usr/local/nginx/html/dist/api; # 绝对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">         </span><br><span class="line">         if ($request_method = &#x27;OPTIONS&#x27;) &#123;</span><br><span class="line">            return 204;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
-        <category>pnpm</category>
+        <category>Nginx</category>
       </categories>
       <tags>
-        <tag>Monorepo</tag>
-        <tag>pnpm</tag>
+        <tag>Nginx</tag>
       </tags>
   </entry>
   <entry>
-    <title>面试经典题汇总</title>
-    <url>/posts/5a01a153.html</url>
-    <content><![CDATA[<p><strong>面试经典题汇总</strong>📝</p>
-<h1 id="输入网址之后发生了什么？"><a href="#输入网址之后发生了什么？" class="headerlink" title="输入网址之后发生了什么？"></a>输入网址之后发生了什么？</h1><p>我们在浏览器输入网址之后发生了什么，为什么我们能收到这个页面呢？</p>
-<h2 id="路径纠错"><a href="#路径纠错" class="headerlink" title="路径纠错"></a>路径纠错</h2><p><strong>第一步❗️路径纠错</strong></p>
-<p>我们输入的路径可能有错，也可能缺少协议等东西，就比如我们输入了<code>www..baidu.com</code>，那么浏览器就会自动加上协议，变成<code>http://www.baidu.com</code>，路径补全后变成<code>http://www.baidu.com/</code></p>
-<h2 id="DNS解析"><a href="#DNS解析" class="headerlink" title="DNS解析"></a>DNS解析</h2><p><strong>第二步❗️DNS解析</strong><br>DNS解析，就是把域名解析成IP地址，比如<code>www.baidu.com</code>，那么DNS解析之后，就会变成<code>192.168.3.11</code></p>
-<details>
-<summary>
-❗️这里需要注意DNS缓存和DNS载荷均衡❗️
-</summary>
-<div>
-  <ol>
-    <li>DNS缓存
-      <ul>
-        <li>本地缓存</li>
-        <li>浏览器缓存</li>
-        <li>系统缓存</li>
-      </ul>
-    </li>
-    <li>
-    DNS载荷均衡
-      我们知道`DNS解析`后会获取到一个IP地址，这个地址对应网站服务器地址；但是一个大公司可能有上千台服务器，那么返回的到底是哪台服务器呢？
-      这里就需要到DNS负载均衡了，所谓的负载均衡是**根据我们的地理位置距离服务器的距离**来决定解析出的IP地址，这样就很好的分散了服务器的压力，提高我们的访问速度。
-    </li>
-  </ol>
-</div>
-  
-</details>
-
-<h2 id="TCP连接"><a href="#TCP连接" class="headerlink" title="TCP连接"></a>TCP连接</h2><p><strong>第三步❗️TCP连接</strong><br>简单来说，<code>TCP</code>连接就是我们为发送和接受数据建立的通道，而TCP连接的建立需要三次握手和四次挥手。</p>
-<p><strong>三次握手</strong></p>
-<ol>
-<li>客户端向服务端发送一个<code>SYN包</code></li>
-<li>服务端在接收到<code>SYN包</code>之后，向客户端发送一个<code>SYN+ACK包</code></li>
-<li>客户端在接收到<code>SYN+ACK包</code>之后，向服务端发送一个<code>ACK包</code></li>
-</ol>
-<p>经过这三次握手，TCP连接就建立起来了。</p>
-<h2 id="发送HTTP请求"><a href="#发送HTTP请求" class="headerlink" title="发送HTTP请求"></a>发送HTTP请求</h2><p><strong>第四步❗️发送HTTP请求</strong><br>客户端向服务端发送一个HTTP请求，请求包括请求行，请求头，请求体</p>
-<ul>
-<li>请求行<ul>
-<li>请求方法: GET&#x2F;POST&#x2F;PUT&#x2F;DELETE</li>
-<li>请求路径</li>
-</ul>
-</li>
-<li>请求头</li>
-<li>请求体（GET请求没有）</li>
-</ul>
-<h2 id="服务端响应数据"><a href="#服务端响应数据" class="headerlink" title="服务端响应数据"></a>服务端响应数据</h2><p><strong>第五步❗️服务端响应数据</strong><br>服务端接收到http请求后会返回一个http响应：</p>
-<ul>
-<li>状态行<ul>
-<li>响应码</li>
-</ul>
-</li>
-<li>响应头<ul>
-<li>content-type: <code>text/html;charset=utf-8</code>等</li>
-</ul>
-</li>
-<li>响应体</li>
-</ul>
-<h2 id="渲染"><a href="#渲染" class="headerlink" title="渲染"></a>渲染</h2><p>关于浏览器渲染可以看这篇博客<a href="https://blog.csdn.net/2302_79523175/article/details/140614526?spm=1011.2415.3001.5331">浏览器渲染原理</a></p>
-<h2 id="断开连接"><a href="#断开连接" class="headerlink" title="断开连接"></a>断开连接</h2><p><strong>第六步❗️断开连接</strong></p>
-]]></content>
+    <title>项目性能优化</title>
+    <url>/posts/345bc23f.html</url>
+    <content><![CDATA[<p>项目整体需求大致完成后，需要开始进行项目性能优化了，优化思路主要有：<code>代码层面</code>，<code>构建与用户打包</code>，<code>用户体验优化</code>，<code>vue/react特有优化</code>…</p>
+<h1 id="代码层面"><a href="#代码层面" class="headerlink" title="代码层面"></a>代码层面</h1><h1 id="构建和用户打包"><a href="#构建和用户打包" class="headerlink" title="构建和用户打包"></a>构建和用户打包</h1><h1 id="用户体验优化"><a href="#用户体验优化" class="headerlink" title="用户体验优化"></a>用户体验优化</h1><h1 id="vue-react特有优化"><a href="#vue-react特有优化" class="headerlink" title="vue&#x2F;react特有优化"></a>vue&#x2F;react特有优化</h1>]]></content>
       <categories>
-        <category>面经</category>
+        <category>项目</category>
       </categories>
       <tags>
-        <tag>面经</tag>
+        <tag>性能优化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>01- this的指向规则</title>
+    <url>/posts/d8cbe511.html</url>
+    <content><![CDATA[<p><code>this</code> 到底指向谁? 箭头函数中的<code>this</code>还能使用吗? 如果能使用又要怎么使用呢? 与普通函数的<code>this</code>指向一致吗?</p>
+<h2 id="this到底指向谁？"><a href="#this到底指向谁？" class="headerlink" title="this到底指向谁？"></a><code>this</code>到底指向谁？</h2><p>首先，定义一个函数：</p>
+<p>三种不同的调用方式，this的指向也会不同！</p>
+<ol>
+<li><p>直接调用</p>
+<blockquote>
+<p>foo()  &#x2F;&#x2F; window{}</p>
+</blockquote>
+</li>
+<li><p>通过对象调用</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><span class="line">var obj = &#123; name: &#x27;name&#x27; &#125;</span><br><span class="line">obj.foo = foo</span><br><span class="line">obj.foo(); // Object&#123;&#125;     (obj这个对象)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>call&#x2F;apply&#x2F;bind</p>
+<blockquote>
+<p>foo.apply(“abc”) &#x2F;&#x2F;  String {‘abc’}</p>
+</blockquote>
+</li>
+</ol>
+<p><strong>结论：</strong></p>
+<ol>
+<li>函数在调用时，js会<strong>默认给this绑定一个值</strong>；</li>
+<li>this的绑定跟它**定义的位置（编写的位置）**没有关系；</li>
+<li>this的绑定与调用方式以及调用的位置有关；</li>
+<li>this是在运行时被绑定的。</li>
+</ol>
+<h2 id="this的绑定规则"><a href="#this的绑定规则" class="headerlink" title="this的绑定规则"></a><code>this</code>的绑定规则</h2><h3 id="默认绑定"><a href="#默认绑定" class="headerlink" title="默认绑定"></a>默认绑定</h3><ul>
+<li>普通函数被独立调用</li>
+</ul>
+<blockquote>
+<p>foo()   &#x2F;&#x2F; window{}</p>
+</blockquote>
+<ul>
+<li>函数定义在对象中，但是独立被调用</li>
+</ul>
+<blockquote>
+<p>var bar &#x3D; obj.foo<br>bar()  &#x2F;&#x2F; window{}</p>
+</blockquote>
+<ul>
+<li><font style="color:#DF2A3F;">严格模式</font>下，独立调用的函数中的<code>this</code>指向<code>undefined</code></li>
+</ul>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="meta"></span></span></span><br><span class="line"><span class="meta"><span class="language-javascript">	&quot;use strict&quot;</span></span></span><br><span class="line"><span class="language-javascript">	...</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>高阶函数</li>
+</ul>
+<blockquote>
+<p>function test(fn) {<br>    fn()<br>}</p>
+<p>test(obj.foo) &#x2F;&#x2F; window{}</p>
+</blockquote>
+<p>即独立调用函数时(非严格模式下)<code>this</code>指向<code>window</code>!</p>
+<h3 id="隐式绑定"><a href="#隐式绑定" class="headerlink" title="隐式绑定"></a>隐式绑定</h3><blockquote>
+<p>一般是通过<strong>对象</strong>来发起调用。</p>
+</blockquote>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/01-this-img/image1.png"></p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/01-this-img/image2.png"></p>
+<h3 id="显式绑定"><a href="#显式绑定" class="headerlink" title="显式绑定"></a>显式绑定</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">foo.<span class="title function_">call</span>(obj)</span><br><span class="line">foo.<span class="title function_">apply</span>(obj) <span class="comment">// foo &#123;name:&#x27;name&#x27;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这两种形式的显示绑定区别不大，不会像隐式绑定那样在obj上面添加foo:foo，但是foo的this就指向了obj；</li>
+<li>另外，这种形式一般将this绑定在对象身上，如果foo.call(‘abc’)，那么也会默认将’abc’创建为对应的包装类型，这里也就是<code>String</code>对象;</li>
+<li>如果是绑定在了<code>undefined</code>这种没有对应包装类型的对象身上，那么this就会默认指向<code>window</code></li>
+</ul>
+<h4 id="call-apply函数说明"><a href="#call-apply函数说明" class="headerlink" title="call &#x2F; apply函数说明"></a>call &#x2F; apply函数说明</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">test</span>(<span class="params">name, age</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;参数:&#x27;</span>, name, age); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>作用：都可以调取函数并绑定this，传递参数方式不同</p>
+<ul>
+<li><code>apply(obj,[argumentsArray])</code></li>
+</ul>
+<p><code>obj</code>是指this指向的对象；</p>
+<p><code>argumentsArray</code>是指函数的参数，必须要放在<strong>数组</strong>中进行传递；</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// apply</span></span><br><span class="line">test.<span class="title function_">apply</span>(<span class="string">&#x27;apply&#x27;</span>, [<span class="string">&#x27;chenber&#x27;</span>, <span class="number">18</span>]) <span class="comment">// 参数: chenber 18</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>&lt;font style=&quot;color:#DF2A3F;&quot;&gt;call(obj,arg1,arg2,...)&lt;/font&gt;</code></li>
+</ul>
+<p><code>obj</code>是指this指向的对象；</p>
+<p><code>arg1,arg2,...</code>是指函数的参数列表。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// call</span></span><br><span class="line">test.<span class="title function_">call</span>(<span class="string">&#x27;call&#x27;</span>, <span class="string">&#x27;chender&#x27;</span>, <span class="number">18</span>) <span class="comment">// 参数: chender 18</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="bind"><a href="#bind" class="headerlink" title="bind"></a>bind</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// bind</span></span><br><span class="line"><span class="keyword">var</span> bar = test.<span class="title function_">bind</span>(<span class="string">&#x27;bind&#x27;</span>)</span><br><span class="line"><span class="title function_">bar</span>() <span class="comment">// 参数:this,String&#123;&#x27;bind&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> bar = test.<span class="title function_">call</span>(<span class="string">&#x27;call&#x27;</span>, <span class="string">&#x27;chender&#x27;</span>, <span class="number">18</span>) <span class="comment">// 参数: chender 18</span></span><br><span class="line"><span class="title function_">bar</span>() <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p><code>bind</code>是<code>绑定（怪异）函数</code>，是返回绑定过对象的函数，那么在执行的时候this只会指向绑定好的对象；</p>
+<p>而<code>call</code>和<code>apply</code>都是直接执行函数，没有返回值 。</p>
+<ul>
+<li>bind()的其他参数</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> bar = test.<span class="title function_">call</span>(<span class="string">&#x27;call&#x27;</span>, <span class="string">&#x27;chender&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"><span class="title function_">bar</span>() <span class="comment">// 参数: chender 18</span></span><br><span class="line"><span class="title function_">bar</span>() <span class="comment">// 参数: chender 18    （参数一开始就指定好了，修改不了）</span></span><br></pre></td></tr></table></figure>
+
+<p>❗️❗️❗️此时，会不会有疑问？（bar()函数单独调用，this不应该指向window吗？）</p>
+<p>这里就涉及到了<strong>this绑定的优先级</strong>了！</p>
+<ol>
+<li><p>默认绑定优先级最低</p>
+</li>
+<li><p>显式绑定 &gt; 隐式绑定</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;chenber&#x27;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">18</span>,</span><br><span class="line">  <span class="attr">test</span>: test</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">obj.<span class="property">test</span>.<span class="title function_">apply</span>(<span class="string">&#x27;apply&#x27;</span>, [<span class="string">&#x27;1&#x27;</span>, <span class="number">19</span>]) </span><br><span class="line"><span class="comment">// this [String: &#x27;apply&#x27;]</span></span><br><span class="line"><span class="comment">// 参数: 1 19</span></span><br><span class="line"><span class="keyword">var</span> test1 = obj.<span class="property">test</span>.<span class="title function_">bind</span>(<span class="string">&#x27;bind&#x27;</span>, <span class="string">&#x27;chenber&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"><span class="title function_">test1</span>()</span><br><span class="line"><span class="comment">// this [String: &#x27;bind&#x27;]</span></span><br><span class="line"><span class="comment">// 参数: chenber 18</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>new 绑定 &gt; 隐式绑定</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;chenber&#x27;</span>,</span><br><span class="line">  <span class="attr">foo</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;foo:&#x27;</span>, <span class="variable language_">this</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;foo:&#x27;</span>, <span class="variable language_">this</span> === obj);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">new</span> obj.<span class="title function_">foo</span>()</span><br><span class="line"><span class="comment">// foo: foo &#123;&#125;</span></span><br><span class="line"><span class="comment">// foo: false</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>new &gt; 显式(bind)</p>
+<p>❗️<code>new</code>和<code>apply</code> &#x2F; <code>call</code>不可以一起使用，所以没有可比性</p>
+<p><code>new</code>和<code>bind</code>可以一起使用</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">test</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;test&#x27;</span>, <span class="variable language_">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> testFN = test.<span class="title function_">bind</span>(<span class="string">&#x27;abc&#x27;</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="title function_">testFN</span>() <span class="comment">// test&#123;&#125;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="new绑定"><a href="#new绑定" class="headerlink" title="new绑定"></a>new绑定</h3><p>使用new关键字来调用函数是，会执行如下的操作：</p>
+<ul>
+<li>创建一个全新的对象；</li>
+<li>这个新对象会被执行prototype连接：</li>
+<li>这个新对象会绑定到函数调用的this上（this的绑定在这个步骤完成）；</li>
+<li>如果函数没有返回其他对象，表达式会返回这个新对象：</li>
+</ul>
+<p><strong>总结(优先级从高到低)：</strong></p>
+<ol>
+<li>new</li>
+<li>bind </li>
+<li>apply &#x2F; call</li>
+<li>隐式</li>
+<li>默认绑定</li>
+</ol>
+<h2 id="内置函数的调用绑定"><a href="#内置函数的调用绑定" class="headerlink" title="内置函数的调用绑定"></a>内置函数的调用绑定</h2><p>内置函数的this指向需要<code>根据一些经验</code>获取</p>
+<ol>
+<li><p>setTimeOut()</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">setTimeOut</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;this&#x27;</span>, <span class="variable language_">this</span>) <span class="comment">//window</span></span><br><span class="line">&#125;,<span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>按钮的点击监听</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> btn = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;button&#x27;</span>)</span><br><span class="line">btn.<span class="property">onclick</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;btn&#x27;</span>, <span class="variable language_">this</span>); <span class="comment">// &lt;button&gt;点击&lt;/button&gt;</span></span><br><span class="line">&#125;</span><br><span class="line">btn.<span class="title function_">addEventListener</span>(<span class="string">&quot;click&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;btn&#x27;</span>, <span class="variable language_">this</span>); <span class="comment">// &lt;button&gt;点击&lt;/button&gt;</span></span><br><span class="line">&#125;)</span><br><span class="line">btn.<span class="title function_">addEventListener</span>(<span class="string">&quot;click&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;btn&#x27;</span>, <span class="variable language_">this</span>); <span class="comment">// window</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>forEach</p>
+<p> forEach(function(){}, {})</p>
+</li>
+</ol>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/01-this-img/image3.png"></p>
+<p>forEach的两个参数：</p>
+<ol>
+<li>回调函数</li>
+<li>回调函数的this绑定对象</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> names = [<span class="string">&quot;abc&quot;</span>, <span class="string">&quot;abc&quot;</span>, <span class="string">&quot;abc&quot;</span>, <span class="string">&quot;abc&quot;</span>, <span class="string">&quot;abc&quot;</span>]</span><br><span class="line">names.<span class="title function_">forEach</span>(<span class="keyword">function</span> (<span class="params">item</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;forEach&#x27;</span>, <span class="variable language_">this</span>); <span class="comment">// window</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">names.<span class="title function_">forEach</span>(<span class="keyword">function</span> (<span class="params">item</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;forEach&#x27;</span>, <span class="variable language_">this</span>); <span class="comment">// String &#123;&#x27;abc&#x27;&#125;</span></span><br><span class="line">&#125;, <span class="string">&quot;cba&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="this-绑定之外的规则"><a href="#this-绑定之外的规则" class="headerlink" title="this 绑定之外的规则"></a><code>this</code> 绑定之外的规则</h2><ol>
+<li><p>如果在使用显式绑定时传入<code>null</code>或者<code>undefined</code>，那么就会使用默认绑定规则</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">foo.<span class="title function_">apply</span>(<span class="literal">null</span>) <span class="comment">// window</span></span><br><span class="line">foo.<span class="title function_">apply</span>(<span class="literal">undefined</span>) <span class="comment">// window</span></span><br></pre></td></tr></table></figure>
+<p> 严格模式差异：在严格模式下，绑定null&#x2F;undefined时会直接使用传入值，this会指向null或undefined本身。</p>
+</li>
+<li><p>间接函数引用（知道就行，一般不会出现）</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj2 = &#123;&#125;;</span><br><span class="line">    (obj2.<span class="property">foo</span> = obj.<span class="property">foo</span>)() <span class="comment">// window</span></span><br></pre></td></tr></table></figure></li>
+<li><p>箭头函数(补充)<br>箭头函数是 <code>es6</code> 新增的一种函数的声明方法。</p>
+</li>
+</ol>
+<ul>
+<li>完整写法</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">foo</span> = (<span class="params">name,age</span>)=&gt;&#123;</span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;=&gt;&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>❗️注:</p>
+<pre><code>- 箭头函数不会绑定`this` 和 `arguments`(有新的属性进行代替)属性；
+- 箭头函数不能作为构造函数来使用（会抛出错误）
+</code></pre>
+<ul>
+<li>箭头函数的简写<ul>
+<li>只有一个参数时 可省略()<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/01-this-img/image4.png"></li>
+<li>函数体只有一行语句时，可省略{}，但是不能带return 关键字<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/01-this-img/image5.png"></li>
+<li>如果执行体只有返回一个对象，那么需要给这个对象加上()<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/01-this-img/image6.png"></li>
+</ul>
+</li>
+</ul>
+<h2 id="箭头函数中的-this-使用"><a href="#箭头函数中的-this-使用" class="headerlink" title="箭头函数中的 this 使用"></a>箭头函数中的 <code>this</code> 使用</h2><p> <strong>箭头函数的作用域没有 <code>this</code> ！</strong><br> 但是箭头函数中<code>this</code>会向寻找上层作用域中的<code>this</code>，直至找到全局this-&gt;<code>window</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">test</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;this&#x27;</span>, <span class="variable language_">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">test</span>() <span class="comment">// window</span></span><br><span class="line"><span class="keyword">var</span> test1 = test.<span class="title function_">bind</span>(<span class="string">&#x27;abc&#x27;</span>)</span><br><span class="line"><span class="title function_">test1</span>() <span class="comment">// window</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">	<span class="attr">name</span>: <span class="string">&#x27;chenber&#x27;</span>,</span><br><span class="line">	<span class="attr">foo</span>: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;this&#x27;</span>, <span class="variable language_">this</span>);</span><br><span class="line">      &#125;</span><br><span class="line"> &#125;</span><br><span class="line">obj.<span class="title function_">foo</span>() <span class="comment">// window</span></span><br><span class="line"><span class="keyword">const</span> test2 = obj.<span class="property">foo</span>.<span class="title function_">bind</span>(<span class="string">&#x27;abc&#x27;</span>)</span><br><span class="line"><span class="title function_">test2</span>() <span class="comment">// window</span></span><br></pre></td></tr></table></figure>
+<p>应用实例：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 模拟网络请求函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">request</span>(<span class="params">url, callbackFn</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> results = &#123;<span class="attr">code</span>: <span class="number">200</span>, <span class="attr">msg</span>: <span class="string">&#x27;成功&#x27;</span>, <span class="attr">data</span>: <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">callbackFn</span>(results)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将获取的数据传输给obj的results</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    <span class="attr">results</span>: &#123;&#125;,</span><br><span class="line">    <span class="comment">// 之前的写法：</span></span><br><span class="line">    <span class="comment">// getData: function () &#123;</span></span><br><span class="line">    <span class="comment">//   var _this = this</span></span><br><span class="line">    <span class="comment">//   request(&#x27;/test&#x27;, function (res) &#123;</span></span><br><span class="line">    <span class="comment">//     _this.results = res</span></span><br><span class="line">    <span class="comment">//   &#125;)</span></span><br><span class="line">    <span class="comment">// &#125;</span></span><br><span class="line">    <span class="comment">// 使用箭头函数:</span></span><br><span class="line">    <span class="attr">getData</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="title function_">request</span>(<span class="string">&#x27;/test&#x27;</span>, <span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">results</span> = res</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.<span class="title function_">getData</span>()</span><br></pre></td></tr></table></figure>
+<h2 id="1-6-相关面试题"><a href="#1-6-相关面试题" class="headerlink" title="1.6 相关面试题"></a>1.6 相关面试题</h2><ol>
+<li>面试题一</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 面试题一</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;person&#x27;</span>,</span><br><span class="line">  <span class="attr">sayName</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sayName</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> sss = person.<span class="property">sayName</span>;</span><br><span class="line">  <span class="title function_">sss</span>(); <span class="comment">// 默认绑定  输出：window</span></span><br><span class="line"></span><br><span class="line">  person.<span class="title function_">sayName</span>(); <span class="comment">// 隐式绑定  输出：person</span></span><br><span class="line">  (person.<span class="property">sayName</span>)();  <span class="comment">// 隐式绑定  输出：person  // 此处的;不能省略，因为下面是间接函数引用</span></span><br><span class="line">  (b = person.<span class="property">sayName</span>)() <span class="comment">// 默认绑定  输出：window     此处为间接函数引用，相当于独立函数调用，即this指向window </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>面试题二</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 面试题二</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"><span class="keyword">var</span> person1 = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;person1&#x27;</span>,</span><br><span class="line">  <span class="attr">foo1</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">foo2</span>: <span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>),</span><br><span class="line">  <span class="attr">foo3</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">foo4</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person2 = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;person2&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">person1.<span class="title function_">foo1</span>(); <span class="comment">// 隐式绑定  输出：person1</span></span><br><span class="line">person1.<span class="property">foo1</span>.<span class="title function_">call</span>(person2); <span class="comment">// 显示绑定   输出：person2</span></span><br><span class="line"></span><br><span class="line">person1.<span class="title function_">foo2</span>(); <span class="comment">// 默认绑定  输出：window  </span></span><br><span class="line">person1.<span class="property">foo2</span>.<span class="title function_">call</span>(person2); <span class="comment">// 显示绑定  this-&gt;上层作用域  输出：window</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 上层作用域指的是函数定义时的作用域，而不是函数运行时的作用域   </span></span><br><span class="line"><span class="comment">// 所以下面这几种情况要注意区分</span></span><br><span class="line">person1.<span class="title function_">foo3</span>()(); <span class="comment">// 默认绑定  输出：window </span></span><br><span class="line">person1.<span class="property">foo3</span>.<span class="title function_">call</span>(person2)(); <span class="comment">// 显示绑定  输出：window</span></span><br><span class="line">person1.<span class="title function_">foo3</span>().<span class="title function_">call</span>(person2); <span class="comment">// 显示绑定  输出：person2</span></span><br><span class="line"></span><br><span class="line">person1.<span class="title function_">foo4</span>()(); <span class="comment">// 间接函数引用  输出：person1</span></span><br><span class="line">person1.<span class="property">foo4</span>.<span class="title function_">call</span>(person2)(); <span class="comment">// 间接函数引用  输出：person2</span></span><br><span class="line">person1.<span class="title function_">foo4</span>().<span class="title function_">call</span>(person2); <span class="comment">// 显式绑定  输出：person1</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>面试题三</li>
+</ol>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/01-this-img/image7.png" alt="在这里插入图片描述"></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 面试题三</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name</span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">foo1</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">foo2</span> = <span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">foo3</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">foo4</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;person1&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;person2&#x27;</span>)</span><br><span class="line"></span><br><span class="line">person1.<span class="title function_">foo1</span>(); <span class="comment">// 隐式绑定  输出：person1</span></span><br><span class="line">person1.<span class="property">foo1</span>.<span class="title function_">call</span>(person2); <span class="comment">// 显示绑定  输出：person2</span></span><br><span class="line"></span><br><span class="line">person1.<span class="title function_">foo2</span>(); <span class="comment">// 上层作用域查找  输出：person1  </span></span><br><span class="line">person1.<span class="property">foo2</span>.<span class="title function_">call</span>(person2); <span class="comment">// 显示绑定  this-&gt;上层作用域  输出：person2</span></span><br><span class="line"></span><br><span class="line">person1.<span class="title function_">foo3</span>()(); <span class="comment">// 默认绑定  输出：window </span></span><br><span class="line">person1.<span class="property">foo3</span>.<span class="title function_">call</span>(person2)(); <span class="comment">// 显式绑定  输出：window</span></span><br><span class="line">person1.<span class="title function_">foo3</span>().<span class="title function_">call</span>(person2); <span class="comment">// 显式绑定  输出：person2</span></span><br><span class="line"></span><br><span class="line">person1.<span class="title function_">foo4</span>()(); <span class="comment">// 隐式绑定 上层作用域查找  输出：person1</span></span><br><span class="line">person1.<span class="property">foo4</span>.<span class="title function_">call</span>(person2)(); <span class="comment">// 显式绑定  上层作用域查找  输出：person2</span></span><br><span class="line">person1.<span class="title function_">foo4</span>().<span class="title function_">call</span>(person2); <span class="comment">// 显式绑定  上层作用域查找  输出：person1</span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>面试题四</li>
+</ol>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/01-this-img/image8.png" alt="在这里插入图片描述"></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 面试题四</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name</span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">obj</span> = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>,</span><br><span class="line">    <span class="attr">foo1</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">foo2</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;person1&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;person2&#x27;</span>)</span><br><span class="line"></span><br><span class="line">person1.<span class="property">obj</span>.<span class="title function_">foo1</span>()()<span class="comment">// 隐式绑定 window</span></span><br><span class="line">person1.<span class="property">obj</span>.<span class="property">foo1</span>.<span class="title function_">call</span>(person2)() <span class="comment">// 显式绑定 window</span></span><br><span class="line">person1.<span class="property">obj</span>.<span class="title function_">foo1</span>().<span class="title function_">call</span>(person2) <span class="comment">//  显式绑定 person2</span></span><br><span class="line"></span><br><span class="line">person1.<span class="property">obj</span>.<span class="title function_">foo2</span>()() <span class="comment">// 隐式绑定 obj</span></span><br><span class="line">person1.<span class="property">obj</span>.<span class="property">foo2</span>.<span class="title function_">call</span>(person2)() <span class="comment">// 显式绑定 person2</span></span><br><span class="line">person1.<span class="property">obj</span>.<span class="title function_">foo2</span>().<span class="title function_">call</span>(person2) <span class="comment">// 显式绑定 obj</span></span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>js高级</category>
+      </categories>
+      <tags>
+        <tag>this指向</tag>
       </tags>
   </entry>
   <entry>
@@ -697,209 +956,6 @@
       </tags>
   </entry>
   <entry>
-    <title>01- this的指向规则</title>
-    <url>/posts/d8cbe511.html</url>
-    <content><![CDATA[<p><code>this</code> 到底指向谁? 箭头函数中的<code>this</code>还能使用吗? 如果能使用又要怎么使用呢? 与普通函数的<code>this</code>指向一致吗?</p>
-<h2 id="this到底指向谁？"><a href="#this到底指向谁？" class="headerlink" title="this到底指向谁？"></a><code>this</code>到底指向谁？</h2><p>首先，定义一个函数：</p>
-<p>三种不同的调用方式，this的指向也会不同！</p>
-<ol>
-<li><p>直接调用</p>
-<blockquote>
-<p>foo()  &#x2F;&#x2F; window{}</p>
-</blockquote>
-</li>
-<li><p>通过对象调用</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><span class="line">var obj = &#123; name: &#x27;name&#x27; &#125;</span><br><span class="line">obj.foo = foo</span><br><span class="line">obj.foo(); // Object&#123;&#125;     (obj这个对象)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>call&#x2F;apply&#x2F;bind</p>
-<blockquote>
-<p>foo.apply(“abc”) &#x2F;&#x2F;  String {‘abc’}</p>
-</blockquote>
-</li>
-</ol>
-<p><strong>结论：</strong></p>
-<ol>
-<li>函数在调用时，js会<strong>默认给this绑定一个值</strong>；</li>
-<li>this的绑定跟它**定义的位置（编写的位置）**没有关系；</li>
-<li>this的绑定与调用方式以及调用的位置有关；</li>
-<li>this是在运行时被绑定的。</li>
-</ol>
-<h2 id="this的绑定规则"><a href="#this的绑定规则" class="headerlink" title="this的绑定规则"></a><code>this</code>的绑定规则</h2><h3 id="默认绑定"><a href="#默认绑定" class="headerlink" title="默认绑定"></a>默认绑定</h3><ul>
-<li>普通函数被独立调用</li>
-</ul>
-<blockquote>
-<p>foo()   &#x2F;&#x2F; window{}</p>
-</blockquote>
-<ul>
-<li>函数定义在对象中，但是独立被调用</li>
-</ul>
-<blockquote>
-<p>var bar &#x3D; obj.foo<br>bar()  &#x2F;&#x2F; window{}</p>
-</blockquote>
-<ul>
-<li><font style="color:#DF2A3F;">严格模式</font>下，独立调用的函数中的<code>this</code>指向<code>undefined</code></li>
-</ul>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="meta"></span></span></span><br><span class="line"><span class="meta"><span class="language-javascript">	&quot;use strict&quot;</span></span></span><br><span class="line"><span class="language-javascript">	...</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>高阶函数</li>
-</ul>
-<blockquote>
-<p>function test(fn) {<br>    fn()<br>}</p>
-<p>test(obj.foo) &#x2F;&#x2F; window{}</p>
-</blockquote>
-<p>即独立调用函数时(非严格模式下)<code>this</code>指向<code>window</code>!</p>
-<h3 id="隐式绑定"><a href="#隐式绑定" class="headerlink" title="隐式绑定"></a>隐式绑定</h3><blockquote>
-<p>一般是通过<strong>对象</strong>来发起调用。</p>
-</blockquote>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/01-this-img/image1.png"></p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/01-this-img/image2.png"></p>
-<h3 id="显式绑定"><a href="#显式绑定" class="headerlink" title="显式绑定"></a>显式绑定</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">foo.<span class="title function_">call</span>(obj)</span><br><span class="line">foo.<span class="title function_">apply</span>(obj) <span class="comment">// foo &#123;name:&#x27;name&#x27;&#125;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>这两种形式的显示绑定区别不大，不会像隐式绑定那样在obj上面添加foo:foo，但是foo的this就指向了obj；</li>
-<li>另外，这种形式一般将this绑定在对象身上，如果foo.call(‘abc’)，那么也会默认将’abc’创建为对应的包装类型，这里也就是<code>String</code>对象;</li>
-<li>如果是绑定在了<code>undefined</code>这种没有对应包装类型的对象身上，那么this就会默认指向<code>window</code></li>
-</ul>
-<h4 id="call-apply函数说明"><a href="#call-apply函数说明" class="headerlink" title="call &#x2F; apply函数说明"></a>call &#x2F; apply函数说明</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">test</span>(<span class="params">name, age</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;参数:&#x27;</span>, name, age); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>作用：都可以调取函数并绑定this，传递参数方式不同</p>
-<ul>
-<li><code>apply(obj,[argumentsArray])</code></li>
-</ul>
-<p><code>obj</code>是指this指向的对象；</p>
-<p><code>argumentsArray</code>是指函数的参数，必须要放在<strong>数组</strong>中进行传递；</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// apply</span></span><br><span class="line">test.<span class="title function_">apply</span>(<span class="string">&#x27;apply&#x27;</span>, [<span class="string">&#x27;chenber&#x27;</span>, <span class="number">18</span>]) <span class="comment">// 参数: chenber 18</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><code>&lt;font style=&quot;color:#DF2A3F;&quot;&gt;call(obj,arg1,arg2,...)&lt;/font&gt;</code></li>
-</ul>
-<p><code>obj</code>是指this指向的对象；</p>
-<p><code>arg1,arg2,...</code>是指函数的参数列表。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// call</span></span><br><span class="line">test.<span class="title function_">call</span>(<span class="string">&#x27;call&#x27;</span>, <span class="string">&#x27;chender&#x27;</span>, <span class="number">18</span>) <span class="comment">// 参数: chender 18</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="bind"><a href="#bind" class="headerlink" title="bind"></a>bind</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// bind</span></span><br><span class="line"><span class="keyword">var</span> bar = test.<span class="title function_">bind</span>(<span class="string">&#x27;bind&#x27;</span>)</span><br><span class="line"><span class="title function_">bar</span>() <span class="comment">// 参数:this,String&#123;&#x27;bind&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> bar = test.<span class="title function_">call</span>(<span class="string">&#x27;call&#x27;</span>, <span class="string">&#x27;chender&#x27;</span>, <span class="number">18</span>) <span class="comment">// 参数: chender 18</span></span><br><span class="line"><span class="title function_">bar</span>() <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
-
-<p><code>bind</code>是<code>绑定（怪异）函数</code>，是返回绑定过对象的函数，那么在执行的时候this只会指向绑定好的对象；</p>
-<p>而<code>call</code>和<code>apply</code>都是直接执行函数，没有返回值 。</p>
-<ul>
-<li>bind()的其他参数</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> bar = test.<span class="title function_">call</span>(<span class="string">&#x27;call&#x27;</span>, <span class="string">&#x27;chender&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"><span class="title function_">bar</span>() <span class="comment">// 参数: chender 18</span></span><br><span class="line"><span class="title function_">bar</span>() <span class="comment">// 参数: chender 18    （参数一开始就指定好了，修改不了）</span></span><br></pre></td></tr></table></figure>
-
-<p>❗️❗️❗️此时，会不会有疑问？（bar()函数单独调用，this不应该指向window吗？）</p>
-<p>这里就涉及到了<strong>this绑定的优先级</strong>了！</p>
-<ol>
-<li><p>默认绑定优先级最低</p>
-</li>
-<li><p>显式绑定 &gt; 隐式绑定</p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;chenber&#x27;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">18</span>,</span><br><span class="line">  <span class="attr">test</span>: test</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">obj.<span class="property">test</span>.<span class="title function_">apply</span>(<span class="string">&#x27;apply&#x27;</span>, [<span class="string">&#x27;1&#x27;</span>, <span class="number">19</span>]) </span><br><span class="line"><span class="comment">// this [String: &#x27;apply&#x27;]</span></span><br><span class="line"><span class="comment">// 参数: 1 19</span></span><br><span class="line"><span class="keyword">var</span> test1 = obj.<span class="property">test</span>.<span class="title function_">bind</span>(<span class="string">&#x27;bind&#x27;</span>, <span class="string">&#x27;chenber&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"><span class="title function_">test1</span>()</span><br><span class="line"><span class="comment">// this [String: &#x27;bind&#x27;]</span></span><br><span class="line"><span class="comment">// 参数: chenber 18</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>new 绑定 &gt; 隐式绑定</p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;chenber&#x27;</span>,</span><br><span class="line">  <span class="attr">foo</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;foo:&#x27;</span>, <span class="variable language_">this</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;foo:&#x27;</span>, <span class="variable language_">this</span> === obj);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">new</span> obj.<span class="title function_">foo</span>()</span><br><span class="line"><span class="comment">// foo: foo &#123;&#125;</span></span><br><span class="line"><span class="comment">// foo: false</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>new &gt; 显式(bind)</p>
-<p>❗️<code>new</code>和<code>apply</code> &#x2F; <code>call</code>不可以一起使用，所以没有可比性</p>
-<p><code>new</code>和<code>bind</code>可以一起使用</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">test</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;test&#x27;</span>, <span class="variable language_">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> testFN = test.<span class="title function_">bind</span>(<span class="string">&#x27;abc&#x27;</span>)</span><br><span class="line"><span class="keyword">new</span> <span class="title function_">testFN</span>() <span class="comment">// test&#123;&#125;</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="new绑定"><a href="#new绑定" class="headerlink" title="new绑定"></a>new绑定</h3><p>使用new关键字来调用函数是，会执行如下的操作：</p>
-<ul>
-<li>创建一个全新的对象；</li>
-<li>这个新对象会被执行prototype连接：</li>
-<li>这个新对象会绑定到函数调用的this上（this的绑定在这个步骤完成）；</li>
-<li>如果函数没有返回其他对象，表达式会返回这个新对象：</li>
-</ul>
-<p><strong>总结(优先级从高到低)：</strong></p>
-<ol>
-<li>new</li>
-<li>bind </li>
-<li>apply &#x2F; call</li>
-<li>隐式</li>
-<li>默认绑定</li>
-</ol>
-<h2 id="内置函数的调用绑定"><a href="#内置函数的调用绑定" class="headerlink" title="内置函数的调用绑定"></a>内置函数的调用绑定</h2><p>内置函数的this指向需要<code>根据一些经验</code>获取</p>
-<ol>
-<li><p>setTimeOut()</p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">setTimeOut</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;this&#x27;</span>, <span class="variable language_">this</span>) <span class="comment">//window</span></span><br><span class="line">&#125;,<span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>按钮的点击监听</p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> btn = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;button&#x27;</span>)</span><br><span class="line">btn.<span class="property">onclick</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;btn&#x27;</span>, <span class="variable language_">this</span>); <span class="comment">// &lt;button&gt;点击&lt;/button&gt;</span></span><br><span class="line">&#125;</span><br><span class="line">btn.<span class="title function_">addEventListener</span>(<span class="string">&quot;click&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;btn&#x27;</span>, <span class="variable language_">this</span>); <span class="comment">// &lt;button&gt;点击&lt;/button&gt;</span></span><br><span class="line">&#125;)</span><br><span class="line">btn.<span class="title function_">addEventListener</span>(<span class="string">&quot;click&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;btn&#x27;</span>, <span class="variable language_">this</span>); <span class="comment">// window</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>forEach</p>
-<p> forEach(function(){}, {})</p>
-</li>
-</ol>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/01-this-img/image3.png"></p>
-<p>forEach的两个参数：</p>
-<ol>
-<li>回调函数</li>
-<li>回调函数的this绑定对象</li>
-</ol>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> names = [<span class="string">&quot;abc&quot;</span>, <span class="string">&quot;abc&quot;</span>, <span class="string">&quot;abc&quot;</span>, <span class="string">&quot;abc&quot;</span>, <span class="string">&quot;abc&quot;</span>]</span><br><span class="line">names.<span class="title function_">forEach</span>(<span class="keyword">function</span> (<span class="params">item</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;forEach&#x27;</span>, <span class="variable language_">this</span>); <span class="comment">// window</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">names.<span class="title function_">forEach</span>(<span class="keyword">function</span> (<span class="params">item</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;forEach&#x27;</span>, <span class="variable language_">this</span>); <span class="comment">// String &#123;&#x27;abc&#x27;&#125;</span></span><br><span class="line">&#125;, <span class="string">&quot;cba&quot;</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="this-绑定之外的规则"><a href="#this-绑定之外的规则" class="headerlink" title="this 绑定之外的规则"></a><code>this</code> 绑定之外的规则</h2><ol>
-<li><p>如果在使用显式绑定时传入<code>null</code>或者<code>undefined</code>，那么就会使用默认绑定规则</p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">foo.<span class="title function_">apply</span>(<span class="literal">null</span>) <span class="comment">// window</span></span><br><span class="line">foo.<span class="title function_">apply</span>(<span class="literal">undefined</span>) <span class="comment">// window</span></span><br></pre></td></tr></table></figure>
-<p> 严格模式差异：在严格模式下，绑定null&#x2F;undefined时会直接使用传入值，this会指向null或undefined本身。</p>
-</li>
-<li><p>间接函数引用（知道就行，一般不会出现）</p>
- <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj2 = &#123;&#125;;</span><br><span class="line">    (obj2.<span class="property">foo</span> = obj.<span class="property">foo</span>)() <span class="comment">// window</span></span><br></pre></td></tr></table></figure></li>
-<li><p>箭头函数(补充)<br>箭头函数是 <code>es6</code> 新增的一种函数的声明方法。</p>
-</li>
-</ol>
-<ul>
-<li>完整写法</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">foo</span> = (<span class="params">name,age</span>)=&gt;&#123;</span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;=&gt;&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>❗️注:</p>
-<pre><code>- 箭头函数不会绑定`this` 和 `arguments`(有新的属性进行代替)属性；
-- 箭头函数不能作为构造函数来使用（会抛出错误）
-</code></pre>
-<ul>
-<li>箭头函数的简写<ul>
-<li>只有一个参数时 可省略()<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/01-this-img/image4.png"></li>
-<li>函数体只有一行语句时，可省略{}，但是不能带return 关键字<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/01-this-img/image5.png"></li>
-<li>如果执行体只有返回一个对象，那么需要给这个对象加上()<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/01-this-img/image6.png"></li>
-</ul>
-</li>
-</ul>
-<h2 id="箭头函数中的-this-使用"><a href="#箭头函数中的-this-使用" class="headerlink" title="箭头函数中的 this 使用"></a>箭头函数中的 <code>this</code> 使用</h2><p> <strong>箭头函数的作用域没有 <code>this</code> ！</strong><br> 但是箭头函数中<code>this</code>会向寻找上层作用域中的<code>this</code>，直至找到全局this-&gt;<code>window</code>。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">test</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;this&#x27;</span>, <span class="variable language_">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">test</span>() <span class="comment">// window</span></span><br><span class="line"><span class="keyword">var</span> test1 = test.<span class="title function_">bind</span>(<span class="string">&#x27;abc&#x27;</span>)</span><br><span class="line"><span class="title function_">test1</span>() <span class="comment">// window</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">	<span class="attr">name</span>: <span class="string">&#x27;chenber&#x27;</span>,</span><br><span class="line">	<span class="attr">foo</span>: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;this&#x27;</span>, <span class="variable language_">this</span>);</span><br><span class="line">      &#125;</span><br><span class="line"> &#125;</span><br><span class="line">obj.<span class="title function_">foo</span>() <span class="comment">// window</span></span><br><span class="line"><span class="keyword">const</span> test2 = obj.<span class="property">foo</span>.<span class="title function_">bind</span>(<span class="string">&#x27;abc&#x27;</span>)</span><br><span class="line"><span class="title function_">test2</span>() <span class="comment">// window</span></span><br></pre></td></tr></table></figure>
-<p>应用实例：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 模拟网络请求函数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">request</span>(<span class="params">url, callbackFn</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> results = &#123;<span class="attr">code</span>: <span class="number">200</span>, <span class="attr">msg</span>: <span class="string">&#x27;成功&#x27;</span>, <span class="attr">data</span>: <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">callbackFn</span>(results)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将获取的数据传输给obj的results</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    <span class="attr">results</span>: &#123;&#125;,</span><br><span class="line">    <span class="comment">// 之前的写法：</span></span><br><span class="line">    <span class="comment">// getData: function () &#123;</span></span><br><span class="line">    <span class="comment">//   var _this = this</span></span><br><span class="line">    <span class="comment">//   request(&#x27;/test&#x27;, function (res) &#123;</span></span><br><span class="line">    <span class="comment">//     _this.results = res</span></span><br><span class="line">    <span class="comment">//   &#125;)</span></span><br><span class="line">    <span class="comment">// &#125;</span></span><br><span class="line">    <span class="comment">// 使用箭头函数:</span></span><br><span class="line">    <span class="attr">getData</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="title function_">request</span>(<span class="string">&#x27;/test&#x27;</span>, <span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">results</span> = res</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.<span class="title function_">getData</span>()</span><br></pre></td></tr></table></figure>
-<h2 id="1-6-相关面试题"><a href="#1-6-相关面试题" class="headerlink" title="1.6 相关面试题"></a>1.6 相关面试题</h2><ol>
-<li>面试题一</li>
-</ol>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 面试题一</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;person&#x27;</span>,</span><br><span class="line">  <span class="attr">sayName</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sayName</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> sss = person.<span class="property">sayName</span>;</span><br><span class="line">  <span class="title function_">sss</span>(); <span class="comment">// 默认绑定  输出：window</span></span><br><span class="line"></span><br><span class="line">  person.<span class="title function_">sayName</span>(); <span class="comment">// 隐式绑定  输出：person</span></span><br><span class="line">  (person.<span class="property">sayName</span>)();  <span class="comment">// 隐式绑定  输出：person  // 此处的;不能省略，因为下面是间接函数引用</span></span><br><span class="line">  (b = person.<span class="property">sayName</span>)() <span class="comment">// 默认绑定  输出：window     此处为间接函数引用，相当于独立函数调用，即this指向window </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>面试题二</li>
-</ol>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 面试题二</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"><span class="keyword">var</span> person1 = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;person1&#x27;</span>,</span><br><span class="line">  <span class="attr">foo1</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">foo2</span>: <span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>),</span><br><span class="line">  <span class="attr">foo3</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">foo4</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person2 = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;person2&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">person1.<span class="title function_">foo1</span>(); <span class="comment">// 隐式绑定  输出：person1</span></span><br><span class="line">person1.<span class="property">foo1</span>.<span class="title function_">call</span>(person2); <span class="comment">// 显示绑定   输出：person2</span></span><br><span class="line"></span><br><span class="line">person1.<span class="title function_">foo2</span>(); <span class="comment">// 默认绑定  输出：window  </span></span><br><span class="line">person1.<span class="property">foo2</span>.<span class="title function_">call</span>(person2); <span class="comment">// 显示绑定  this-&gt;上层作用域  输出：window</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 上层作用域指的是函数定义时的作用域，而不是函数运行时的作用域   </span></span><br><span class="line"><span class="comment">// 所以下面这几种情况要注意区分</span></span><br><span class="line">person1.<span class="title function_">foo3</span>()(); <span class="comment">// 默认绑定  输出：window </span></span><br><span class="line">person1.<span class="property">foo3</span>.<span class="title function_">call</span>(person2)(); <span class="comment">// 显示绑定  输出：window</span></span><br><span class="line">person1.<span class="title function_">foo3</span>().<span class="title function_">call</span>(person2); <span class="comment">// 显示绑定  输出：person2</span></span><br><span class="line"></span><br><span class="line">person1.<span class="title function_">foo4</span>()(); <span class="comment">// 间接函数引用  输出：person1</span></span><br><span class="line">person1.<span class="property">foo4</span>.<span class="title function_">call</span>(person2)(); <span class="comment">// 间接函数引用  输出：person2</span></span><br><span class="line">person1.<span class="title function_">foo4</span>().<span class="title function_">call</span>(person2); <span class="comment">// 显式绑定  输出：person1</span></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>面试题三</li>
-</ol>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/01-this-img/image7.png" alt="在这里插入图片描述"></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 面试题三</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name</span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">foo1</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">foo2</span> = <span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">foo3</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">foo4</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;person1&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;person2&#x27;</span>)</span><br><span class="line"></span><br><span class="line">person1.<span class="title function_">foo1</span>(); <span class="comment">// 隐式绑定  输出：person1</span></span><br><span class="line">person1.<span class="property">foo1</span>.<span class="title function_">call</span>(person2); <span class="comment">// 显示绑定  输出：person2</span></span><br><span class="line"></span><br><span class="line">person1.<span class="title function_">foo2</span>(); <span class="comment">// 上层作用域查找  输出：person1  </span></span><br><span class="line">person1.<span class="property">foo2</span>.<span class="title function_">call</span>(person2); <span class="comment">// 显示绑定  this-&gt;上层作用域  输出：person2</span></span><br><span class="line"></span><br><span class="line">person1.<span class="title function_">foo3</span>()(); <span class="comment">// 默认绑定  输出：window </span></span><br><span class="line">person1.<span class="property">foo3</span>.<span class="title function_">call</span>(person2)(); <span class="comment">// 显式绑定  输出：window</span></span><br><span class="line">person1.<span class="title function_">foo3</span>().<span class="title function_">call</span>(person2); <span class="comment">// 显式绑定  输出：person2</span></span><br><span class="line"></span><br><span class="line">person1.<span class="title function_">foo4</span>()(); <span class="comment">// 隐式绑定 上层作用域查找  输出：person1</span></span><br><span class="line">person1.<span class="property">foo4</span>.<span class="title function_">call</span>(person2)(); <span class="comment">// 显式绑定  上层作用域查找  输出：person2</span></span><br><span class="line">person1.<span class="title function_">foo4</span>().<span class="title function_">call</span>(person2); <span class="comment">// 显式绑定  上层作用域查找  输出：person1</span></span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>面试题四</li>
-</ol>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/01-this-img/image8.png" alt="在这里插入图片描述"></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 面试题四</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name</span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">obj</span> = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>,</span><br><span class="line">    <span class="attr">foo1</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">foo2</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;person1&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;person2&#x27;</span>)</span><br><span class="line"></span><br><span class="line">person1.<span class="property">obj</span>.<span class="title function_">foo1</span>()()<span class="comment">// 隐式绑定 window</span></span><br><span class="line">person1.<span class="property">obj</span>.<span class="property">foo1</span>.<span class="title function_">call</span>(person2)() <span class="comment">// 显式绑定 window</span></span><br><span class="line">person1.<span class="property">obj</span>.<span class="title function_">foo1</span>().<span class="title function_">call</span>(person2) <span class="comment">//  显式绑定 person2</span></span><br><span class="line"></span><br><span class="line">person1.<span class="property">obj</span>.<span class="title function_">foo2</span>()() <span class="comment">// 隐式绑定 obj</span></span><br><span class="line">person1.<span class="property">obj</span>.<span class="property">foo2</span>.<span class="title function_">call</span>(person2)() <span class="comment">// 显式绑定 person2</span></span><br><span class="line">person1.<span class="property">obj</span>.<span class="title function_">foo2</span>().<span class="title function_">call</span>(person2) <span class="comment">// 显式绑定 obj</span></span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>js高级</category>
-      </categories>
-      <tags>
-        <tag>this指向</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>06-javascript函数和对象增强</title>
     <url>/posts/2f741396.html</url>
     <content><![CDATA[<p>了解一下<code>js</code>函数和对象的相关增强知识。</p>
@@ -1085,49 +1141,6 @@
       </categories>
       <tags>
         <tag>javascript函数和对象增强</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Nginx安装与配置以及常用命令</title>
-    <url>/posts/4f72a7f4.html</url>
-    <content><![CDATA[<p>了解一下Nginx的安装与配置，以及常见的Nginx常用命令</p>
-<h1 id="1-安装与配置"><a href="#1-安装与配置" class="headerlink" title="1. 安装与配置"></a>1. 安装与配置</h1><ol>
-<li><p>阿里云申请免费云服务器，为Nginx练习使用</p>
-</li>
-<li><p>连接远程服务器</p>
-<ul>
-<li>首先重置root密码</li>
-<li>若是使用vscode 可安装 <code>remote ssh</code>插件 （用来连接远程服务器）</li>
-<li>连接到远程</li>
-</ul>
-</li>
-<li><p>下载Nginx </p>
-<ul>
-<li>cd &#x2F;usr&#x2F;local</li>
-<li>wget <a href="https://nginx.org/download/Nginx-1.28.0.tar.gz">https://nginx.org/download/Nginx-1.28.0.tar.gz</a> (若下载不成功可通过命令 <code>su</code> 切换到root用户)</li>
-</ul>
-</li>
-</ol>
-<img src="../../img/Nginx/img.png">
-
-<pre><code>- tar -zxvf Nginx-1.28.0.tar.gz
-- cd ./Nginx-1.28.0
-</code></pre>
-<ol start="4">
-<li>初始配置及编译安装<ul>
-<li>初始配置 .&#x2F;configure</li>
-<li>编译源码 安装 make &amp;&amp; make install</li>
-</ul>
-</li>
-</ol>
-<h1 id="2-Nginx常见命令"><a href="#2-Nginx常见命令" class="headerlink" title="2. Nginx常见命令"></a>2. Nginx常见命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">user admin; # 规定启动Nginx的用户</span><br><span class="line">worker_processes 1; # Nginx 启动一个工作进程，适用于轻量部署或开发环境。</span><br><span class="line">events &#123;</span><br><span class="line">   worker_connections 1024; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http&#123;</span><br><span class="line">   include mime.types; # 文件类型映射</span><br><span class="line">   default_type application/octet-stream; # 默认MIME类型</span><br><span class="line">   sendfile        on;                            # 启用 sendfile 加速</span><br><span class="line">   tcp_nopush      on;                            # 优化发送数据包</span><br><span class="line">   keepalive_timeout  65;                         # 长连接超时</span><br><span class="line">   client_max_body_size 10m;                      # 请求体大小限制</span><br><span class="line"></span><br><span class="line">   include /etc/nginx/conf.d/*.conf;              # 引入子配置文件</span><br><span class="line">   </span><br><span class="line">   # 静态文件配置</span><br><span class="line">   server &#123;</span><br><span class="line">      listen 8080 ssl;</span><br><span class="line">      server_name localhost myTest.com;</span><br><span class="line">      </span><br><span class="line">      # 申请ssl证书 配置ssl证书</span><br><span class="line">      ssl_certificate /path/to/cert.pem;</span><br><span class="line">      ssl_certificate_key /path/to/cert.key;</span><br><span class="line">      </span><br><span class="line">      location / &#123;</span><br><span class="line">         root /usr/local/nginx/html/dist; # 相对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      location /api &#123;</span><br><span class="line">         # 设置CORS配置</span><br><span class="line">         add_header Access-Control-Allow-Origin *;</span><br><span class="line">         add_header Access-Control-Allow-Methods &#x27;GET, POST, OPTIONS&#x27;;</span><br><span class="line">         add_header Access-Control-Allow-Headers &#x27;Content-Type, Authorization&#x27;;</span><br><span class="line">         </span><br><span class="line">         alias /usr/local/nginx/html/dist/api; # 绝对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">         </span><br><span class="line">         if ($request_method = &#x27;OPTIONS&#x27;) &#123;</span><br><span class="line">            return 204;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Nginx</category>
-      </categories>
-      <tags>
-        <tag>Nginx</tag>
       </tags>
   </entry>
   <entry>
@@ -1475,18 +1488,6 @@
       </categories>
       <tags>
         <tag>Proxy / Reflect</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>项目性能优化</title>
-    <url>/posts/345bc23f.html</url>
-    <content><![CDATA[<p>项目整体需求大致完成后，需要开始进行项目性能优化了，优化思路主要有：<code>代码层面</code>，<code>构建与用户打包</code>，<code>用户体验优化</code>，<code>vue/react特有优化</code>…</p>
-<h1 id="代码层面"><a href="#代码层面" class="headerlink" title="代码层面"></a>代码层面</h1><h1 id="构建和用户打包"><a href="#构建和用户打包" class="headerlink" title="构建和用户打包"></a>构建和用户打包</h1><h1 id="用户体验优化"><a href="#用户体验优化" class="headerlink" title="用户体验优化"></a>用户体验优化</h1><h1 id="vue-react特有优化"><a href="#vue-react特有优化" class="headerlink" title="vue&#x2F;react特有优化"></a>vue&#x2F;react特有优化</h1>]]></content>
-      <categories>
-        <category>项目</category>
-      </categories>
-      <tags>
-        <tag>性能优化</tag>
       </tags>
   </entry>
   <entry>
