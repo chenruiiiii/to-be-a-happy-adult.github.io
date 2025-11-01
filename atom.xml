@@ -6,7 +6,7 @@
   <link href="http://to-be-a-happy-adult.xyz/atom.xml" rel="self"/>
   
   <link href="http://to-be-a-happy-adult.xyz/"/>
-  <updated>2025-10-31T13:55:25.414Z</updated>
+  <updated>2025-11-01T07:35:53.568Z</updated>
   <id>http://to-be-a-happy-adult.xyz/</id>
   
   <author>
@@ -15,6 +15,57 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>git常见问题解决</title>
+    <link href="http://to-be-a-happy-adult.xyz/posts/490dde0b.html"/>
+    <id>http://to-be-a-happy-adult.xyz/posts/490dde0b.html</id>
+    <published>2025-11-01T07:34:10.000Z</published>
+    <updated>2025-11-01T07:35:53.568Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;Git常见问题解决&quot;&gt;&lt;a href=&quot;#Git常见问题解决&quot; class=&quot;headerlink&quot; title=&quot;Git常见问题解决&quot;&gt;&lt;/a&gt;Git常见问题解决&lt;/h1&gt;&lt;h2 id=&quot;首次添加远程仓库&quot;&gt;&lt;a href=&quot;#首次添加远程仓库&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Git" scheme="http://to-be-a-happy-adult.xyz/tags/Git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>前端工程化</title>
+    <link href="http://to-be-a-happy-adult.xyz/posts/7db00131.html"/>
+    <id>http://to-be-a-happy-adult.xyz/posts/7db00131.html</id>
+    <published>2025-11-01T02:53:51.000Z</published>
+    <updated>2025-11-01T07:32:54.089Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;本篇文章主要记录一下&lt;code&gt;前端工程化&lt;/code&gt;的一些内容。&lt;/p&gt;
+&lt;h1 id=&quot;项目工程化&quot;&gt;&lt;a href=&quot;#项目工程化&quot; class=&quot;headerlink&quot; title=&quot;项目工程化&quot;&gt;&lt;/a&gt;项目工程化&lt;/h1&gt;&lt;h2</summary>
+        
+      
+    
+    
+    
+    <category term="工程化" scheme="http://to-be-a-happy-adult.xyz/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
+    
+    
+    <category term="eslint" scheme="http://to-be-a-happy-adult.xyz/tags/eslint/"/>
+    
+    <category term="prettier" scheme="http://to-be-a-happy-adult.xyz/tags/prettier/"/>
+    
+  </entry>
   
   <entry>
     <title>为什么要选择 Monorepo ❓</title>
@@ -126,7 +177,7 @@
     <link href="http://to-be-a-happy-adult.xyz/posts/92d95aa4.html"/>
     <id>http://to-be-a-happy-adult.xyz/posts/92d95aa4.html</id>
     <published>2025-08-19T02:30:30.000Z</published>
-    <updated>2025-10-30T07:25:19.567Z</updated>
+    <updated>2025-11-01T08:01:49.861Z</updated>
     
     
       
