@@ -6,7 +6,7 @@
   <link href="http://to-be-a-happy-adult.xyz/atom.xml" rel="self"/>
   
   <link href="http://to-be-a-happy-adult.xyz/"/>
-  <updated>2025-11-01T07:35:53.568Z</updated>
+  <updated>2025-11-01T10:54:07.544Z</updated>
   <id>http://to-be-a-happy-adult.xyz/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://to-be-a-happy-adult.xyz/posts/490dde0b.html"/>
     <id>http://to-be-a-happy-adult.xyz/posts/490dde0b.html</id>
     <published>2025-11-01T07:34:10.000Z</published>
-    <updated>2025-11-01T07:35:53.568Z</updated>
+    <updated>2025-11-01T10:54:07.544Z</updated>
     
     
       
@@ -34,6 +34,8 @@
     
     
     
+    <category term="Git" scheme="http://to-be-a-happy-adult.xyz/categories/Git/"/>
+    
     
     <category term="Git" scheme="http://to-be-a-happy-adult.xyz/tags/Git/"/>
     
@@ -44,7 +46,7 @@
     <link href="http://to-be-a-happy-adult.xyz/posts/7db00131.html"/>
     <id>http://to-be-a-happy-adult.xyz/posts/7db00131.html</id>
     <published>2025-11-01T02:53:51.000Z</published>
-    <updated>2025-11-01T07:32:54.089Z</updated>
+    <updated>2025-11-01T10:55:30.564Z</updated>
     
     
       
@@ -177,7 +179,7 @@
     <link href="http://to-be-a-happy-adult.xyz/posts/92d95aa4.html"/>
     <id>http://to-be-a-happy-adult.xyz/posts/92d95aa4.html</id>
     <published>2025-08-19T02:30:30.000Z</published>
-    <updated>2025-11-01T08:01:49.861Z</updated>
+    <updated>2025-11-01T10:54:04.540Z</updated>
     
     
       
@@ -189,6 +191,8 @@
       
     
     
+    
+    <category term="Git" scheme="http://to-be-a-happy-adult.xyz/categories/Git/"/>
     
     
     <category term="Git" scheme="http://to-be-a-happy-adult.xyz/tags/Git/"/>
