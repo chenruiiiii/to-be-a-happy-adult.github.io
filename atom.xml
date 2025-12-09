@@ -6,7 +6,7 @@
   <link href="http://to-be-a-happy-adult.xyz/atom.xml" rel="self"/>
   
   <link href="http://to-be-a-happy-adult.xyz/"/>
-  <updated>2025-12-09T08:39:07.254Z</updated>
+  <updated>2025-12-09T09:00:36.625Z</updated>
   <id>http://to-be-a-happy-adult.xyz/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title></title>
+    <link href="http://to-be-a-happy-adult.xyz/posts/0.html"/>
+    <id>http://to-be-a-happy-adult.xyz/posts/0.html</id>
+    <published>2025-12-09T09:00:36.614Z</published>
+    <updated>2025-12-09T09:00:36.625Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;图片加载白屏&quot;&gt;&lt;a href=&quot;#图片加载白屏&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>数据类型检测</title>
@@ -203,15 +224,15 @@
     <link href="http://to-be-a-happy-adult.xyz/posts/345bc23f.html"/>
     <id>http://to-be-a-happy-adult.xyz/posts/345bc23f.html</id>
     <published>2025-09-22T14:01:48.000Z</published>
-    <updated>2025-12-09T08:47:41.656Z</updated>
+    <updated>2025-12-09T09:01:26.671Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;p&gt;项目整体需求大致完成后，需要开始进行项目性能优化了，优化思路主要有：&lt;code&gt;首屏加载&lt;/code&gt;、&amp;#96;&amp;#96;&lt;/p&gt;
-&lt;h1 id=&quot;代码层面&quot;&gt;&lt;a href=&quot;#代码层面&quot; class=&quot;headerlink&quot;</summary>
+    <summary type="html">&lt;p&gt;项目整体需求大致完成后，需要开始进行项目性能优化了，优化思路主要有：&lt;code&gt;首屏加载&lt;/code&gt;、&lt;code&gt;交互优化&lt;/code&gt;等&lt;/p&gt;
+&lt;h1 id=&quot;图片加载白屏&quot;&gt;&lt;a href=&quot;#图片加载白屏&quot; class=&quot;headerlink&quot;</summary>
         
       
     
