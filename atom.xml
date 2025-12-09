@@ -6,7 +6,7 @@
   <link href="http://to-be-a-happy-adult.xyz/atom.xml" rel="self"/>
   
   <link href="http://to-be-a-happy-adult.xyz/"/>
-  <updated>2025-11-13T13:22:48.556Z</updated>
+  <updated>2025-12-09T08:39:07.254Z</updated>
   <id>http://to-be-a-happy-adult.xyz/</id>
   
   <author>
@@ -17,36 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>TypeScript的默认之处</title>
-    <link href="http://to-be-a-happy-adult.xyz/posts/2194d207.html"/>
-    <id>http://to-be-a-happy-adult.xyz/posts/2194d207.html</id>
-    <published>2025-11-13T13:17:14.000Z</published>
-    <updated>2025-11-13T13:22:48.556Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;今天学习封装&lt;code&gt;axios&lt;/code&gt;，&lt;code&gt;coderwhy&lt;/code&gt;老师的封装简直不要太🐂🍺，给我看的一愣一愣的。说实话之前写的项目只是简单的封装了&lt;code&gt;axios&lt;/code&gt;，导致每次使用获取到接口数都会有ts类型提示，这真的很烦人。&lt;</summary>
-        
-      
-    
-    
-    
-    <category term="TypeScript" scheme="http://to-be-a-happy-adult.xyz/categories/TypeScript/"/>
-    
-    
-    <category term="TypeScript" scheme="http://to-be-a-happy-adult.xyz/tags/TypeScript/"/>
-    
-  </entry>
-  
-  <entry>
     <title>数据类型检测</title>
     <link href="http://to-be-a-happy-adult.xyz/posts/67b93776.html"/>
     <id>http://to-be-a-happy-adult.xyz/posts/67b93776.html</id>
-    <published>2025-11-09T08:35:02.000Z</published>
-    <updated>2025-12-09T08:35:56.665Z</updated>
+    <published>2025-11-14T08:35:02.000Z</published>
+    <updated>2025-12-09T08:39:07.254Z</updated>
     
     
       
@@ -63,6 +38,31 @@
     
     
     <category term="数据类型" scheme="http://to-be-a-happy-adult.xyz/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>TypeScript的默认之处</title>
+    <link href="http://to-be-a-happy-adult.xyz/posts/2194d207.html"/>
+    <id>http://to-be-a-happy-adult.xyz/posts/2194d207.html</id>
+    <published>2025-11-13T13:17:14.000Z</published>
+    <updated>2025-12-09T08:36:47.969Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;今天学习封装&lt;code&gt;axios&lt;/code&gt;，&lt;code&gt;coderwhy&lt;/code&gt;老师的封装简直不要太🐂🍺，给我看的一愣一愣的。说实话之前写的项目只是简单的封装了&lt;code&gt;axios&lt;/code&gt;，导致每次使用获取到接口数都会有ts类型提示，这真的很烦人。&lt;</summary>
+        
+      
+    
+    
+    
+    <category term="TypeScript" scheme="http://to-be-a-happy-adult.xyz/categories/TypeScript/"/>
+    
+    
+    <category term="TypeScript" scheme="http://to-be-a-happy-adult.xyz/tags/TypeScript/"/>
     
   </entry>
   
