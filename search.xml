@@ -90,6 +90,307 @@
       </tags>
   </entry>
   <entry>
+    <title>前端工程化</title>
+    <url>/posts/7db00131.html</url>
+    <content><![CDATA[<p>本篇文章主要记录一下<code>前端工程化</code>的一些内容。</p>
+<h1 id="项目工程化"><a href="#项目工程化" class="headerlink" title="项目工程化"></a>项目工程化</h1><h2 id="editorconfig-ts"><a href="#editorconfig-ts" class="headerlink" title="editorconfig.ts"></a>editorconfig.ts</h2><p>用来统一团队代码开发风格，即使是不同<code>IDE</code>也遵循一致代码规范。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 根目录标识（必须放在最顶部）</span><br><span class="line">root = true</span><br><span class="line"></span><br><span class="line">[*] # 匹配所有文件</span><br><span class="line">charset = utf-8 # 文件编码（推荐 UTF-8）</span><br><span class="line">end_of_line = lf # 换行符（React 推荐 LF，兼容 Unix/macOS 和现代 Windows）</span><br><span class="line">insert_final_newline = true # 文件末尾自动添加空行</span><br><span class="line">trim_trailing_whitespace = true # 自动删除行尾空白字符</span><br><span class="line">indent_style = space # 缩进使用空格（React 社区主流选择）</span><br><span class="line">indent_size = 2 # 缩进为 2 个空格（JSX/TSX 常用）</span><br><span class="line"></span><br><span class="line"># 针对 JavaScript/TypeScript 文件（.js, .jsx, .ts, .tsx）</span><br><span class="line">[*.&#123;js,jsx,ts,tsx&#125;]</span><br><span class="line">quote_type = single # 引号使用单引号（可选，也可配置为 double）</span><br><span class="line">max_line_length = 100 # 单行最大长度（TS/JS 推荐 100，避免长行）</span><br><span class="line"></span><br><span class="line"># 针对 CSS/SCSS/LESS 文件（.css, .scss, .less）</span><br><span class="line">[*.&#123;css,scss,less&#125;]</span><br><span class="line">indent_size = 2 # 保持与 JS 一致的缩进</span><br><span class="line">quote_type = single # CSS 引号（可选，部分场景用双引号）</span><br><span class="line"></span><br><span class="line"># 针对 JSON 文件（.json）</span><br><span class="line">[*.json]</span><br><span class="line">indent_size = 2 # JSON 推荐 2 空格缩进</span><br><span class="line"></span><br><span class="line"># 针对 Markdown 文件（.md）</span><br><span class="line">[*.md]</span><br><span class="line">trim_trailing_whitespace = false # Markdown 保留行尾空白（如换行符）</span><br><span class="line">max_line_length = 80 # Markdown 正文推荐 80 字符宽度</span><br></pre></td></tr></table></figure>
+
+<h2 id="eslint配置"><a href="#eslint配置" class="headerlink" title="eslint配置"></a>eslint配置</h2><p>创建<code>.eslintconfig.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="comment">// ... 基础配置（env、parserOptions）</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 插件列表（以 eslint-plugin- 开头，省略前缀）</span></span><br><span class="line">  <span class="attr">plugins</span>: [</span><br><span class="line">    <span class="string">&#x27;react&#x27;</span>, <span class="comment">// React 基础规则</span></span><br><span class="line">    <span class="string">&#x27;react-hooks&#x27;</span>, <span class="comment">// React Hooks 规则（如闭包陷阱检测）</span></span><br><span class="line">    <span class="string">&#x27;@typescript-eslint&#x27;</span>, <span class="comment">// TypeScript 规则（需配合 @typescript-eslint/parser）</span></span><br><span class="line">    <span class="string">&#x27;import&#x27;</span>, <span class="comment">// 导入/导出规范</span></span><br><span class="line">    <span class="string">&#x27;jsx-a11y&#x27;</span>, <span class="comment">// JSX 可访问性</span></span><br><span class="line">  ],</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 扩展规则集（优先使用推荐规则）</span></span><br><span class="line">  <span class="attr">extends</span>: [</span><br><span class="line">    <span class="comment">// ESLint 官方推荐规则（基础语法）</span></span><br><span class="line">    <span class="string">&#x27;eslint:recommended&#x27;</span>,</span><br><span class="line">    <span class="comment">// React 推荐规则（覆盖 JSX、Hooks 等）</span></span><br><span class="line">    <span class="string">&#x27;plugin:react/recommended&#x27;</span>,</span><br><span class="line">    <span class="comment">// React Hooks 专用规则（必须）</span></span><br><span class="line">    <span class="string">&#x27;plugin:react-hooks/recommended&#x27;</span>,</span><br><span class="line">    <span class="comment">// TypeScript 推荐规则（需在 parserOptions 中指定项目 TS 配置）</span></span><br><span class="line">    <span class="string">&#x27;plugin:@typescript-eslint/recommended&#x27;</span>,</span><br><span class="line">    <span class="comment">// 导入规范规则（如禁止循环依赖、排序）</span></span><br><span class="line">    <span class="string">&#x27;plugin:import/recommended&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;plugin:import/typescript&#x27;</span>, <span class="comment">// TypeScript 导入支持</span></span><br><span class="line">    <span class="comment">// 可访问性规则（可选）</span></span><br><span class="line">    <span class="string">&#x27;plugin:jsx-a11y/recommended&#x27;</span>,</span><br><span class="line">    <span class="comment">// 关闭 Prettier 冲突规则（必须放在最后）</span></span><br><span class="line">    <span class="string">&#x27;plugin:prettier/recommended&#x27;</span>,</span><br><span class="line">  ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="prettier"><a href="#prettier" class="headerlink" title="prettier"></a>prettier</h2><p>使用<code>vite</code>创建文件或者创建<code>vue</code>项目以及使用<code>vscode</code>插件会默认配置代码格式化，但是有些情况可能无法自动格式化代码(比如使用<code>webpack</code>创建项目，或者专用其他软件编写代码)，所以配置一下<code>prettier</code>比较规范.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm i prettier -D</span><br><span class="line">pnpm add prettier -D</span><br></pre></td></tr></table></figure>
+
+<p>创建<code>.prettierrc</code>和<code>.prettierignore</code>两个文件</p>
+<ul>
+<li><code>.prettierrc</code> # 格式化run time 配置  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;semi&quot;: true, // 保留分号</span><br><span class="line">    &quot;singleQuote&quot;: true, // 单引号</span><br><span class="line">    &quot;tabWidth&quot;: 2, // 2 空格缩进</span><br><span class="line">    &quot;useTabs&quot;: false, // 不用 Tab</span><br><span class="line">    &quot;trailingComma&quot;: &quot;all&quot;, // 所有可能的位置加尾随逗号（ES5+）</span><br><span class="line">    &quot;printWidth&quot;: 100, // 单行最大 100 字符</span><br><span class="line">    &quot;jsxSingleQuote&quot;: true, // JSX 用单引号</span><br><span class="line">    &quot;bracketSpacing&quot;: true, // 对象括号加空格：&#123; key: value &#125;</span><br><span class="line">    &quot;arrowParens&quot;: &quot;always&quot;, // 箭头函数参数加括号：(param) =&gt; &#123;&#125;</span><br><span class="line">    &quot;overrides&quot;: [ // 针对特定文件覆盖规则</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;files&quot;: &quot;*.md&quot;, // Markdown 文件</span><br><span class="line">            &quot;options&quot;: &#123;</span><br><span class="line">                &quot;printWidth&quot;: 80, // Markdown 单行限制 80 字符</span><br><span class="line">                &quot;proseWrap&quot;: &quot;preserve&quot; // 保留原换行</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;files&quot;: &quot;*.html&quot;, // HTML 文件</span><br><span class="line">            &quot;options&quot;: &#123;</span><br><span class="line">                &quot;htmlWhitespaceSensitivity&quot;: &quot;ignore&quot; // 忽略 HTML 空白</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><code>.prettierignore</code> # 格式化忽略文件  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 构建输出目录</span><br><span class="line">dist/</span><br><span class="line">build/</span><br><span class="line">out/</span><br><span class="line"></span><br><span class="line"># 依赖目录</span><br><span class="line">node_modules/</span><br><span class="line"></span><br><span class="line"># 静态资源</span><br><span class="line">public/</span><br><span class="line">assets/</span><br><span class="line">images/</span><br><span class="line">fonts/</span><br><span class="line">icons/</span><br><span class="line"></span><br><span class="line"># 配置文件</span><br><span class="line">.env</span><br><span class="line">.env.local</span><br><span class="line">.env.development</span><br><span class="line">.env.production</span><br><span class="line">.editorconfig</span><br><span class="line">.eslintrc.js</span><br><span class="line">.prettierrc.js</span><br><span class="line"></span><br><span class="line"># 测试/覆盖率报告</span><br><span class="line">coverage/</span><br><span class="line">.nyc_output/</span><br><span class="line">*.test.js</span><br><span class="line">*.spec.tsx</span><br><span class="line"></span><br><span class="line"># IDE/编辑器缓存</span><br><span class="line">.vscode/</span><br><span class="line">.idea/</span><br><span class="line">*.suo</span><br><span class="line">*.ntvs*</span><br><span class="line">*.njsproj</span><br><span class="line">*.sln</span><br><span class="line"></span><br><span class="line"># 其他</span><br><span class="line">*.log</span><br><span class="line">*.tmp</span><br><span class="line">.DS_Store</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>一次性格式化多个文件命令配置：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;prettier&quot;</span><span class="punctuation">:</span> <span class="string">&quot;prettier --write .&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>工程化</category>
+      </categories>
+      <tags>
+        <tag>eslint</tag>
+        <tag>prettier</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>面试经典题汇总</title>
+    <url>/posts/5a01a153.html</url>
+    <content><![CDATA[<p><strong>面试经典题汇总</strong>📝</p>
+<h1 id="输入网址之后发生了什么？"><a href="#输入网址之后发生了什么？" class="headerlink" title="输入网址之后发生了什么？"></a>输入网址之后发生了什么？</h1><p>我们在浏览器输入网址之后发生了什么，为什么我们能收到这个页面呢？</p>
+<h2 id="路径纠错"><a href="#路径纠错" class="headerlink" title="路径纠错"></a>路径纠错</h2><p><strong>第一步❗️路径纠错</strong></p>
+<p>我们输入的路径可能有错，也可能缺少协议等东西，就比如我们输入了<code>www..baidu.com</code>，那么浏览器就会自动加上协议，变成<code>http://www.baidu.com</code>，路径补全后变成<code>http://www.baidu.com/</code></p>
+<h2 id="DNS解析"><a href="#DNS解析" class="headerlink" title="DNS解析"></a>DNS解析</h2><p><strong>第二步❗️DNS解析</strong><br>DNS解析，就是把域名解析成IP地址，比如<code>www.baidu.com</code>，那么DNS解析之后，就会变成<code>192.168.3.11</code></p>
+<details>
+<summary>
+❗️这里需要注意DNS缓存和DNS载荷均衡❗️
+</summary>
+<div>
+  <ol>
+    <li>DNS缓存
+      <ul>
+        <li>本地缓存</li>
+        <li>浏览器缓存</li>
+        <li>系统缓存</li>
+      </ul>
+    </li>
+    <li>
+    DNS载荷均衡
+      我们知道`DNS解析`后会获取到一个IP地址，这个地址对应网站服务器地址；但是一个大公司可能有上千台服务器，那么返回的到底是哪台服务器呢？
+      这里就需要到DNS负载均衡了，所谓的负载均衡是**根据我们的地理位置距离服务器的距离**来决定解析出的IP地址，这样就很好的分散了服务器的压力，提高我们的访问速度。
+    </li>
+  </ol>
+</div>
+  
+</details>
+
+<h2 id="TCP连接"><a href="#TCP连接" class="headerlink" title="TCP连接"></a>TCP连接</h2><p><strong>第三步❗️TCP连接</strong><br>简单来说，<code>TCP</code>连接就是我们为发送和接受数据建立的通道，而TCP连接的建立需要三次握手和四次挥手。</p>
+<p><strong>三次握手</strong></p>
+<ol>
+<li>客户端向服务端发送一个<code>SYN包</code></li>
+<li>服务端在接收到<code>SYN包</code>之后，向客户端发送一个<code>SYN+ACK包</code></li>
+<li>客户端在接收到<code>SYN+ACK包</code>之后，向服务端发送一个<code>ACK包</code></li>
+</ol>
+<p>经过这三次握手，TCP连接就建立起来了。</p>
+<h2 id="发送HTTP请求"><a href="#发送HTTP请求" class="headerlink" title="发送HTTP请求"></a>发送HTTP请求</h2><p><strong>第四步❗️发送HTTP请求</strong><br>客户端向服务端发送一个HTTP请求，请求包括请求行，请求头，请求体</p>
+<ul>
+<li>请求行<ul>
+<li>请求方法: GET&#x2F;POST&#x2F;PUT&#x2F;DELETE</li>
+<li>请求路径</li>
+</ul>
+</li>
+<li>请求头</li>
+<li>请求体（GET请求没有）</li>
+</ul>
+<h2 id="服务端响应数据"><a href="#服务端响应数据" class="headerlink" title="服务端响应数据"></a>服务端响应数据</h2><p><strong>第五步❗️服务端响应数据</strong><br>服务端接收到http请求后会返回一个http响应：</p>
+<ul>
+<li>状态行<ul>
+<li>响应码</li>
+</ul>
+</li>
+<li>响应头<ul>
+<li>content-type: <code>text/html;charset=utf-8</code>等</li>
+</ul>
+</li>
+<li>响应体</li>
+</ul>
+<h2 id="渲染"><a href="#渲染" class="headerlink" title="渲染"></a>渲染</h2><p>关于浏览器渲染可以看这篇博客<a href="https://blog.csdn.net/2302_79523175/article/details/140614526?spm=1011.2415.3001.5331">浏览器渲染原理</a></p>
+<h2 id="断开连接"><a href="#断开连接" class="headerlink" title="断开连接"></a>断开连接</h2><p><strong>第六步❗️断开连接</strong></p>
+<h1 id="js"><a href="#js" class="headerlink" title="js"></a>js</h1><h2 id="和"><a href="#和" class="headerlink" title="&amp;&amp;  和 ||"></a>&amp;&amp;  和 ||</h2><p><code>数据1 &amp;&amp; 数据2</code>   &#x3D;&#x3D;&#x3D; &gt;  前后依次进行布尔判断</p>
+<p><code>数据1 || 数据2</code>   &#x3D;&#x3D;&#x3D; &gt;  前后依次进行布尔判断</p>
+<p><strong>最终结果都是返回最后一步判定的数据。</strong></p>
+<p>例：</p>
+<blockquote>
+<p>condole.log(2 &amp;&amp; 3)    &#x2F;&#x2F; 3</p>
+<p>console.log(2 || 3)   &#x2F;&#x2F; 2</p>
+</blockquote>
+<p>常见应用：</p>
+<ol>
+<li>赋默认值</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> a = obj.<span class="property">a</span> || <span class="string">&#x27;default&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>函数的调用</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> resault = obj.<span class="property">func</span> &amp;&amp; obj.<span class="title function_">func</span>() </span><br></pre></td></tr></table></figure>
+
+<h2 id="深度克隆"><a href="#深度克隆" class="headerlink" title="深度克隆"></a>深度克隆</h2><p>首先明确一下 <code>javascript</code> 的8种数据类型：</p>
+<ol>
+<li>基本类型：<code>string</code>，<code>number</code>，<code>undefined</code>，<code>boolean</code>，<code>null</code>，<code>symbol</code>，<code>bigint</code></li>
+<li>引用类型：<code>object</code></li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">deepClone</span> = (<span class="params">val</span>) =&gt; &#123;</span><br><span class="line">  <span class="comment">// 复杂类型</span></span><br><span class="line">  <span class="comment">// 数组</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="title class_">Array</span>.<span class="title function_">isArray</span>(val)) &#123;</span><br><span class="line">    <span class="keyword">var</span> clone = []</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; val.<span class="property">length</span>; i++) &#123;</span><br><span class="line">      clone[i] = <span class="title function_">deepClone</span>(val[i])</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> val === <span class="string">&#x27;object&#x27;</span> &amp;&amp; val !== <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> cloneObj = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> val) &#123;</span><br><span class="line">      cloneObj[key] = <span class="title function_">deepClone</span>(val[key])</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 基本类型</span></span><br><span class="line">  <span class="keyword">return</span> val</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">deepClone</span>([<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>], <span class="number">5</span>]));   <span class="comment">// [1, 2, [3, 4], 5]</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">deepClone</span>(&#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">2</span>, <span class="attr">c</span>: &#123; <span class="attr">d</span>: <span class="number">3</span>, <span class="attr">e</span>: <span class="number">4</span> &#125; &#125;));  <span class="comment">// &#123; a: 1, b: 2, c: &#123; d: 3, e: 4 &#125; &#125;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="为什么要有虚拟DOM？"><a href="#为什么要有虚拟DOM？" class="headerlink" title="为什么要有虚拟DOM？"></a>为什么要有虚拟DOM？</h1><p>与原生<code>js</code>比对，现在流行的框架如<code>React</code>、<code>Vue</code>或者<code>Angular</code>都使用了虚拟DOM的设计。当数据发生改变时，会先生成新的虚拟<code>DOM</code>树，经过与旧虚拟<code>DOM</code>树的比对，只更新改变的部分，这极大提高了渲染性能，降低了浏览器的性能浪费。更加完整的解释是这样的：</p>
+<ol>
+<li><strong>框架设计</strong></li>
+</ol>
+<p>像那些直接更新<code>DOM</code>的框架，它们的<strong>颗粒度对齐到</strong><code>**DOM**</code><strong>节点</strong>，当数据发生改变的时候，只更新需要更新的节点；</p>
+<p>而对于<code>Vue</code>这些框架，它们的<strong>颗粒度对齐到组件</strong>，当数据更新时，整个组件都要重新渲染；如果组件中DOM过多的话，就可能会造成浏览器的多次<strong>重排、重绘</strong>，渲染性能浪费。引入虚拟DOM之后就很大程度的减轻了浏览器的负担。</p>
+<ol start="2">
+<li><strong>运行环境</strong></li>
+</ol>
+<p>DOM能在浏览器或<code>node</code>模拟环境中运行，但是在移动端就不能运行（移动端需要的是系统的原生组件）；</p>
+<p>但是虚拟DOM会将组件结构生成<code>**js对象**</code>，依据判断出的运行环境给出相应的<code>DOM节点</code>或者<code>原生组件</code>，实现<code>**一套代码，多端复用**</code>(像React Native等)。</p>
+<h1 id="js事件循环"><a href="#js事件循环" class="headerlink" title="js事件循环"></a>js事件循环</h1><p>首先要知道js代码的核心是：<code>**单线程和异步任务队列**</code>。</p>
+<p>事件循环的核心部分是：<code>调用栈</code>、<code>任务队列(包含宏任务队列和微任务队列)</code>。</p>
+<ol>
+<li><code>**调用栈**</code>**:**同步代码的执行区。</li>
+</ol>
+<ul>
+<li>第一个宏任务默认为<code>script整块代码</code>，同步执行该代码块，依次放入调用栈，遇到异步任务如<code>setTimeout</code>、<code>Promise.then()</code>等，分别放入微任务和宏任务队列；</li>
+<li>调用栈为空时，执行微任务队列内容直至清空；</li>
+</ul>
+<ol start="2">
+<li><code>**任务队列**</code><strong>:</strong></li>
+</ol>
+<ul>
+<li>宏任务: 主要是浏览器或者Nodejs发起的任务。<ul>
+<li>script整块代码；</li>
+<li>setTimeout、setInterval等</li>
+<li>I&#x2F;O操作（如文件读写、网络请求）</li>
+<li>事件操作（如click、resize、scroll）</li>
+<li>UI渲染</li>
+<li>…</li>
+</ul>
+</li>
+<li>微任务：主要是js引擎发起的任务。<ul>
+<li>Promise.then&#x2F;catch&#x2F;finally</li>
+<li>queneMicroTask（显式微任务）</li>
+<li>MutationObserver（DOM变化监听器）</li>
+<li>…</li>
+</ul>
+</li>
+</ul>
+<p><strong>事件循环过程：</strong></p>
+<ol>
+<li>第一个宏任务默认为<code>script整块代码</code>，之后默认去除宏任务队列中最早放入的一个执行，同步执行该代码块，依次放入调用栈，遇到异步任务如<code>setTimeout</code>、<code>Promise.then()</code>等，分别放入微任务和宏任务队列；</li>
+<li>调用栈为空时，执行微任务队列内容，如果微任务中嵌套微任务，那么就将嵌套的微任务再次放入微任务队列，直至清空；</li>
+<li>UI渲染：在微任务清空完，下个宏任务执行前，若有任务引起了DOM的变化，就会引起浏览器的重绘重排；</li>
+<li>当UI渲染结束后，本次事件循环结束，执行下个宏任务即为下次事件循环开始；</li>
+<li>事件循环是个无限循环的过程，当调用栈和任务队列为空，那么循环结束。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>面经</category>
+      </categories>
+      <tags>
+        <tag>面经</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数据类型检测</title>
+    <url>/posts/67b93776.html</url>
+    <content><![CDATA[<h1 id="数据类型的检测"><a href="#数据类型的检测" class="headerlink" title="数据类型的检测"></a>数据类型的检测</h1><p>❗️首先要明确常见的<strong>八种</strong>数据类型：</p>
+<ol>
+<li>基本数据类型<ul>
+<li><code>string</code></li>
+<li><code>number</code></li>
+<li><code>boolean</code></li>
+<li><code>null</code></li>
+<li><code>undefined</code></li>
+<li><code>bigint</code></li>
+<li><code>symbol</code></li>
+</ul>
+</li>
+<li>复杂数据类型<ul>
+<li><code>object</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="1-typeof"><a href="#1-typeof" class="headerlink" title="1. typeof"></a>1. <strong>typeof</strong></h2><ul>
+<li><strong>typeof</strong> 是一元运算符，用法：<code>typeof value</code></li>
+<li>输出值：上面所说的八种类型（除null之外加上个function）</li>
+</ul>
+<p><strong>注意点</strong>：</p>
+<ol>
+<li><p><code>typeof null</code> 输出值为Object，这个是历史遗留问题;</p>
+</li>
+<li><p><code>typeof function()&#123;&#125;</code>输出值为<code>function</code>；</p>
+</li>
+<li><p><code>[]</code>、<code>&#123;&#125;</code>、<code>function()&#123;&#125;</code>输出值都为<code>Object</code>，也就是<code>typeof</code>只能精准判断除了null之外的基本类型，无法判断复杂数据类型(除function外)；</p>
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">输出值</th>
+<th align="center">原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>null</strong></td>
+<td align="center">object</td>
+<td align="center">历史遗留问题</td>
+</tr>
+<tr>
+<td align="center">其他原始类型</td>
+<td align="center">对应类型字符串</td>
+<td align="center">准确识别</td>
+</tr>
+<tr>
+<td align="center"><strong>function(){}</strong></td>
+<td align="center">function</td>
+<td align="center">函数属于function类型</td>
+</tr>
+<tr>
+<td align="center"><strong>[] &#x2F; {} &#x2F; Date &#x2F; RegExp等</strong></td>
+<td align="center">object</td>
+<td align="center">-（无法具体区分object的具体类型）</td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+<h2 id="2-instanceof"><a href="#2-instanceof" class="headerlink" title="2. instanceof"></a>2. <strong>instanceof</strong></h2><ul>
+<li><strong>instanceof</strong> 是二元运算符，用法：<code>object instanceof type</code></li>
+<li>输出值：true 或 false</li>
+</ul>
+<p><strong>注意点</strong>：</p>
+<ol>
+<li><code>instanceof </code>是在检测对象的隐式原型链的任意位置是否存在构造函数的原型;</li>
+<li>能检测对<strong>Object</strong>的具体类型，如<code>Function</code>、<code>Array</code>、<code>Object</code>等；</li>
+</ol>
+<h2 id="3-constructor"><a href="#3-constructor" class="headerlink" title="3. constructor"></a>3. <strong>constructor</strong></h2><ul>
+<li><strong>constructor</strong> 是对象的构造函数的显式原型上的属性，用法：<code>object.constructor</code></li>
+<li>输出值：对象所属的构造函数</li>
+</ul>
+<p><strong>注意点</strong>：</p>
+<ol>
+<li><code>constructor</code> 是属性，不是运算符，用法：<code>object.constructor</code></li>
+<li><code>constructor</code> 可以进行修改</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> obj = []</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj.<span class="property">constructor</span>) <span class="comment">// Array (在obj的隐式原型链上寻找构造函数的原型，再从上面获取constructor属性)</span></span><br><span class="line"></span><br><span class="line">obj.<span class="property">constructor</span> = <span class="title class_">Function</span>()&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj.<span class="property">constructor</span>) <span class="comment">// Function</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-Object-prototype-toString-call"><a href="#4-Object-prototype-toString-call" class="headerlink" title="4. Object.prototype.toString.call()"></a>4. <strong>Object.prototype.toString.call()</strong></h2><p>能准确判断数据类型，包括ES6+出的数据类型(如：<code>Map</code>、<code>Set</code>、<code>WeakSet</code>、<code>WeakMap</code>等)</p>
+<h2 id="🚌总结："><a href="#🚌总结：" class="headerlink" title="🚌总结："></a>🚌总结：</h2><table>
+<thead>
+<tr>
+<th align="center">方法</th>
+<th align="center">核心原理</th>
+<th align="center">优点</th>
+<th align="center">缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">typeof</td>
+<td align="center">内部类型标志位</td>
+<td align="center">推测快速简单</td>
+<td align="center">无法检测出[] &#x2F; {}以及对象的具体类型（如Date、RegExp第二个）</td>
+</tr>
+<tr>
+<td align="center">instanceof</td>
+<td align="center">检测显示原型是否在对象隐式原型链上</td>
+<td align="center">检测对象是否为构造函数实例，支持继承</td>
+<td align="center">无法检测原始类型</td>
+</tr>
+<tr>
+<td align="center">constructor</td>
+<td align="center">显式原型的构造函数属性</td>
+<td align="center">检测是否是某个构造函数的实例</td>
+<td align="center">原始类型检测不准确；nul&#x2F;undefined检测会出错；而且<strong>易被修改</strong></td>
+</tr>
+<tr>
+<td align="center">Object.prototype.toString.call</td>
+<td align="center">利用Object的固有属性</td>
+<td align="center">准确检测类型（包括ES6+新类型）</td>
+<td align="center">写法麻烦</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>面经</category>
+      </categories>
+      <tags>
+        <tag>数据类型</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Git 分布式版本控制工具</title>
     <url>/posts/92d95aa4.html</url>
     <content><![CDATA[<h1 id="Git-概述"><a href="#Git-概述" class="headerlink" title="Git 概述"></a>Git 概述</h1><h2 id="Git-版本控制器的方式"><a href="#Git-版本控制器的方式" class="headerlink" title="Git 版本控制器的方式"></a>Git 版本控制器的方式</h2><ul>
@@ -277,7 +578,7 @@
 <li>获取本地密钥</li>
 <li>cat ~&#x2F;.ssh&#x2F;id_rsa.pub</li>
 <li>验证是否配置成功<ul>
-<li>ssh -T <a href="mailto:&#103;&#x69;&#116;&#64;&#x67;&#x69;&#116;&#x68;&#x75;&#x62;&#x2e;&#99;&#111;&#x6d;">git@github.com</a> 或者 ssh -T <a href="mailto:&#x67;&#105;&#116;&#x40;&#x67;&#105;&#116;&#x65;&#x65;&#46;&#x63;&#x6f;&#109;">git@gitee.com</a></li>
+<li>ssh -T <a href="mailto:&#x67;&#105;&#116;&#x40;&#x67;&#x69;&#116;&#x68;&#117;&#x62;&#46;&#x63;&#111;&#109;">git@github.com</a> 或者 ssh -T <a href="mailto:&#103;&#105;&#x74;&#64;&#103;&#105;&#x74;&#x65;&#101;&#46;&#x63;&#111;&#109;">git@gitee.com</a></li>
 </ul>
 </li>
 </ul>
@@ -287,7 +588,7 @@
 <h3 id="远程仓库相关命令"><a href="#远程仓库相关命令" class="headerlink" title="远程仓库相关命令"></a>远程仓库相关命令</h3><ol>
 <li>添加远程仓库<ul>
 <li><code>git add remote &lt;远端名称&gt; &lt;仓库地址&gt;</code><ul>
-<li>例：git remote add origin <a href="mailto:&#x67;&#x69;&#x74;&#64;&#103;&#x69;&#116;&#104;&#x75;&#x62;&#46;&#99;&#x6f;&#x6d;">git@github.com</a>:zhangjunyi&#x2F;git.git</li>
+<li>例：git remote add origin <a href="mailto:&#103;&#x69;&#116;&#x40;&#103;&#x69;&#x74;&#104;&#x75;&#x62;&#46;&#x63;&#x6f;&#109;">git@github.com</a>:zhangjunyi&#x2F;git.git</li>
 </ul>
 </li>
 </ul>
@@ -347,234 +648,6 @@
       </categories>
       <tags>
         <tag>Git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>git常见问题解决</title>
-    <url>/posts/490dde0b.html</url>
-    <content><![CDATA[<h1 id="Git常见问题解决"><a href="#Git常见问题解决" class="headerlink" title="Git常见问题解决"></a>Git常见问题解决</h1><h2 id="首次添加远程仓库"><a href="#首次添加远程仓库" class="headerlink" title="首次添加远程仓库"></a>首次添加远程仓库</h2><blockquote>
-<p><strong>场景：本地分支已存在，远程分支也已存在，但未建立联系</strong></p>
-</blockquote>
-<p>首次添加远程仓库时，我们的本地分支与远程分支未能建立联系，从本地<code>master</code>切换到<code>远程master</code>时会出现<code>Git:fatal:a branch named &#39;master&#39;already exists</code>的错误！</p>
-<ol>
-<li><p>查看当前分支<br>查看当前位于什么分支，保证下面之后操作的分支正确；</p>
-</li>
-<li><p>与远程分支建立联系<br>将当前分支与远程origin&#x2F;master分支建立联系</p>
-<blockquote>
-<p>git branch –set-upstream-to&#x3D;origin&#x2F;master</p>
-<p>简写：git branch -u origin&#x2F;master</p>
-</blockquote>
-</li>
-<li><p>查看是否建立联系</p>
-<blockquote>
-<p>查看所有分支的状态</p>
-<p>git branch -vv<br>查看当前分支的状态<br>git status</p>
-</blockquote>
-<p><img src="/../../img/Git/img_12.png" alt="img.png"></p>
-</li>
-<li><p>解决之后的错误<br>之后可能会出现<code>fatal: refusing to merge unrelated histories</code>的问题，解决方法如下：</p>
-</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git pull origin master --allow-unrelated-histories</span><br></pre></td></tr></table></figure>
-
-<p>这样问题就基本解决了！</p>
-<h2 id="connection-abort"><a href="#connection-abort" class="headerlink" title="connection abort"></a>connection abort</h2><p>有时候使用ssh方式推送代码的时候会出现下面的错误😅：</p>
-<p><img src="/../../img/Git/img_13.png" alt="img.png"></p>
-<p><span style="color: red;">原因<span>：</p>
-<p>代理服务商为了安全考虑，避免被别人当跳板，会限制22端口的连接，导致无法正确连接到Github的服务器。</p>
-<p><strong>解决办法：</strong><br>改走HTTPS协议，走443端口，这样不仅可以解决上面的问题，还可以提高代理的下载速度。<br>在<code>~/.ssh/config</code>中添加以下内容：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Host github.com</span><br><span class="line">    Hostname ssh.github.com</span><br><span class="line">    Port 443</span><br><span class="line">    User git</span><br></pre></td></tr></table></figure>
-<p>之后就可以正常拉取推送了！</p>
-<h2 id="Failed-to-connect-to-127-0-0-1"><a href="#Failed-to-connect-to-127-0-0-1" class="headerlink" title="Failed to connect to 127.0.0.1"></a>Failed to connect to 127.0.0.1</h2><p>有时候可能会出现下面的错误❌：<br><img src="/../../img/Git/img_14.png" alt="img.png"></p>
-<p>查看git有没有proxy</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global http.proxy</span><br><span class="line">git config --global https.proxy</span><br></pre></td></tr></table></figure>
-<p>如果有代理，取消之后就可以正常拉取推送了！</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global --<span class="built_in">unset</span> http.proxy</span><br><span class="line">git config --global --<span class="built_in">unset</span> https.proxy</span><br></pre></td></tr></table></figure>
-
-<h2 id="refusing-to-merge-unrelated-histories"><a href="#refusing-to-merge-unrelated-histories" class="headerlink" title="refusing to merge unrelated histories"></a>refusing to merge unrelated histories</h2><p>刚学习使用git的时候可能会犯的错就是：本地<code>git init</code>了仓库，远程仓库同样也初始化了，这就会导致两个仓库的历史提交是完全独立的。</p>
-<p>一个<code>Git</code>仓库好比是一棵树，树上的每个节点就是一次提交。正常情况下，当在一个仓库中工作，操作也都是在同一棵树上不同的分支上进行推送和拉取。<code>Git</code>可以轻松的追踪这些分支的演变，因为他们都来自同一个根（即最初的提交）。</p>
-<p>但是如果出现“不相关的历史记录”，就好像把两颗长在不同地方的树进行合并，<code>Git</code>无法找到共同的起点来理解这两个库的关系，所以会拒绝执行合并。</p>
-<p><strong>解决办法：</strong></p>
-<ol>
-<li>常见方法：<code>--allow-unrelated-histories</code> 强制执行合并 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git pull origin &lt;branch_name&gt; --allow-unrelated-histories</span><br></pre></td></tr></table></figure></li>
-<li>新项目中<br>如果是在新项目中，我们可以先<code>git clone</code>把仓库代码拉到本地，之后在克隆的仓库中拉取和推送。这样可以确保本地仓库在一开始就跟远程仓库拥有相同的历史。</li>
-</ol>
-<h2 id="携带未提交的更改到另外分支"><a href="#携带未提交的更改到另外分支" class="headerlink" title="携带未提交的更改到另外分支"></a>携带未提交的更改到另外分支</h2><p>在改项目代码的时候添加了新功能一些的尝试，但是尝试还需要很长时间才能完成，这时候还有其他需求等待完成，所以不得需要先将更改保存起来（放入其他分支）</p>
-<p>我们可以通过<code>stash</code>暂时保存当前更改，切换到其他分支之后再恢复更改；</p>
-<ol>
-<li><p>保存更改到<code>stash</code>条目</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git stash save <span class="string">&quot;临时保存dev-添加列表滚动加载&quot;</span> <span class="comment"># 可选：添加描述信息</span></span><br><span class="line"><span class="comment"># 或者简化命令</span></span><br><span class="line">git stash push -m <span class="string">&quot;临时保存dev-添加列表滚动加载&quot;</span></span><br></pre></td></tr></table></figure>
-<p>保存更改的时候注意<code>components.d.ts</code>，它会阻碍其他文件提交到<code>stash</code>(本来一次<code>stash</code>就可以了，因为这个文件会多几次<code>stash</code>)</p>
-</li>
-<li><p>切换分支21</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git checkout -m feature-scrollbar</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>从<code>stash</code>恢复到当前分支</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git stash pop <span class="comment"># 获取最新stash条目并删除</span></span><br><span class="line">git stash apply stash@&#123;0&#125; <span class="comment"># 只获取不删除</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-]]></content>
-      <categories>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>Git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>前端工程化</title>
-    <url>/posts/7db00131.html</url>
-    <content><![CDATA[<p>本篇文章主要记录一下<code>前端工程化</code>的一些内容。</p>
-<h1 id="项目工程化"><a href="#项目工程化" class="headerlink" title="项目工程化"></a>项目工程化</h1><h2 id="editorconfig-ts"><a href="#editorconfig-ts" class="headerlink" title="editorconfig.ts"></a>editorconfig.ts</h2><p>用来统一团队代码开发风格，即使是不同<code>IDE</code>也遵循一致代码规范。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 根目录标识（必须放在最顶部）</span><br><span class="line">root = true</span><br><span class="line"></span><br><span class="line">[*] # 匹配所有文件</span><br><span class="line">charset = utf-8 # 文件编码（推荐 UTF-8）</span><br><span class="line">end_of_line = lf # 换行符（React 推荐 LF，兼容 Unix/macOS 和现代 Windows）</span><br><span class="line">insert_final_newline = true # 文件末尾自动添加空行</span><br><span class="line">trim_trailing_whitespace = true # 自动删除行尾空白字符</span><br><span class="line">indent_style = space # 缩进使用空格（React 社区主流选择）</span><br><span class="line">indent_size = 2 # 缩进为 2 个空格（JSX/TSX 常用）</span><br><span class="line"></span><br><span class="line"># 针对 JavaScript/TypeScript 文件（.js, .jsx, .ts, .tsx）</span><br><span class="line">[*.&#123;js,jsx,ts,tsx&#125;]</span><br><span class="line">quote_type = single # 引号使用单引号（可选，也可配置为 double）</span><br><span class="line">max_line_length = 100 # 单行最大长度（TS/JS 推荐 100，避免长行）</span><br><span class="line"></span><br><span class="line"># 针对 CSS/SCSS/LESS 文件（.css, .scss, .less）</span><br><span class="line">[*.&#123;css,scss,less&#125;]</span><br><span class="line">indent_size = 2 # 保持与 JS 一致的缩进</span><br><span class="line">quote_type = single # CSS 引号（可选，部分场景用双引号）</span><br><span class="line"></span><br><span class="line"># 针对 JSON 文件（.json）</span><br><span class="line">[*.json]</span><br><span class="line">indent_size = 2 # JSON 推荐 2 空格缩进</span><br><span class="line"></span><br><span class="line"># 针对 Markdown 文件（.md）</span><br><span class="line">[*.md]</span><br><span class="line">trim_trailing_whitespace = false # Markdown 保留行尾空白（如换行符）</span><br><span class="line">max_line_length = 80 # Markdown 正文推荐 80 字符宽度</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="eslint配置"><a href="#eslint配置" class="headerlink" title="eslint配置"></a>eslint配置</h2><p>创建<code>.eslintconfig.js</code></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="comment">// ... 基础配置（env、parserOptions）</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 插件列表（以 eslint-plugin- 开头，省略前缀）</span></span><br><span class="line">  <span class="attr">plugins</span>: [</span><br><span class="line">    <span class="string">&#x27;react&#x27;</span>, <span class="comment">// React 基础规则</span></span><br><span class="line">    <span class="string">&#x27;react-hooks&#x27;</span>, <span class="comment">// React Hooks 规则（如闭包陷阱检测）</span></span><br><span class="line">    <span class="string">&#x27;@typescript-eslint&#x27;</span>, <span class="comment">// TypeScript 规则（需配合 @typescript-eslint/parser）</span></span><br><span class="line">    <span class="string">&#x27;import&#x27;</span>, <span class="comment">// 导入/导出规范</span></span><br><span class="line">    <span class="string">&#x27;jsx-a11y&#x27;</span>, <span class="comment">// JSX 可访问性</span></span><br><span class="line">  ],</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 扩展规则集（优先使用推荐规则）</span></span><br><span class="line">  <span class="attr">extends</span>: [</span><br><span class="line">    <span class="comment">// ESLint 官方推荐规则（基础语法）</span></span><br><span class="line">    <span class="string">&#x27;eslint:recommended&#x27;</span>,</span><br><span class="line">    <span class="comment">// React 推荐规则（覆盖 JSX、Hooks 等）</span></span><br><span class="line">    <span class="string">&#x27;plugin:react/recommended&#x27;</span>,</span><br><span class="line">    <span class="comment">// React Hooks 专用规则（必须）</span></span><br><span class="line">    <span class="string">&#x27;plugin:react-hooks/recommended&#x27;</span>,</span><br><span class="line">    <span class="comment">// TypeScript 推荐规则（需在 parserOptions 中指定项目 TS 配置）</span></span><br><span class="line">    <span class="string">&#x27;plugin:@typescript-eslint/recommended&#x27;</span>,</span><br><span class="line">    <span class="comment">// 导入规范规则（如禁止循环依赖、排序）</span></span><br><span class="line">    <span class="string">&#x27;plugin:import/recommended&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;plugin:import/typescript&#x27;</span>, <span class="comment">// TypeScript 导入支持</span></span><br><span class="line">    <span class="comment">// 可访问性规则（可选）</span></span><br><span class="line">    <span class="string">&#x27;plugin:jsx-a11y/recommended&#x27;</span>,</span><br><span class="line">    <span class="comment">// 关闭 Prettier 冲突规则（必须放在最后）</span></span><br><span class="line">    <span class="string">&#x27;plugin:prettier/recommended&#x27;</span>,</span><br><span class="line">  ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="prettier"><a href="#prettier" class="headerlink" title="prettier"></a>prettier</h2><p>使用<code>vite</code>创建文件或者创建<code>vue</code>项目以及使用<code>vscode</code>插件会默认配置代码格式化，但是有些情况可能无法自动格式化代码(比如使用<code>webpack</code>创建项目，或者专用其他软件编写代码)，所以配置一下<code>prettier</code>比较规范.</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm i prettier -D</span><br><span class="line">pnpm add prettier -D</span><br></pre></td></tr></table></figure>
-
-<p>创建<code>.prettierrc</code>和<code>.prettierignore</code>两个文件</p>
-<ul>
-<li><code>.prettierrc</code> # 格式化run time 配置  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;semi&quot;: true, // 保留分号</span><br><span class="line">    &quot;singleQuote&quot;: true, // 单引号</span><br><span class="line">    &quot;tabWidth&quot;: 2, // 2 空格缩进</span><br><span class="line">    &quot;useTabs&quot;: false, // 不用 Tab</span><br><span class="line">    &quot;trailingComma&quot;: &quot;all&quot;, // 所有可能的位置加尾随逗号（ES5+）</span><br><span class="line">    &quot;printWidth&quot;: 100, // 单行最大 100 字符</span><br><span class="line">    &quot;jsxSingleQuote&quot;: true, // JSX 用单引号</span><br><span class="line">    &quot;bracketSpacing&quot;: true, // 对象括号加空格：&#123; key: value &#125;</span><br><span class="line">    &quot;arrowParens&quot;: &quot;always&quot;, // 箭头函数参数加括号：(param) =&gt; &#123;&#125;</span><br><span class="line">    &quot;overrides&quot;: [ // 针对特定文件覆盖规则</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;files&quot;: &quot;*.md&quot;, // Markdown 文件</span><br><span class="line">            &quot;options&quot;: &#123;</span><br><span class="line">                &quot;printWidth&quot;: 80, // Markdown 单行限制 80 字符</span><br><span class="line">                &quot;proseWrap&quot;: &quot;preserve&quot; // 保留原换行</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;files&quot;: &quot;*.html&quot;, // HTML 文件</span><br><span class="line">            &quot;options&quot;: &#123;</span><br><span class="line">                &quot;htmlWhitespaceSensitivity&quot;: &quot;ignore&quot; // 忽略 HTML 空白</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><code>.prettierignore</code> # 格式化忽略文件  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 构建输出目录</span><br><span class="line">dist/</span><br><span class="line">build/</span><br><span class="line">out/</span><br><span class="line"></span><br><span class="line"># 依赖目录</span><br><span class="line">node_modules/</span><br><span class="line"></span><br><span class="line"># 静态资源</span><br><span class="line">public/</span><br><span class="line">assets/</span><br><span class="line">images/</span><br><span class="line">fonts/</span><br><span class="line">icons/</span><br><span class="line"></span><br><span class="line"># 配置文件</span><br><span class="line">.env</span><br><span class="line">.env.local</span><br><span class="line">.env.development</span><br><span class="line">.env.production</span><br><span class="line">.editorconfig</span><br><span class="line">.eslintrc.js</span><br><span class="line">.prettierrc.js</span><br><span class="line"></span><br><span class="line"># 测试/覆盖率报告</span><br><span class="line">coverage/</span><br><span class="line">.nyc_output/</span><br><span class="line">*.test.js</span><br><span class="line">*.spec.tsx</span><br><span class="line"></span><br><span class="line"># IDE/编辑器缓存</span><br><span class="line">.vscode/</span><br><span class="line">.idea/</span><br><span class="line">*.suo</span><br><span class="line">*.ntvs*</span><br><span class="line">*.njsproj</span><br><span class="line">*.sln</span><br><span class="line"></span><br><span class="line"># 其他</span><br><span class="line">*.log</span><br><span class="line">*.tmp</span><br><span class="line">.DS_Store</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>一次性格式化多个文件命令配置：</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;prettier&quot;</span><span class="punctuation">:</span> <span class="string">&quot;prettier --write .&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>工程化</category>
-      </categories>
-      <tags>
-        <tag>eslint</tag>
-        <tag>prettier</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>数据类型检测</title>
-    <url>/posts/67b93776.html</url>
-    <content><![CDATA[<h1 id="数据类型的检测"><a href="#数据类型的检测" class="headerlink" title="数据类型的检测"></a>数据类型的检测</h1><p>❗️首先要明确常见的<strong>八种</strong>数据类型：</p>
-<ol>
-<li>基本数据类型<ul>
-<li><code>string</code></li>
-<li><code>number</code></li>
-<li><code>boolean</code></li>
-<li><code>null</code></li>
-<li><code>undefined</code></li>
-<li><code>bigint</code></li>
-<li><code>symbol</code></li>
-</ul>
-</li>
-<li>复杂数据类型<ul>
-<li><code>object</code></li>
-</ul>
-</li>
-</ol>
-<h2 id="1-typeof"><a href="#1-typeof" class="headerlink" title="1. typeof"></a>1. <strong>typeof</strong></h2><ul>
-<li><strong>typeof</strong> 是一元运算符，用法：<code>typeof value</code></li>
-<li>输出值：上面所说的八种类型（除null之外加上个function）</li>
-</ul>
-<p><strong>注意点</strong>：</p>
-<ol>
-<li><p><code>typeof null</code> 输出值为Object，这个是历史遗留问题;</p>
-</li>
-<li><p><code>typeof function()&#123;&#125;</code>输出值为<code>function</code>；</p>
-</li>
-<li><p><code>[]</code>、<code>&#123;&#125;</code>、<code>function()&#123;&#125;</code>输出值都为<code>Object</code>，也就是<code>typeof</code>只能精准判断除了null之外的基本类型，无法判断复杂数据类型(除function外)；</p>
-<table>
-<thead>
-<tr>
-<th align="center">类型</th>
-<th align="center">输出值</th>
-<th align="center">原因</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><strong>null</strong></td>
-<td align="center">object</td>
-<td align="center">历史遗留问题</td>
-</tr>
-<tr>
-<td align="center">其他原始类型</td>
-<td align="center">对应类型字符串</td>
-<td align="center">准确识别</td>
-</tr>
-<tr>
-<td align="center"><strong>function(){}</strong></td>
-<td align="center">function</td>
-<td align="center">函数属于function类型</td>
-</tr>
-<tr>
-<td align="center"><strong>[] &#x2F; {} &#x2F; Date &#x2F; RegExp等</strong></td>
-<td align="center">object</td>
-<td align="center">-（无法具体区分object的具体类型）</td>
-</tr>
-</tbody></table>
-</li>
-</ol>
-<h2 id="2-instanceof"><a href="#2-instanceof" class="headerlink" title="2. instanceof"></a>2. <strong>instanceof</strong></h2><ul>
-<li><strong>instanceof</strong> 是二元运算符，用法：<code>object instanceof type</code></li>
-<li>输出值：true 或 false</li>
-</ul>
-<p><strong>注意点</strong>：</p>
-<ol>
-<li><code>instanceof </code>是在检测对象的隐式原型链的任意位置是否存在构造函数的原型;</li>
-<li>能检测对<strong>Object</strong>的具体类型，如<code>Function</code>、<code>Array</code>、<code>Object</code>等；</li>
-</ol>
-<h2 id="3-constructor"><a href="#3-constructor" class="headerlink" title="3. constructor"></a>3. <strong>constructor</strong></h2><ul>
-<li><strong>constructor</strong> 是对象的构造函数的显式原型上的属性，用法：<code>object.constructor</code></li>
-<li>输出值：对象所属的构造函数</li>
-</ul>
-<p><strong>注意点</strong>：</p>
-<ol>
-<li><code>constructor</code> 是属性，不是运算符，用法：<code>object.constructor</code></li>
-<li><code>constructor</code> 可以进行修改</li>
-</ol>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> obj = []</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj.<span class="property">constructor</span>) <span class="comment">// Array (在obj的隐式原型链上寻找构造函数的原型，再从上面获取constructor属性)</span></span><br><span class="line"></span><br><span class="line">obj.<span class="property">constructor</span> = <span class="title class_">Function</span>()&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj.<span class="property">constructor</span>) <span class="comment">// Function</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="4-Object-prototype-toString-call"><a href="#4-Object-prototype-toString-call" class="headerlink" title="4. Object.prototype.toString.call()"></a>4. <strong>Object.prototype.toString.call()</strong></h2><p>能准确判断数据类型，包括ES6+出的数据类型(如：<code>Map</code>、<code>Set</code>、<code>WeakSet</code>、<code>WeakMap</code>等)</p>
-<h2 id="🚌总结："><a href="#🚌总结：" class="headerlink" title="🚌总结："></a>🚌总结：</h2><table>
-<thead>
-<tr>
-<th align="center">方法</th>
-<th align="center">核心原理</th>
-<th align="center">优点</th>
-<th align="center">缺点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">typeof</td>
-<td align="center">内部类型标志位</td>
-<td align="center">推测快速简单</td>
-<td align="center">无法检测出[] &#x2F; {}以及对象的具体类型（如Date、RegExp第二个）</td>
-</tr>
-<tr>
-<td align="center">instanceof</td>
-<td align="center">检测显示原型是否在对象隐式原型链上</td>
-<td align="center">检测对象是否为构造函数实例，支持继承</td>
-<td align="center">无法检测原始类型</td>
-</tr>
-<tr>
-<td align="center">constructor</td>
-<td align="center">显式原型的构造函数属性</td>
-<td align="center">检测是否是某个构造函数的实例</td>
-<td align="center">原始类型检测不准确；nul&#x2F;undefined检测会出错；而且<strong>易被修改</strong></td>
-</tr>
-<tr>
-<td align="center">Object.prototype.toString.call</td>
-<td align="center">利用Object的固有属性</td>
-<td align="center">准确检测类型（包括ES6+新类型）</td>
-<td align="center">写法麻烦</td>
-</tr>
-</tbody></table>
-]]></content>
-      <categories>
-        <category>面经</category>
-      </categories>
-      <tags>
-        <tag>数据类型</tag>
       </tags>
   </entry>
   <entry>
@@ -781,296 +854,102 @@
       </tags>
   </entry>
   <entry>
-    <title>面试经典题汇总</title>
-    <url>/posts/5a01a153.html</url>
-    <content><![CDATA[<p><strong>面试经典题汇总</strong>📝</p>
-<h1 id="输入网址之后发生了什么？"><a href="#输入网址之后发生了什么？" class="headerlink" title="输入网址之后发生了什么？"></a>输入网址之后发生了什么？</h1><p>我们在浏览器输入网址之后发生了什么，为什么我们能收到这个页面呢？</p>
-<h2 id="路径纠错"><a href="#路径纠错" class="headerlink" title="路径纠错"></a>路径纠错</h2><p><strong>第一步❗️路径纠错</strong></p>
-<p>我们输入的路径可能有错，也可能缺少协议等东西，就比如我们输入了<code>www..baidu.com</code>，那么浏览器就会自动加上协议，变成<code>http://www.baidu.com</code>，路径补全后变成<code>http://www.baidu.com/</code></p>
-<h2 id="DNS解析"><a href="#DNS解析" class="headerlink" title="DNS解析"></a>DNS解析</h2><p><strong>第二步❗️DNS解析</strong><br>DNS解析，就是把域名解析成IP地址，比如<code>www.baidu.com</code>，那么DNS解析之后，就会变成<code>192.168.3.11</code></p>
-<details>
-<summary>
-❗️这里需要注意DNS缓存和DNS载荷均衡❗️
-</summary>
-<div>
-  <ol>
-    <li>DNS缓存
-      <ul>
-        <li>本地缓存</li>
-        <li>浏览器缓存</li>
-        <li>系统缓存</li>
-      </ul>
-    </li>
-    <li>
-    DNS载荷均衡
-      我们知道`DNS解析`后会获取到一个IP地址，这个地址对应网站服务器地址；但是一个大公司可能有上千台服务器，那么返回的到底是哪台服务器呢？
-      这里就需要到DNS负载均衡了，所谓的负载均衡是**根据我们的地理位置距离服务器的距离**来决定解析出的IP地址，这样就很好的分散了服务器的压力，提高我们的访问速度。
-    </li>
-  </ol>
-</div>
-  
-</details>
-
-<h2 id="TCP连接"><a href="#TCP连接" class="headerlink" title="TCP连接"></a>TCP连接</h2><p><strong>第三步❗️TCP连接</strong><br>简单来说，<code>TCP</code>连接就是我们为发送和接受数据建立的通道，而TCP连接的建立需要三次握手和四次挥手。</p>
-<p><strong>三次握手</strong></p>
-<ol>
-<li>客户端向服务端发送一个<code>SYN包</code></li>
-<li>服务端在接收到<code>SYN包</code>之后，向客户端发送一个<code>SYN+ACK包</code></li>
-<li>客户端在接收到<code>SYN+ACK包</code>之后，向服务端发送一个<code>ACK包</code></li>
-</ol>
-<p>经过这三次握手，TCP连接就建立起来了。</p>
-<h2 id="发送HTTP请求"><a href="#发送HTTP请求" class="headerlink" title="发送HTTP请求"></a>发送HTTP请求</h2><p><strong>第四步❗️发送HTTP请求</strong><br>客户端向服务端发送一个HTTP请求，请求包括请求行，请求头，请求体</p>
-<ul>
-<li>请求行<ul>
-<li>请求方法: GET&#x2F;POST&#x2F;PUT&#x2F;DELETE</li>
-<li>请求路径</li>
-</ul>
-</li>
-<li>请求头</li>
-<li>请求体（GET请求没有）</li>
-</ul>
-<h2 id="服务端响应数据"><a href="#服务端响应数据" class="headerlink" title="服务端响应数据"></a>服务端响应数据</h2><p><strong>第五步❗️服务端响应数据</strong><br>服务端接收到http请求后会返回一个http响应：</p>
-<ul>
-<li>状态行<ul>
-<li>响应码</li>
-</ul>
-</li>
-<li>响应头<ul>
-<li>content-type: <code>text/html;charset=utf-8</code>等</li>
-</ul>
-</li>
-<li>响应体</li>
-</ul>
-<h2 id="渲染"><a href="#渲染" class="headerlink" title="渲染"></a>渲染</h2><p>关于浏览器渲染可以看这篇博客<a href="https://blog.csdn.net/2302_79523175/article/details/140614526?spm=1011.2415.3001.5331">浏览器渲染原理</a></p>
-<h2 id="断开连接"><a href="#断开连接" class="headerlink" title="断开连接"></a>断开连接</h2><p><strong>第六步❗️断开连接</strong></p>
-]]></content>
-      <categories>
-        <category>面经</category>
-      </categories>
-      <tags>
-        <tag>面经</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>03-javascript的运行原理</title>
-    <url>/posts/4bc49eeb.html</url>
-    <content><![CDATA[<p>上篇博客了解了一下浏览器的运行原理，那javascript的运行原理又是怎么样的呢？</p>
-<h1 id="V8引擎"><a href="#V8引擎" class="headerlink" title="V8引擎"></a>V8引擎</h1><p>先来了解一下V8引擎:</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image1.png" alt="在这里插入图片描述"></p>
-<p>简单来说，V8引擎就是在做<strong>将<code>javascript</code>代码转换成机器语言</strong>，从而被cpu识别继而运行的工作。</p>
-<h2 id="执行原理与架构（了解）"><a href="#执行原理与架构（了解）" class="headerlink" title="执行原理与架构（了解）"></a>执行原理与架构（了解）</h2><p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image2.png" alt="在这里插入图片描述"><br>V8引擎本身的源码非常复杂，大概有超过100w行C++代码，通过了解它的架构，我们可以知道它是如何对)vaScript执行的：</p>
-<ul>
-<li><p><code>Parse</code>：将<code>javascript</code>代码转换成<code>AST抽象语法树</code>，因为解释器并不直接认识js代码；</p>
-<ul>
-<li>如果函数没有被调用，那么就不会被转成<code>AST</code></li>
-</ul>
-</li>
-<li><p><code>lgnition</code>：是一个解释器，会将<code>AST</code>转换成字节码；</p>
-<ul>
-<li>同时会收集<code>TurboFan</code>需要的类型信息（比如函数参数的类型信息，有了类型才能进行真实的运算）</li>
-<li>如果函数只执行一次，那么将直接解释执行字节码</li>
-</ul>
-</li>
-<li><p><code>TurboFan</code>：是一个编译器，可以将<code>AST</code>转换成CPU直接能运行的机器码；</p>
-<ul>
-<li>如果一个函数被多次调用，那么将会被标记为<code>热点函数</code>，那么就会经过<code>TurboFan</code>编译成优化的机器码，提高代码的执行性能；</li>
-<li>但是，<strong>机器码实际上也会被还原成字节码</strong>，这是因为如果后续执行过程中类型发生了变化，之前优化的机器码并不能正确的运算，就会逆向的转成字节码</li>
-</ul>
-</li>
-</ul>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image3.png" alt="在这里插入图片描述"></p>
-<h1 id="javascript-执行过程"><a href="#javascript-执行过程" class="headerlink" title="javascript 执行过程"></a>javascript 执行过程</h1><p>假设现在有段这样的代码，它应该是怎样执行的呢？<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image4.png" alt="在这里插入图片描述"></p>
-<p>我们先来了解一下相关的基础知识！</p>
-<h2 id="初始化全局对象"><a href="#初始化全局对象" class="headerlink" title="初始化全局对象"></a>初始化全局对象</h2><ul>
-<li>首先，<code>js</code> 在执行代码前，会创建一个全局对象：<code>Global Object</code><ul>
-<li>该对象 所有的作用域都可以访问；</li>
-<li>里面还会包含<code>Date</code>、<code>Array</code>、<code>Number</code>、<code>setTimeout</code>、<code>setInterval</code>等；</li>
-<li>其中还有一个属性指向<code>window</code></li>
-</ul>
-</li>
-</ul>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image5.png" alt="在这里插入图片描述"></p>
-<h2 id="执行上下文栈"><a href="#执行上下文栈" class="headerlink" title="执行上下文栈"></a>执行上下文栈</h2><p>js 引擎内部有一个<code>执行上下文栈</code>（Excution Context Stack，简称ECS），是用于执行代码的调用栈。</p>
-<ul>
-<li><p>那么现在要执行的是谁呢？是全局的代码块：</p>
-<ul>
-<li>全局的代码块在执行前会创建一个<code>Global Excution Context（GEC）</code>；</li>
-<li><code>GEC</code>会被放到<code>ECS</code>中执行</li>
-</ul>
-</li>
-<li><p><code>GEC</code>被放到<code>ECS</code>中包含两部分内容：</p>
-<ul>
-<li>第一部分：在代码执行前，在<code>parser</code>转成<code>AST</code>的过程中，会将全局定义的变量、函数等加入到<code>Global Object</code>中，但并不会赋值；（这个过程也叫做变量的作用域提升）</li>
-<li>在代码执行中，对变量赋值，或者执行其他的函数；</li>
-</ul>
-</li>
-</ul>
-<h1 id="全局代码的执行"><a href="#全局代码的执行" class="headerlink" title="全局代码的执行"></a>全局代码的执行</h1><p>先来认识一下<code>VO对象</code>：</p>
-<ul>
-<li>每个执行上下文都会关联一个VO（Variable Object，变量对象），变量和函数声明会被添加到这个VO对象中；</li>
-<li>当全局代码被执行的时候，VO就是GO对象了。</li>
-</ul>
-<p>❗️❗️❗️问题来了！<strong>全局代码如何被执行呢？</strong></p>
-<p><strong>执行前：</strong><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image6.png" alt="在这里插入图片描述"><br><strong>执行后：</strong><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image7.png" alt="在这里插入图片描述"><br>现在更改代码为：<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image8.png" alt="在这里插入图片描述"></p>
-<p>那就又有一个问题：<strong>函数代码如何执行呢？</strong></p>
-<h1 id="函数代码的执行"><a href="#函数代码的执行" class="headerlink" title="函数代码的执行"></a>函数代码的执行</h1><ul>
-<li>执行代码遇到函数体时，就会根据函数体创建一个函数体上下文（Functional Excution Context），并且压入到ECS中；</li>
-<li>当进入函数体执行代码时，就会创建一个<code>AO（Activation Obejct）</code>；</li>
-<li>这个<code>AO</code>会使用<code>arguments</code>作为初始化，并且初始值是传入的参数；</li>
-<li>这个<code>AO</code>对象会作为该函数体的执行上下文的<code>VO</code>来存放变量的初始化</li>
-</ul>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image9.png" alt="在这里插入图片描述"></p>
-<p>执行函数上下文之后：</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image10.png" alt="在这里插入图片描述"></p>
-<p>之后，函数执行上下文将会被压出栈外：</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image11.png" alt="在这里插入图片描述"></p>
-<p>❗️在函数作用域中可能遇到这样的情况：</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image12.png" alt="在这里插入图片描述"></p>
-<blockquote>
-<p><code>message</code>变量的声明存在于全局作用域，但在局部作用域进行了调用，<strong>那局部作用域又是怎么找到全距作用与中的变量呢？</strong></p>
+    <title>04-闭包</title>
+    <url>/posts/2f741396.html</url>
+    <content><![CDATA[<h1 id="javascript-内存管理"><a href="#javascript-内存管理" class="headerlink" title="javascript 内存管理"></a>javascript 内存管理</h1><blockquote>
+<p>认识内存管理</p>
 </blockquote>
-<p>这就涉及到了<code>javascript</code>的作用域和作用链！</p>
-<h1 id="作用域和作用链"><a href="#作用域和作用链" class="headerlink" title="作用域和作用链"></a>作用域和作用链</h1><p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image13.png" alt="在这里插入图片描述"></p>
-<p>上面说到，但我们进入一个执行上下文时，执行上下文会关联一个VO对象，其实，同时它也会关联一个 <strong><code>作用域链（Scope Chain）</code></strong>。</p>
+<p>不管什么样的编程语言，<strong>在代码执行过程中都需要进行内存分配</strong>，不同的是有些编程语言需要我们自己手动进行内存配置，有些则会自动帮我们进行内存分配。</p>
+<p>不管什么样的内存分配机制，<strong>内存的分配都会进入如下周期</strong>：</p>
+<ol>
+<li>申请分配内存</li>
+<li>使用分配的内存</li>
+<li>不需要使用时释放内存</li>
+</ol>
+<p>不同的语言会对第一步和第三步进行不同的处理：</p>
 <ul>
-<li>作用域链是一个对象列表，用于表示变量标识符的求值；</li>
-<li>当进入一个执行上下文时，这个作用域链就会被创建，并且根据代码类型，添加一系列的对象</li>
+<li>手动管理内存：比如<code>C</code>、<code>C++</code>，包括早期的<code>OC</code>，都是需要手动的进行内存的申请和释放（<code>malloc和free函数</code>）；</li>
+<li>自动管理内存：比如<code>java</code>、<code>javascript</code>、<code>Python</code>、<code>Swift</code>、<code>Dart</code>等，这些语言都有帮我们自动进行内存管理。</li>
 </ul>
-]]></content>
+<p>也就是说，我们所使用的<code>javascript</code>会自动的对原始值、对象、函数等进行内存管理，我们并不需要进行多余的操作。</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/04-closure/img1.png" alt="img.png"></p>
+<h1 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h1><h1 id="闭包的概念理解"><a href="#闭包的概念理解" class="headerlink" title="闭包的概念理解"></a>闭包的概念理解</h1><h1 id="闭包的形成过程"><a href="#闭包的形成过程" class="headerlink" title="闭包的形成过程"></a>闭包的形成过程</h1><h1 id="闭包的内存泄漏"><a href="#闭包的内存泄漏" class="headerlink" title="闭包的内存泄漏"></a>闭包的内存泄漏</h1>]]></content>
       <categories>
         <category>js高级</category>
       </categories>
       <tags>
-        <tag>javascript运行原理</tag>
+        <tag>闭包</tag>
       </tags>
   </entry>
   <entry>
-    <title>02- 浏览器运行原理</title>
-    <url>/posts/2373884b.html</url>
-    <content><![CDATA[<p>从输入路径开始，浏览器是怎样一步步渲染出页面的呢？</p>
-<h1 id="网页的解析过程"><a href="#网页的解析过程" class="headerlink" title="网页的解析过程"></a>网页的解析过程</h1><p>输入地址 —&gt; DNS解析 —&gt; 服务器响应 —&gt; 浏览器响应<br>一个网页URL从输入到浏览器中，到显示经历怎样的过程呢？<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image1.png" alt="在这里插入图片描述"></p>
-<h2 id="浏览器内核"><a href="#浏览器内核" class="headerlink" title="浏览器内核"></a>浏览器内核</h2><p>常见的浏览器内核：<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image2.png" alt="在这里插入图片描述"><br>我们常说的<code>浏览器内核</code>指的是浏览器的<code>排版引擎</code>，也称之为<code>页面渲染引擎</code>或<code>样板引擎</code>。</p>
-<h1 id="浏览器渲染流程"><a href="#浏览器渲染流程" class="headerlink" title="浏览器渲染流程"></a>浏览器渲染流程</h1><p>详细内容可看我的另一篇博客：<br><a href="https://blog.csdn.net/2302_79523175/article/details/140614526?spm=1011.2415.3001.5331">浏览器渲染原理</a><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image3.png" alt="在这里插入图片描述"></p>
-<h2 id="解析html"><a href="#解析html" class="headerlink" title="解析html"></a>解析html</h2><p>因为默认情况下服务器会给浏览器返回index..html文件，所以解析HTML是所有步骤的开始：<br>解析HTML，会构建DOM Tree:<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image4.png" alt="在这里插入图片描述"></p>
-<h2 id="生成css规则"><a href="#生成css规则" class="headerlink" title="生成css规则"></a>生成css规则</h2><p>浏览器在解析html时遇到 css 的<code>&lt;link&gt;</code>时会开启另外一个线程对css文件进行下载，这也就不会影响到dom tree的生成；<br>下载完css文件后就会对其进行解析，生成对应的<code>cssom</code>树。<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image5.png" alt="在这里插入图片描述"></p>
-<h2 id="构建render-tree"><a href="#构建render-tree" class="headerlink" title="构建render tree"></a>构建render tree</h2><p>当有了<code>DOM Tree</code>和<code>CSSOM Tree</code>两部分之后，就可以结合来生成<code>Render Tree</code>了。<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image6.png" alt="在这里插入图片描述"></p>
-<p>注意❗️</p>
+    <title>git常见问题解决</title>
+    <url>/posts/490dde0b.html</url>
+    <content><![CDATA[<h1 id="Git常见问题解决"><a href="#Git常见问题解决" class="headerlink" title="Git常见问题解决"></a>Git常见问题解决</h1><h2 id="首次添加远程仓库"><a href="#首次添加远程仓库" class="headerlink" title="首次添加远程仓库"></a>首次添加远程仓库</h2><blockquote>
+<p><strong>场景：本地分支已存在，远程分支也已存在，但未建立联系</strong></p>
+</blockquote>
+<p>首次添加远程仓库时，我们的本地分支与远程分支未能建立联系，从本地<code>master</code>切换到<code>远程master</code>时会出现<code>Git:fatal:a branch named &#39;master&#39;already exists</code>的错误！</p>
 <ol>
-<li><code>link</code>元素不会阻塞<code>DOM Tree</code>的构建，但是会阻塞<code>Render Tree</code>的构建，因为构建<code>Render Tree</code>需要对应的<code>CSSOM Tree</code>；</li>
-<li><strong><code>DOM Tree</code>和<code>Render Tree</code>并不是一一对应的</strong>，有些dom可能设置了<code>display: none;</code>，不会在<code>Render Tree</code>中出现。</li>
-</ol>
-<h2 id="布局-Layout"><a href="#布局-Layout" class="headerlink" title="布局(Layout)"></a>布局(Layout)</h2><p>布局是确定呈现树中所有节点的宽度、高度和位置信息</p>
-<p><code>Render Tree</code>形成之后，就可以对dom的style进行计算：</p>
-<ol>
-<li><code>em</code>、<code>rem</code>或<code>%</code>等转换成<code>px</code>；</li>
-<li>…</li>
-</ol>
-<h2 id="绘制-Paint"><a href="#绘制-Paint" class="headerlink" title="绘制(Paint)"></a>绘制(Paint)</h2><ul>
-<li>在绘制阶段，浏览器将布局阶段计算的每个frame转为屏幕上实际的像素点；</li>
-<li>包括将元素的可见部分进行绘制，比如文本、颜色、边框、阴影、替换元素（比如img）<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image7.png" alt="在这里插入图片描述"></li>
-</ul>
-<h1 id="回流和重绘"><a href="#回流和重绘" class="headerlink" title="回流和重绘"></a>回流和重绘</h1><h2 id="回流reflow"><a href="#回流reflow" class="headerlink" title="回流reflow"></a>回流reflow</h2><h3 id="（1）理解："><a href="#（1）理解：" class="headerlink" title="（1）理解："></a>（1）理解：</h3><ul>
-<li>第一次确定节点的位置和大小叫做布局(Layout)；</li>
-<li>之后对于节点大小以及位置等的计算叫做回流。</li>
-</ul>
-<h3 id="（2）出现情况"><a href="#（2）出现情况" class="headerlink" title="（2）出现情况"></a>（2）出现情况</h3><ol>
-<li><code>DOM</code>结构发生改变（添加新节点或者移除节点）；</li>
-<li>布局改变（修改了width、height、padding等值）；</li>
-<li>窗口resize（修改了窗口的尺寸）；</li>
-<li>调用<code>getComputedStyle</code>方法获取尺寸、位置信息；</li>
-</ol>
-<h2 id="重绘repaint"><a href="#重绘repaint" class="headerlink" title="重绘repaint"></a>重绘repaint</h2><h3 id="（1）理解：-1"><a href="#（1）理解：-1" class="headerlink" title="（1）理解："></a>（1）理解：</h3><ul>
-<li>第一次渲染内容叫做绘制(Paint)；</li>
-<li>之后重新渲染叫做重绘（repaint）。</li>
-</ul>
-<h3 id="（2）出现情况-1"><a href="#（2）出现情况-1" class="headerlink" title="（2）出现情况"></a>（2）出现情况</h3><ol>
-<li>修改背景色、边框颜色、文字颜色、模糊样式等</li>
-<li><code>回流</code>一定引起<code>重绘</code>，所以回流是很<strong>消耗性能</strong>的事情。</li>
-</ol>
-<p><strong>所以在开发中要尽量避免回流</strong>：</p>
-<ol>
-<li>修改样式时尽量一次性修改<ul>
-<li>比如通过<code>cssText</code>修改，通过添加<code>class</code>修改。</li>
-</ul>
+<li><p>查看当前分支<br>查看当前位于什么分支，保证下面之后操作的分支正确；</p>
 </li>
-<li>尽量避免频繁的操作DOM<ul>
-<li>我们可以在一个<code>DocumentFragment</code>(了解即可)或者是父元素中将要操作的DOM操作完成，在一次性的操作。</li>
-</ul>
+<li><p>与远程分支建立联系<br>将当前分支与远程origin&#x2F;master分支建立联系</p>
+<blockquote>
+<p>git branch –set-upstream-to&#x3D;origin&#x2F;master</p>
+<p>简写：git branch -u origin&#x2F;master</p>
+</blockquote>
 </li>
-<li>尽量避免通过<code>getComputedStyle</code>获取尺寸、位置等信息</li>
-<li>对某些元素使用<code>position</code>的<code>absolute</code>或<code>fixed</code><ul>
-<li>这种操作并不是不会引起回流，而是相对来说开销较小，不会对其他元素造成影响。</li>
-</ul>
+<li><p>查看是否建立联系</p>
+<blockquote>
+<p>查看所有分支的状态</p>
+<p>git branch -vv<br>查看当前分支的状态<br>git status</p>
+</blockquote>
+<p><img src="/../../img/Git/img_12.png" alt="img.png"></p>
+</li>
+<li><p>解决之后的错误<br>之后可能会出现<code>fatal: refusing to merge unrelated histories</code>的问题，解决方法如下：</p>
 </li>
 </ol>
-<h1 id="特殊解析composite合成-和性能优化"><a href="#特殊解析composite合成-和性能优化" class="headerlink" title="特殊解析composite合成 和性能优化"></a>特殊解析composite合成 和性能优化</h1><p>绘制的过程，浏览器会将布局后的元素绘制到多个合成图层中（这是浏览器的一种优化手段）；</p>
-<ul>
-<li>默认情况下，标准流的元素会被绘制到同一个图层中；</li>
-<li>而某些特殊的属性，会单独创建一个新的合成层，并且新的图层可以使用<code>GPU</code>加速绘制（每个合成层都是单独进行渲染）</li>
-</ul>
-<p><strong>哪些属性可以形成新的合成层呢</strong>？下面是常见的一下属性：</p>
-<ul>
-<li>3D transforms</li>
-<li><code>video</code>、<code>canvas</code>、<code>iframe</code></li>
-<li><code>opacity</code>动画转换</li>
-<li><code>position: fixed</code></li>
-<li><code>will-cahnge</code>：一个实验性的属性，提前告诉浏览器可能会发生哪些变化</li>
-<li><code>animation</code>或<code>transition</code>设置了<code>opacity</code>、<code>transform</code></li>
-</ul>
-<p>注❗️：<br>分层确实可以提高性能，但是它以内存管理为代价，因此不应作为web性能优化策略的一部分过度使用！</p>
-<h1 id="defer和async属性"><a href="#defer和async属性" class="headerlink" title="defer和async属性"></a>defer和async属性</h1><p>首先来了解一下 <strong><code>script</code>和页面解析的关系</strong> !</p>
-<p>前面我们已经知道了，浏览器在解析html时遇到<code>&lt;link&gt;</code>不会影响<code>DOM Tree</code>的构建，那遇到<code>&lt;script&gt;</code>呢？会影响吗？<br>答案是：<strong>会的！</strong></p>
-<ul>
-<li>浏览器在遇到<code>&lt;script&gt;</code>时会先停止对<code>DOM Tree</code>构建，转而去下载、执行js脚本；</li>
-<li>只有js脚本执行完毕后，<code>DOM Tree</code>才能继续进行构建；</li>
-</ul>
-<p>那这是为什么呢？</p>
-<ul>
-<li>因为js文件中可能存在对<code>DOM</code>的操作；</li>
-<li>若先构建<code>DOM Tree</code>，再执行js脚本，可能会造成严重的回流和重绘，影响页面性能。</li>
-</ul>
-<p>但是这也会带来新的问题，特别是现在主流框架：</p>
-<ul>
-<li>目前主要流行的<code>Vue</code>、<code>React</code>，脚本往往比html页面更”重”，处理时间更长，</li>
-<li>也就是在js脚本执行结束前，页面可能出现空白</li>
-</ul>
-<p>（有些浏览器可能对此做了优化，也就是在js脚本执行接受之前，先将已经构建的<code>DOM Tree</code>进行展示）<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image8.png" alt="在这里插入图片描述"></p>
-<p>为了解决这个问题，<code>&lt;script&gt;</code>给我们提供了两个属性：<code>defer</code>和<code>async</code></p>
-<h2 id="4-1-defer"><a href="#4-1-defer" class="headerlink" title="4.1 defer"></a>4.1 defer</h2><ul>
-<li>defer会告诉浏览器不要等待脚本的下载，继续执行<code>DOM Tree</code>的构建</li>
-<li>脚本的下载有浏览器完成，不会影响<code>DOM Tree</code>的构建；</li>
-<li>若脚本先下载完，那它会等待<code>DOM Tree</code>构建完成，在<code>DOMContentLoaded</code>事件执行前执行defer中的代码</li>
-</ul>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image9.png" alt="在这里插入图片描述"><br>总结：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git pull origin master --allow-unrelated-histories</span><br></pre></td></tr></table></figure>
+
+<p>这样问题就基本解决了！</p>
+<h2 id="connection-abort"><a href="#connection-abort" class="headerlink" title="connection abort"></a>connection abort</h2><p>有时候使用ssh方式推送代码的时候会出现下面的错误😅：</p>
+<p><img src="/../../img/Git/img_13.png" alt="img.png"></p>
+<p><span style="color: red;">原因<span>：</p>
+<p>代理服务商为了安全考虑，避免被别人当跳板，会限制22端口的连接，导致无法正确连接到Github的服务器。</p>
+<p><strong>解决办法：</strong><br>改走HTTPS协议，走443端口，这样不仅可以解决上面的问题，还可以提高代理的下载速度。<br>在<code>~/.ssh/config</code>中添加以下内容：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Host github.com</span><br><span class="line">    Hostname ssh.github.com</span><br><span class="line">    Port 443</span><br><span class="line">    User git</span><br></pre></td></tr></table></figure>
+<p>之后就可以正常拉取推送了！</p>
+<h2 id="Failed-to-connect-to-127-0-0-1"><a href="#Failed-to-connect-to-127-0-0-1" class="headerlink" title="Failed to connect to 127.0.0.1"></a>Failed to connect to 127.0.0.1</h2><p>有时候可能会出现下面的错误❌：<br><img src="/../../img/Git/img_14.png" alt="img.png"></p>
+<p>查看git有没有proxy</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global http.proxy</span><br><span class="line">git config --global https.proxy</span><br></pre></td></tr></table></figure>
+<p>如果有代理，取消之后就可以正常拉取推送了！</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global --<span class="built_in">unset</span> http.proxy</span><br><span class="line">git config --global --<span class="built_in">unset</span> https.proxy</span><br></pre></td></tr></table></figure>
+
+<h2 id="refusing-to-merge-unrelated-histories"><a href="#refusing-to-merge-unrelated-histories" class="headerlink" title="refusing to merge unrelated histories"></a>refusing to merge unrelated histories</h2><p>刚学习使用git的时候可能会犯的错就是：本地<code>git init</code>了仓库，远程仓库同样也初始化了，这就会导致两个仓库的历史提交是完全独立的。</p>
+<p>一个<code>Git</code>仓库好比是一棵树，树上的每个节点就是一次提交。正常情况下，当在一个仓库中工作，操作也都是在同一棵树上不同的分支上进行推送和拉取。<code>Git</code>可以轻松的追踪这些分支的演变，因为他们都来自同一个根（即最初的提交）。</p>
+<p>但是如果出现“不相关的历史记录”，就好像把两颗长在不同地方的树进行合并，<code>Git</code>无法找到共同的起点来理解这两个库的关系，所以会拒绝执行合并。</p>
+<p><strong>解决办法：</strong></p>
 <ol>
-<li><code>defer</code>不会影响<code>DOM Tree</code>的构建；</li>
-<li>在<code>defer</code>中<code>DOM Tree</code>已经构建完成，可进行对dom的操作；</li>
-<li><code>defer</code>总是在<code>DOMContentLoaded</code>时间发出前执行；</li>
-<li>另外，有多个<code>defer</code>会按照编写顺序执行；</li>
-<li>从某种角度来说，<code>defer</code>会提高页面性能，并且推荐放在<code>&lt;head&gt;</code>中（提前下载js脚本）；</li>
-<li>注意：<code>defer</code>仅适用于外部脚本，对于<code>&lt;script&gt;</code>默认内容会被忽略。</li>
+<li>常见方法：<code>--allow-unrelated-histories</code> 强制执行合并 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git pull origin &lt;branch_name&gt; --allow-unrelated-histories</span><br></pre></td></tr></table></figure></li>
+<li>新项目中<br>如果是在新项目中，我们可以先<code>git clone</code>把仓库代码拉到本地，之后在克隆的仓库中拉取和推送。这样可以确保本地仓库在一开始就跟远程仓库拥有相同的历史。</li>
 </ol>
-<h2 id="4-2-async"><a href="#4-2-async" class="headerlink" title="4.2 async"></a>4.2 async</h2><ul>
-<li><code>async</code>和<code>defer</code>相似，都能够让脚本不堵塞页面；</li>
-<li><code>async</code>是完全独立于浏览器的：<ul>
-<li>浏览器页面不会因为<code>script</code>脚本而暂停<code>DOM Tree</code>的构建；</li>
-<li><code>async</code>脚本不能保证顺序执行脚本，它独立下载，独立运行，不会等待其他脚本；</li>
-<li><code>async</code>不一定在<code>DOMContentLoaded</code>时间执行前执行</li>
-</ul>
+<h2 id="携带未提交的更改到另外分支"><a href="#携带未提交的更改到另外分支" class="headerlink" title="携带未提交的更改到另外分支"></a>携带未提交的更改到另外分支</h2><p>在改项目代码的时候添加了新功能一些的尝试，但是尝试还需要很长时间才能完成，这时候还有其他需求等待完成，所以不得需要先将更改保存起来（放入其他分支）</p>
+<p>我们可以通过<code>stash</code>暂时保存当前更改，切换到其他分支之后再恢复更改；</p>
+<ol>
+<li><p>保存更改到<code>stash</code>条目</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git stash save <span class="string">&quot;临时保存dev-添加列表滚动加载&quot;</span> <span class="comment"># 可选：添加描述信息</span></span><br><span class="line"><span class="comment"># 或者简化命令</span></span><br><span class="line">git stash push -m <span class="string">&quot;临时保存dev-添加列表滚动加载&quot;</span></span><br></pre></td></tr></table></figure>
+<p>保存更改的时候注意<code>components.d.ts</code>，它会阻碍其他文件提交到<code>stash</code>(本来一次<code>stash</code>就可以了，因为这个文件会多几次<code>stash</code>)</p>
 </li>
-</ul>
-<p><strong>总结：</strong></p>
-<ol>
-<li><code>defer</code>通常需要在文档解析后操作<code>DOM</code>的<code>javascript</code>代码，并且对多个<code>script</code>文件有顺序要求；</li>
-<li><code>async</code>通常用于独立的脚本，对其他脚本，甚至<code>DOM</code>没有依赖的。</li>
+<li><p>切换分支21</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git checkout -m feature-scrollbar</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从<code>stash</code>恢复到当前分支</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git stash pop <span class="comment"># 获取最新stash条目并删除</span></span><br><span class="line">git stash apply stash@&#123;0&#125; <span class="comment"># 只获取不删除</span></span><br></pre></td></tr></table></figure></li>
 </ol>
-<p>注：整个JS高级专栏依托于coderwhy老师的课程，相关图片、代码均来自于其课程。</p>
 ]]></content>
       <categories>
-        <category>js高级</category>
+        <category>Git</category>
       </categories>
       <tags>
-        <tag>浏览器</tag>
+        <tag>Git</tag>
       </tags>
   </entry>
   <entry>
@@ -1259,6 +1138,99 @@
       </categories>
       <tags>
         <tag>javascript函数和对象增强</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>03-javascript的运行原理</title>
+    <url>/posts/4bc49eeb.html</url>
+    <content><![CDATA[<p>上篇博客了解了一下浏览器的运行原理，那javascript的运行原理又是怎么样的呢？</p>
+<h1 id="V8引擎"><a href="#V8引擎" class="headerlink" title="V8引擎"></a>V8引擎</h1><p>先来了解一下V8引擎:</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image1.png" alt="在这里插入图片描述"></p>
+<p>简单来说，V8引擎就是在做<strong>将<code>javascript</code>代码转换成机器语言</strong>，从而被cpu识别继而运行的工作。</p>
+<h2 id="执行原理与架构（了解）"><a href="#执行原理与架构（了解）" class="headerlink" title="执行原理与架构（了解）"></a>执行原理与架构（了解）</h2><p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image2.png" alt="在这里插入图片描述"><br>V8引擎本身的源码非常复杂，大概有超过100w行C++代码，通过了解它的架构，我们可以知道它是如何对)vaScript执行的：</p>
+<ul>
+<li><p><code>Parse</code>：将<code>javascript</code>代码转换成<code>AST抽象语法树</code>，因为解释器并不直接认识js代码；</p>
+<ul>
+<li>如果函数没有被调用，那么就不会被转成<code>AST</code></li>
+</ul>
+</li>
+<li><p><code>lgnition</code>：是一个解释器，会将<code>AST</code>转换成字节码；</p>
+<ul>
+<li>同时会收集<code>TurboFan</code>需要的类型信息（比如函数参数的类型信息，有了类型才能进行真实的运算）</li>
+<li>如果函数只执行一次，那么将直接解释执行字节码</li>
+</ul>
+</li>
+<li><p><code>TurboFan</code>：是一个编译器，可以将<code>AST</code>转换成CPU直接能运行的机器码；</p>
+<ul>
+<li>如果一个函数被多次调用，那么将会被标记为<code>热点函数</code>，那么就会经过<code>TurboFan</code>编译成优化的机器码，提高代码的执行性能；</li>
+<li>但是，<strong>机器码实际上也会被还原成字节码</strong>，这是因为如果后续执行过程中类型发生了变化，之前优化的机器码并不能正确的运算，就会逆向的转成字节码</li>
+</ul>
+</li>
+</ul>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image3.png" alt="在这里插入图片描述"></p>
+<h1 id="javascript-执行过程"><a href="#javascript-执行过程" class="headerlink" title="javascript 执行过程"></a>javascript 执行过程</h1><p>假设现在有段这样的代码，它应该是怎样执行的呢？<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image4.png" alt="在这里插入图片描述"></p>
+<p>我们先来了解一下相关的基础知识！</p>
+<h2 id="初始化全局对象"><a href="#初始化全局对象" class="headerlink" title="初始化全局对象"></a>初始化全局对象</h2><ul>
+<li>首先，<code>js</code> 在执行代码前，会创建一个全局对象：<code>Global Object</code><ul>
+<li>该对象 所有的作用域都可以访问；</li>
+<li>里面还会包含<code>Date</code>、<code>Array</code>、<code>Number</code>、<code>setTimeout</code>、<code>setInterval</code>等；</li>
+<li>其中还有一个属性指向<code>window</code></li>
+</ul>
+</li>
+</ul>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image5.png" alt="在这里插入图片描述"></p>
+<h2 id="执行上下文栈"><a href="#执行上下文栈" class="headerlink" title="执行上下文栈"></a>执行上下文栈</h2><p>js 引擎内部有一个<code>执行上下文栈</code>（Excution Context Stack，简称ECS），是用于执行代码的调用栈。</p>
+<ul>
+<li><p>那么现在要执行的是谁呢？是全局的代码块：</p>
+<ul>
+<li>全局的代码块在执行前会创建一个<code>Global Excution Context（GEC）</code>；</li>
+<li><code>GEC</code>会被放到<code>ECS</code>中执行</li>
+</ul>
+</li>
+<li><p><code>GEC</code>被放到<code>ECS</code>中包含两部分内容：</p>
+<ul>
+<li>第一部分：在代码执行前，在<code>parser</code>转成<code>AST</code>的过程中，会将全局定义的变量、函数等加入到<code>Global Object</code>中，但并不会赋值；（这个过程也叫做变量的作用域提升）</li>
+<li>在代码执行中，对变量赋值，或者执行其他的函数；</li>
+</ul>
+</li>
+</ul>
+<h1 id="全局代码的执行"><a href="#全局代码的执行" class="headerlink" title="全局代码的执行"></a>全局代码的执行</h1><p>先来认识一下<code>VO对象</code>：</p>
+<ul>
+<li>每个执行上下文都会关联一个VO（Variable Object，变量对象），变量和函数声明会被添加到这个VO对象中；</li>
+<li>当全局代码被执行的时候，VO就是GO对象了。</li>
+</ul>
+<p>❗️❗️❗️问题来了！<strong>全局代码如何被执行呢？</strong></p>
+<p><strong>执行前：</strong><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image6.png" alt="在这里插入图片描述"><br><strong>执行后：</strong><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image7.png" alt="在这里插入图片描述"><br>现在更改代码为：<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image8.png" alt="在这里插入图片描述"></p>
+<p>那就又有一个问题：<strong>函数代码如何执行呢？</strong></p>
+<h1 id="函数代码的执行"><a href="#函数代码的执行" class="headerlink" title="函数代码的执行"></a>函数代码的执行</h1><ul>
+<li>执行代码遇到函数体时，就会根据函数体创建一个函数体上下文（Functional Excution Context），并且压入到ECS中；</li>
+<li>当进入函数体执行代码时，就会创建一个<code>AO（Activation Obejct）</code>；</li>
+<li>这个<code>AO</code>会使用<code>arguments</code>作为初始化，并且初始值是传入的参数；</li>
+<li>这个<code>AO</code>对象会作为该函数体的执行上下文的<code>VO</code>来存放变量的初始化</li>
+</ul>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image9.png" alt="在这里插入图片描述"></p>
+<p>执行函数上下文之后：</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image10.png" alt="在这里插入图片描述"></p>
+<p>之后，函数执行上下文将会被压出栈外：</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image11.png" alt="在这里插入图片描述"></p>
+<p>❗️在函数作用域中可能遇到这样的情况：</p>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image12.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p><code>message</code>变量的声明存在于全局作用域，但在局部作用域进行了调用，<strong>那局部作用域又是怎么找到全距作用与中的变量呢？</strong></p>
+</blockquote>
+<p>这就涉及到了<code>javascript</code>的作用域和作用链！</p>
+<h1 id="作用域和作用链"><a href="#作用域和作用链" class="headerlink" title="作用域和作用链"></a>作用域和作用链</h1><p><img src="/../../img/js%E9%AB%98%E7%BA%A7/03-oringinal-run-js/image13.png" alt="在这里插入图片描述"></p>
+<p>上面说到，但我们进入一个执行上下文时，执行上下文会关联一个VO对象，其实，同时它也会关联一个 <strong><code>作用域链（Scope Chain）</code></strong>。</p>
+<ul>
+<li>作用域链是一个对象列表，用于表示变量标识符的求值；</li>
+<li>当进入一个执行上下文时，这个作用域链就会被创建，并且根据代码类型，添加一系列的对象</li>
+</ul>
+]]></content>
+      <categories>
+        <category>js高级</category>
+      </categories>
+      <tags>
+        <tag>javascript运行原理</tag>
       </tags>
   </entry>
   <entry>
@@ -1453,6 +1425,135 @@
       </tags>
   </entry>
   <entry>
+    <title>02- 浏览器运行原理</title>
+    <url>/posts/2373884b.html</url>
+    <content><![CDATA[<p>从输入路径开始，浏览器是怎样一步步渲染出页面的呢？</p>
+<h1 id="网页的解析过程"><a href="#网页的解析过程" class="headerlink" title="网页的解析过程"></a>网页的解析过程</h1><p>输入地址 —&gt; DNS解析 —&gt; 服务器响应 —&gt; 浏览器响应<br>一个网页URL从输入到浏览器中，到显示经历怎样的过程呢？<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image1.png" alt="在这里插入图片描述"></p>
+<h2 id="浏览器内核"><a href="#浏览器内核" class="headerlink" title="浏览器内核"></a>浏览器内核</h2><p>常见的浏览器内核：<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image2.png" alt="在这里插入图片描述"><br>我们常说的<code>浏览器内核</code>指的是浏览器的<code>排版引擎</code>，也称之为<code>页面渲染引擎</code>或<code>样板引擎</code>。</p>
+<h1 id="浏览器渲染流程"><a href="#浏览器渲染流程" class="headerlink" title="浏览器渲染流程"></a>浏览器渲染流程</h1><p>详细内容可看我的另一篇博客：<br><a href="https://blog.csdn.net/2302_79523175/article/details/140614526?spm=1011.2415.3001.5331">浏览器渲染原理</a><br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image3.png" alt="在这里插入图片描述"></p>
+<h2 id="解析html"><a href="#解析html" class="headerlink" title="解析html"></a>解析html</h2><p>因为默认情况下服务器会给浏览器返回index..html文件，所以解析HTML是所有步骤的开始：<br>解析HTML，会构建DOM Tree:<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image4.png" alt="在这里插入图片描述"></p>
+<h2 id="生成css规则"><a href="#生成css规则" class="headerlink" title="生成css规则"></a>生成css规则</h2><p>浏览器在解析html时遇到 css 的<code>&lt;link&gt;</code>时会开启另外一个线程对css文件进行下载，这也就不会影响到dom tree的生成；<br>下载完css文件后就会对其进行解析，生成对应的<code>cssom</code>树。<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image5.png" alt="在这里插入图片描述"></p>
+<h2 id="构建render-tree"><a href="#构建render-tree" class="headerlink" title="构建render tree"></a>构建render tree</h2><p>当有了<code>DOM Tree</code>和<code>CSSOM Tree</code>两部分之后，就可以结合来生成<code>Render Tree</code>了。<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image6.png" alt="在这里插入图片描述"></p>
+<p>注意❗️</p>
+<ol>
+<li><code>link</code>元素不会阻塞<code>DOM Tree</code>的构建，但是会阻塞<code>Render Tree</code>的构建，因为构建<code>Render Tree</code>需要对应的<code>CSSOM Tree</code>；</li>
+<li><strong><code>DOM Tree</code>和<code>Render Tree</code>并不是一一对应的</strong>，有些dom可能设置了<code>display: none;</code>，不会在<code>Render Tree</code>中出现。</li>
+</ol>
+<h2 id="布局-Layout"><a href="#布局-Layout" class="headerlink" title="布局(Layout)"></a>布局(Layout)</h2><p>布局是确定呈现树中所有节点的宽度、高度和位置信息</p>
+<p><code>Render Tree</code>形成之后，就可以对dom的style进行计算：</p>
+<ol>
+<li><code>em</code>、<code>rem</code>或<code>%</code>等转换成<code>px</code>；</li>
+<li>…</li>
+</ol>
+<h2 id="绘制-Paint"><a href="#绘制-Paint" class="headerlink" title="绘制(Paint)"></a>绘制(Paint)</h2><ul>
+<li>在绘制阶段，浏览器将布局阶段计算的每个frame转为屏幕上实际的像素点；</li>
+<li>包括将元素的可见部分进行绘制，比如文本、颜色、边框、阴影、替换元素（比如img）<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image7.png" alt="在这里插入图片描述"></li>
+</ul>
+<h1 id="回流和重绘"><a href="#回流和重绘" class="headerlink" title="回流和重绘"></a>回流和重绘</h1><h2 id="回流reflow"><a href="#回流reflow" class="headerlink" title="回流reflow"></a>回流reflow</h2><h3 id="（1）理解："><a href="#（1）理解：" class="headerlink" title="（1）理解："></a>（1）理解：</h3><ul>
+<li>第一次确定节点的位置和大小叫做布局(Layout)；</li>
+<li>之后对于节点大小以及位置等的计算叫做回流。</li>
+</ul>
+<h3 id="（2）出现情况"><a href="#（2）出现情况" class="headerlink" title="（2）出现情况"></a>（2）出现情况</h3><ol>
+<li><code>DOM</code>结构发生改变（添加新节点或者移除节点）；</li>
+<li>布局改变（修改了width、height、padding等值）；</li>
+<li>窗口resize（修改了窗口的尺寸）；</li>
+<li>调用<code>getComputedStyle</code>方法获取尺寸、位置信息；</li>
+</ol>
+<h2 id="重绘repaint"><a href="#重绘repaint" class="headerlink" title="重绘repaint"></a>重绘repaint</h2><h3 id="（1）理解：-1"><a href="#（1）理解：-1" class="headerlink" title="（1）理解："></a>（1）理解：</h3><ul>
+<li>第一次渲染内容叫做绘制(Paint)；</li>
+<li>之后重新渲染叫做重绘（repaint）。</li>
+</ul>
+<h3 id="（2）出现情况-1"><a href="#（2）出现情况-1" class="headerlink" title="（2）出现情况"></a>（2）出现情况</h3><ol>
+<li>修改背景色、边框颜色、文字颜色、模糊样式等</li>
+<li><code>回流</code>一定引起<code>重绘</code>，所以回流是很<strong>消耗性能</strong>的事情。</li>
+</ol>
+<p><strong>所以在开发中要尽量避免回流</strong>：</p>
+<ol>
+<li>修改样式时尽量一次性修改<ul>
+<li>比如通过<code>cssText</code>修改，通过添加<code>class</code>修改。</li>
+</ul>
+</li>
+<li>尽量避免频繁的操作DOM<ul>
+<li>我们可以在一个<code>DocumentFragment</code>(了解即可)或者是父元素中将要操作的DOM操作完成，在一次性的操作。</li>
+</ul>
+</li>
+<li>尽量避免通过<code>getComputedStyle</code>获取尺寸、位置等信息</li>
+<li>对某些元素使用<code>position</code>的<code>absolute</code>或<code>fixed</code><ul>
+<li>这种操作并不是不会引起回流，而是相对来说开销较小，不会对其他元素造成影响。</li>
+</ul>
+</li>
+</ol>
+<h1 id="特殊解析composite合成-和性能优化"><a href="#特殊解析composite合成-和性能优化" class="headerlink" title="特殊解析composite合成 和性能优化"></a>特殊解析composite合成 和性能优化</h1><p>绘制的过程，浏览器会将布局后的元素绘制到多个合成图层中（这是浏览器的一种优化手段）；</p>
+<ul>
+<li>默认情况下，标准流的元素会被绘制到同一个图层中；</li>
+<li>而某些特殊的属性，会单独创建一个新的合成层，并且新的图层可以使用<code>GPU</code>加速绘制（每个合成层都是单独进行渲染）</li>
+</ul>
+<p><strong>哪些属性可以形成新的合成层呢</strong>？下面是常见的一下属性：</p>
+<ul>
+<li>3D transforms</li>
+<li><code>video</code>、<code>canvas</code>、<code>iframe</code></li>
+<li><code>opacity</code>动画转换</li>
+<li><code>position: fixed</code></li>
+<li><code>will-cahnge</code>：一个实验性的属性，提前告诉浏览器可能会发生哪些变化</li>
+<li><code>animation</code>或<code>transition</code>设置了<code>opacity</code>、<code>transform</code></li>
+</ul>
+<p>注❗️：<br>分层确实可以提高性能，但是它以内存管理为代价，因此不应作为web性能优化策略的一部分过度使用！</p>
+<h1 id="defer和async属性"><a href="#defer和async属性" class="headerlink" title="defer和async属性"></a>defer和async属性</h1><p>首先来了解一下 <strong><code>script</code>和页面解析的关系</strong> !</p>
+<p>前面我们已经知道了，浏览器在解析html时遇到<code>&lt;link&gt;</code>不会影响<code>DOM Tree</code>的构建，那遇到<code>&lt;script&gt;</code>呢？会影响吗？<br>答案是：<strong>会的！</strong></p>
+<ul>
+<li>浏览器在遇到<code>&lt;script&gt;</code>时会先停止对<code>DOM Tree</code>构建，转而去下载、执行js脚本；</li>
+<li>只有js脚本执行完毕后，<code>DOM Tree</code>才能继续进行构建；</li>
+</ul>
+<p>那这是为什么呢？</p>
+<ul>
+<li>因为js文件中可能存在对<code>DOM</code>的操作；</li>
+<li>若先构建<code>DOM Tree</code>，再执行js脚本，可能会造成严重的回流和重绘，影响页面性能。</li>
+</ul>
+<p>但是这也会带来新的问题，特别是现在主流框架：</p>
+<ul>
+<li>目前主要流行的<code>Vue</code>、<code>React</code>，脚本往往比html页面更”重”，处理时间更长，</li>
+<li>也就是在js脚本执行结束前，页面可能出现空白</li>
+</ul>
+<p>（有些浏览器可能对此做了优化，也就是在js脚本执行接受之前，先将已经构建的<code>DOM Tree</code>进行展示）<br><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image8.png" alt="在这里插入图片描述"></p>
+<p>为了解决这个问题，<code>&lt;script&gt;</code>给我们提供了两个属性：<code>defer</code>和<code>async</code></p>
+<h2 id="4-1-defer"><a href="#4-1-defer" class="headerlink" title="4.1 defer"></a>4.1 defer</h2><ul>
+<li>defer会告诉浏览器不要等待脚本的下载，继续执行<code>DOM Tree</code>的构建</li>
+<li>脚本的下载有浏览器完成，不会影响<code>DOM Tree</code>的构建；</li>
+<li>若脚本先下载完，那它会等待<code>DOM Tree</code>构建完成，在<code>DOMContentLoaded</code>事件执行前执行defer中的代码</li>
+</ul>
+<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/02-browser/image9.png" alt="在这里插入图片描述"><br>总结：</p>
+<ol>
+<li><code>defer</code>不会影响<code>DOM Tree</code>的构建；</li>
+<li>在<code>defer</code>中<code>DOM Tree</code>已经构建完成，可进行对dom的操作；</li>
+<li><code>defer</code>总是在<code>DOMContentLoaded</code>时间发出前执行；</li>
+<li>另外，有多个<code>defer</code>会按照编写顺序执行；</li>
+<li>从某种角度来说，<code>defer</code>会提高页面性能，并且推荐放在<code>&lt;head&gt;</code>中（提前下载js脚本）；</li>
+<li>注意：<code>defer</code>仅适用于外部脚本，对于<code>&lt;script&gt;</code>默认内容会被忽略。</li>
+</ol>
+<h2 id="4-2-async"><a href="#4-2-async" class="headerlink" title="4.2 async"></a>4.2 async</h2><ul>
+<li><code>async</code>和<code>defer</code>相似，都能够让脚本不堵塞页面；</li>
+<li><code>async</code>是完全独立于浏览器的：<ul>
+<li>浏览器页面不会因为<code>script</code>脚本而暂停<code>DOM Tree</code>的构建；</li>
+<li><code>async</code>脚本不能保证顺序执行脚本，它独立下载，独立运行，不会等待其他脚本；</li>
+<li><code>async</code>不一定在<code>DOMContentLoaded</code>时间执行前执行</li>
+</ul>
+</li>
+</ul>
+<p><strong>总结：</strong></p>
+<ol>
+<li><code>defer</code>通常需要在文档解析后操作<code>DOM</code>的<code>javascript</code>代码，并且对多个<code>script</code>文件有顺序要求；</li>
+<li><code>async</code>通常用于独立的脚本，对其他脚本，甚至<code>DOM</code>没有依赖的。</li>
+</ol>
+<p>注：整个JS高级专栏依托于coderwhy老师的课程，相关图片、代码均来自于其课程。</p>
+]]></content>
+      <categories>
+        <category>js高级</category>
+      </categories>
+      <tags>
+        <tag>浏览器</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>08-手写apply/call/bind</title>
     <url>/posts/5be1151a.html</url>
     <content><![CDATA[<p>手撕apply&#x2F;call&#x2F;bind</p>
@@ -1488,34 +1589,6 @@
       </categories>
       <tags>
         <tag>apply/call/bind</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>04-闭包</title>
-    <url>/posts/2f741396.html</url>
-    <content><![CDATA[<h1 id="javascript-内存管理"><a href="#javascript-内存管理" class="headerlink" title="javascript 内存管理"></a>javascript 内存管理</h1><blockquote>
-<p>认识内存管理</p>
-</blockquote>
-<p>不管什么样的编程语言，<strong>在代码执行过程中都需要进行内存分配</strong>，不同的是有些编程语言需要我们自己手动进行内存配置，有些则会自动帮我们进行内存分配。</p>
-<p>不管什么样的内存分配机制，<strong>内存的分配都会进入如下周期</strong>：</p>
-<ol>
-<li>申请分配内存</li>
-<li>使用分配的内存</li>
-<li>不需要使用时释放内存</li>
-</ol>
-<p>不同的语言会对第一步和第三步进行不同的处理：</p>
-<ul>
-<li>手动管理内存：比如<code>C</code>、<code>C++</code>，包括早期的<code>OC</code>，都是需要手动的进行内存的申请和释放（<code>malloc和free函数</code>）；</li>
-<li>自动管理内存：比如<code>java</code>、<code>javascript</code>、<code>Python</code>、<code>Swift</code>、<code>Dart</code>等，这些语言都有帮我们自动进行内存管理。</li>
-</ul>
-<p>也就是说，我们所使用的<code>javascript</code>会自动的对原始值、对象、函数等进行内存管理，我们并不需要进行多余的操作。</p>
-<p><img src="/../../img/js%E9%AB%98%E7%BA%A7/04-closure/img1.png" alt="img.png"></p>
-<h1 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h1><h1 id="闭包的概念理解"><a href="#闭包的概念理解" class="headerlink" title="闭包的概念理解"></a>闭包的概念理解</h1><h1 id="闭包的形成过程"><a href="#闭包的形成过程" class="headerlink" title="闭包的形成过程"></a>闭包的形成过程</h1><h1 id="闭包的内存泄漏"><a href="#闭包的内存泄漏" class="headerlink" title="闭包的内存泄漏"></a>闭包的内存泄漏</h1>]]></content>
-      <categories>
-        <category>js高级</category>
-      </categories>
-      <tags>
-        <tag>闭包</tag>
       </tags>
   </entry>
   <entry>
@@ -1591,6 +1664,49 @@
       </tags>
   </entry>
   <entry>
+    <title>Nginx安装与配置以及常用命令</title>
+    <url>/posts/4f72a7f4.html</url>
+    <content><![CDATA[<p>了解一下Nginx的安装与配置，以及常见的Nginx常用命令</p>
+<h1 id="1-安装与配置"><a href="#1-安装与配置" class="headerlink" title="1. 安装与配置"></a>1. 安装与配置</h1><ol>
+<li><p>阿里云申请免费云服务器，为Nginx练习使用</p>
+</li>
+<li><p>连接远程服务器</p>
+<ul>
+<li>首先重置root密码</li>
+<li>若是使用vscode 可安装 <code>remote ssh</code>插件 （用来连接远程服务器）</li>
+<li>连接到远程</li>
+</ul>
+</li>
+<li><p>下载Nginx </p>
+<ul>
+<li>cd &#x2F;usr&#x2F;local</li>
+<li>wget <a href="https://nginx.org/download/Nginx-1.28.0.tar.gz">https://nginx.org/download/Nginx-1.28.0.tar.gz</a> (若下载不成功可通过命令 <code>su</code> 切换到root用户)</li>
+</ul>
+</li>
+</ol>
+<img src="../../img/Nginx/img.png">
+
+<pre><code>- tar -zxvf Nginx-1.28.0.tar.gz
+- cd ./Nginx-1.28.0
+</code></pre>
+<ol start="4">
+<li>初始配置及编译安装<ul>
+<li>初始配置 .&#x2F;configure</li>
+<li>编译源码 安装 make &amp;&amp; make install</li>
+</ul>
+</li>
+</ol>
+<h1 id="2-Nginx常见命令"><a href="#2-Nginx常见命令" class="headerlink" title="2. Nginx常见命令"></a>2. Nginx常见命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">user admin; # 规定启动Nginx的用户</span><br><span class="line">worker_processes 1; # Nginx 启动一个工作进程，适用于轻量部署或开发环境。</span><br><span class="line">events &#123;</span><br><span class="line">   worker_connections 1024; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http&#123;</span><br><span class="line">   include mime.types; # 文件类型映射</span><br><span class="line">   default_type application/octet-stream; # 默认MIME类型</span><br><span class="line">   sendfile        on;                            # 启用 sendfile 加速</span><br><span class="line">   tcp_nopush      on;                            # 优化发送数据包</span><br><span class="line">   keepalive_timeout  65;                         # 长连接超时</span><br><span class="line">   client_max_body_size 10m;                      # 请求体大小限制</span><br><span class="line"></span><br><span class="line">   include /etc/nginx/conf.d/*.conf;              # 引入子配置文件</span><br><span class="line">   </span><br><span class="line">   # 静态文件配置</span><br><span class="line">   server &#123;</span><br><span class="line">      listen 8080 ssl;</span><br><span class="line">      server_name localhost myTest.com;</span><br><span class="line">      </span><br><span class="line">      # 申请ssl证书 配置ssl证书</span><br><span class="line">      ssl_certificate /path/to/cert.pem;</span><br><span class="line">      ssl_certificate_key /path/to/cert.key;</span><br><span class="line">      </span><br><span class="line">      location / &#123;</span><br><span class="line">         root /usr/local/nginx/html/dist; # 相对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      location /api &#123;</span><br><span class="line">         # 设置CORS配置</span><br><span class="line">         add_header Access-Control-Allow-Origin *;</span><br><span class="line">         add_header Access-Control-Allow-Methods &#x27;GET, POST, OPTIONS&#x27;;</span><br><span class="line">         add_header Access-Control-Allow-Headers &#x27;Content-Type, Authorization&#x27;;</span><br><span class="line">         </span><br><span class="line">         alias /usr/local/nginx/html/dist/api; # 绝对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">         </span><br><span class="line">         if ($request_method = &#x27;OPTIONS&#x27;) &#123;</span><br><span class="line">            return 204;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Nginx</category>
+      </categories>
+      <tags>
+        <tag>Nginx</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>09-let-const</title>
     <url>/posts/abd5a0df.html</url>
     <content><![CDATA[<p>let &#x2F; const 注意事项</p>
@@ -1637,71 +1753,15 @@
       </tags>
   </entry>
   <entry>
-    <title>TypeScript的默认之处</title>
-    <url>/posts/2194d207.html</url>
-    <content><![CDATA[<p>今天学习封装<code>axios</code>，<code>coderwhy</code>老师的封装简直不要太🐂🍺，给我看的一愣一愣的。说实话之前写的项目只是简单的封装了<code>axios</code>，导致每次使用获取到接口数都会有ts类型提示，这真的很烦人。<br>不过今天看到使用<code>ts</code>泛型定义返回数据，真是给我整爽了❗️</p>
-<p>鉴于自己确实缺乏<code>ts</code>灵活的使用，所以先来回顾一下必要的基础知识🧀</p>
-<h1 id="1-泛型"><a href="#1-泛型" class="headerlink" title="1. 泛型"></a>1. 泛型</h1>]]></content>
-      <categories>
-        <category>TypeScript</category>
-      </categories>
-      <tags>
-        <tag>TypeScript</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>项目性能优化</title>
     <url>/posts/345bc23f.html</url>
-    <content><![CDATA[<p>项目整体需求大致完成后，需要开始进行项目性能优化了，优化思路主要有：<code>代码层面</code>，<code>构建与用户打包</code>，<code>用户体验优化</code>，<code>vue/react特有优化</code>…</p>
+    <content><![CDATA[<p>项目整体需求大致完成后，需要开始进行项目性能优化了，优化思路主要有：<code>首屏加载</code>、&#96;&#96;</p>
 <h1 id="代码层面"><a href="#代码层面" class="headerlink" title="代码层面"></a>代码层面</h1><h1 id="构建和用户打包"><a href="#构建和用户打包" class="headerlink" title="构建和用户打包"></a>构建和用户打包</h1><h1 id="用户体验优化"><a href="#用户体验优化" class="headerlink" title="用户体验优化"></a>用户体验优化</h1><h1 id="vue-react特有优化"><a href="#vue-react特有优化" class="headerlink" title="vue&#x2F;react特有优化"></a>vue&#x2F;react特有优化</h1>]]></content>
       <categories>
         <category>项目</category>
       </categories>
       <tags>
         <tag>性能优化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Nginx安装与配置以及常用命令</title>
-    <url>/posts/4f72a7f4.html</url>
-    <content><![CDATA[<p>了解一下Nginx的安装与配置，以及常见的Nginx常用命令</p>
-<h1 id="1-安装与配置"><a href="#1-安装与配置" class="headerlink" title="1. 安装与配置"></a>1. 安装与配置</h1><ol>
-<li><p>阿里云申请免费云服务器，为Nginx练习使用</p>
-</li>
-<li><p>连接远程服务器</p>
-<ul>
-<li>首先重置root密码</li>
-<li>若是使用vscode 可安装 <code>remote ssh</code>插件 （用来连接远程服务器）</li>
-<li>连接到远程</li>
-</ul>
-</li>
-<li><p>下载Nginx </p>
-<ul>
-<li>cd &#x2F;usr&#x2F;local</li>
-<li>wget <a href="https://nginx.org/download/Nginx-1.28.0.tar.gz">https://nginx.org/download/Nginx-1.28.0.tar.gz</a> (若下载不成功可通过命令 <code>su</code> 切换到root用户)</li>
-</ul>
-</li>
-</ol>
-<img src="../../img/Nginx/img.png">
-
-<pre><code>- tar -zxvf Nginx-1.28.0.tar.gz
-- cd ./Nginx-1.28.0
-</code></pre>
-<ol start="4">
-<li>初始配置及编译安装<ul>
-<li>初始配置 .&#x2F;configure</li>
-<li>编译源码 安装 make &amp;&amp; make install</li>
-</ul>
-</li>
-</ol>
-<h1 id="2-Nginx常见命令"><a href="#2-Nginx常见命令" class="headerlink" title="2. Nginx常见命令"></a>2. Nginx常见命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">user admin; # 规定启动Nginx的用户</span><br><span class="line">worker_processes 1; # Nginx 启动一个工作进程，适用于轻量部署或开发环境。</span><br><span class="line">events &#123;</span><br><span class="line">   worker_connections 1024; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http&#123;</span><br><span class="line">   include mime.types; # 文件类型映射</span><br><span class="line">   default_type application/octet-stream; # 默认MIME类型</span><br><span class="line">   sendfile        on;                            # 启用 sendfile 加速</span><br><span class="line">   tcp_nopush      on;                            # 优化发送数据包</span><br><span class="line">   keepalive_timeout  65;                         # 长连接超时</span><br><span class="line">   client_max_body_size 10m;                      # 请求体大小限制</span><br><span class="line"></span><br><span class="line">   include /etc/nginx/conf.d/*.conf;              # 引入子配置文件</span><br><span class="line">   </span><br><span class="line">   # 静态文件配置</span><br><span class="line">   server &#123;</span><br><span class="line">      listen 8080 ssl;</span><br><span class="line">      server_name localhost myTest.com;</span><br><span class="line">      </span><br><span class="line">      # 申请ssl证书 配置ssl证书</span><br><span class="line">      ssl_certificate /path/to/cert.pem;</span><br><span class="line">      ssl_certificate_key /path/to/cert.key;</span><br><span class="line">      </span><br><span class="line">      location / &#123;</span><br><span class="line">         root /usr/local/nginx/html/dist; # 相对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      location /api &#123;</span><br><span class="line">         # 设置CORS配置</span><br><span class="line">         add_header Access-Control-Allow-Origin *;</span><br><span class="line">         add_header Access-Control-Allow-Methods &#x27;GET, POST, OPTIONS&#x27;;</span><br><span class="line">         add_header Access-Control-Allow-Headers &#x27;Content-Type, Authorization&#x27;;</span><br><span class="line">         </span><br><span class="line">         alias /usr/local/nginx/html/dist/api; # 绝对静态资源路径</span><br><span class="line">         index index.html inddex.htm;</span><br><span class="line">         </span><br><span class="line">         if ($request_method = &#x27;OPTIONS&#x27;) &#123;</span><br><span class="line">            return 204;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Nginx</category>
-      </categories>
-      <tags>
-        <tag>Nginx</tag>
       </tags>
   </entry>
   <entry>
@@ -1754,6 +1814,19 @@
       </categories>
       <tags>
         <tag>webpack配置</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>TypeScript的默认之处</title>
+    <url>/posts/2194d207.html</url>
+    <content><![CDATA[<p>今天学习封装<code>axios</code>，<code>coderwhy</code>老师的封装简直不要太🐂🍺，给我看的一愣一愣的。说实话之前写的项目只是简单的封装了<code>axios</code>，导致每次使用获取到接口数都会有ts类型提示，这真的很烦人。<br>不过今天看到使用<code>ts</code>泛型定义返回数据，真是给我整爽了❗️</p>
+<p>鉴于自己确实缺乏<code>ts</code>灵活的使用，所以先来回顾一下必要的基础知识🧀</p>
+<h1 id="1-泛型"><a href="#1-泛型" class="headerlink" title="1. 泛型"></a>1. 泛型</h1>]]></content>
+      <categories>
+        <category>TypeScript</category>
+      </categories>
+      <tags>
+        <tag>TypeScript</tag>
       </tags>
   </entry>
 </search>

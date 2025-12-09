@@ -96,7 +96,7 @@
     <link href="http://to-be-a-happy-adult.xyz/posts/7db00131.html"/>
     <id>http://to-be-a-happy-adult.xyz/posts/7db00131.html</id>
     <published>2025-11-01T02:53:51.000Z</published>
-    <updated>2025-11-01T10:55:30.564Z</updated>
+    <updated>2025-12-09T08:47:41.664Z</updated>
     
     
       
@@ -177,7 +177,7 @@
     <link href="http://to-be-a-happy-adult.xyz/posts/5a01a153.html"/>
     <id>http://to-be-a-happy-adult.xyz/posts/5a01a153.html</id>
     <published>2025-09-24T12:11:25.000Z</published>
-    <updated>2025-09-26T14:08:50.013Z</updated>
+    <updated>2025-12-09T08:51:01.860Z</updated>
     
     
       
@@ -203,15 +203,15 @@
     <link href="http://to-be-a-happy-adult.xyz/posts/345bc23f.html"/>
     <id>http://to-be-a-happy-adult.xyz/posts/345bc23f.html</id>
     <published>2025-09-22T14:01:48.000Z</published>
-    <updated>2025-09-26T13:32:29.596Z</updated>
+    <updated>2025-12-09T08:47:41.656Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;p&gt;项目整体需求大致完成后，需要开始进行项目性能优化了，优化思路主要有：&lt;code&gt;代码层面&lt;/code&gt;，&lt;code&gt;构建与用户打包&lt;/code&gt;，&lt;code&gt;用户体验优化&lt;/code&gt;，&lt;code&gt;vue/react特有优化&lt;/code&gt;…&lt;/p&gt;
-&lt;h1</summary>
+    <summary type="html">&lt;p&gt;项目整体需求大致完成后，需要开始进行项目性能优化了，优化思路主要有：&lt;code&gt;首屏加载&lt;/code&gt;、&amp;#96;&amp;#96;&lt;/p&gt;
+&lt;h1 id=&quot;代码层面&quot;&gt;&lt;a href=&quot;#代码层面&quot; class=&quot;headerlink&quot;</summary>
         
       
     
