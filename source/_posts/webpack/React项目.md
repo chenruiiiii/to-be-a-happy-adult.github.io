@@ -1,27 +1,22 @@
-<h1 id="XCBZA">创建项目</h1>
-> create-react-app 项目名称
->
+---
+title: craco更改webpack配置
+categories:
+  - webpack
+tags:
+  - webpack配置
+indexing: false
+abbrlink: 89b86ab2
+---
 
-
-
-<h2 id="lQ2RM">配置tsconfig.json</h2>
-配置`tsconfig.json`可以帮助
-
-
-
-<h2 id="QIFtw">使用craco更改webpack配置</h2>
 `React`官方文档推荐使用`CRA ( create-react-app )`来创建项目，其中会隐藏起有关`webpack`的配置，可以通过`npm run eject`修改相关配置，但是这个操作时不可逆的❗️也就是说一旦执行了此操作，那么`webpack`相关的处理都需要自行进行处理，比如说配置、构建等。对于小白来说，还是不要轻易尝试的好。
 
+如果想要**配置路径别名**或者**less**等操作时，可以通过`craco`进行配置。
 
-
-如果想要**配置路径别名**或者**less**等操作是，可以通过`craco`进行配置。
-
+首先安装`craco`
 > npm i @craco/craco
->
 
-<h3 id="eIOky">配置less</h3>
+# 配置less
 > npm i croco-less -D
->
 
 ```typescript
 const CracoLessPlugin = require('craco-less')
@@ -43,16 +38,14 @@ module.exports = {
 }
 ```
 
-<h3 id="yNmk8">移动端自适应 postcss-pxtorem</h3>
+# 移动端自适应 postcss-pxtorem
 > npm i postcss-pxtorem -D
->
 
 + 在入口文件`index.ts`中引入
 
 > import 'lib-flexible';
->
 
-+ 配置postcss-pxtorem
++ 配置`postcss-pxtorem`
 
 ```typescript
 const postcssPx2Rem = require('postcss-pxtorem')
@@ -84,7 +77,8 @@ module.exports = {
 
 ```
 
-<h3 id="EIFiG">代理</h3>
+# 代理
+
 ```typescript
     // craco.config.js文件
     module.exports = {
@@ -111,29 +105,29 @@ module.exports = {
 
 ```
 
-<h3 id="KgRMz">路径别名和打包大小分析</h3>
+# 路径别名和打包大小分析
 ```typescript
  // craco.config.js文件
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 module.exports = {
-  // ...
-  webpack: {
-    // 配置别名
-    alias: {
-      // 约定：使用 @ 表示 src 文件所在路径
-      '@': path.resolve(__dirname, 'src')
-    },
-    
-    plugins: [
-      // 打包分析插件，需要分析时解开注释
-      // [new BundleAnalyzerPlugin()]
-    ],
-   // ...
-}
+    // ...
+    webpack: {
+        // 配置别名
+        alias: {
+            // 约定：使用 @ 表示 src 文件所在路径
+            '@': path.resolve(__dirname, 'src')
+        },
 
+        plugins: [
+            // 打包分析插件，需要分析时解开注释
+            // [new BundleAnalyzerPlugin()]
+        ],
+        // ...
+    }
+}
 ```
 
-<h3 id="Em1x3">拆包和打包路径</h3>
+# 拆包和打包路径
 ```typescript
 // craco.config.js文件
 module.exports = {
@@ -189,7 +183,7 @@ module.exports = {
 
 ```
 
-<h3 id="s9fUg">移除开发日志console.log</h3>
+# 移除开发日志console.log
 ```typescript
 module.exports = {
      babel: {
@@ -205,29 +199,38 @@ module.exports = {
 
 ```
 
-<h3 id="s4tQR">修改项目运行命令 & 使用`dotenv-cli`加载开发、测试、生产不同环境的环境变量</h3>
-> <font style="color:rgb(102, 102, 102);background-color:rgb(248, 248, 248);">npm i dotenv-cli -D</font>
->
+# 修改项目运行命令
 
-`<font style="color:rgb(102, 102, 102);background-color:rgb(248, 248, 248);">package.json</font>`
-
-
+`package.json`
 
 ```typescript
-  "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
-    "eject": "react-scripts eject",
-    "prod": "dotenv -e .env.production craco start",
-    "build:dev": "dotenv -e .env.development craco build",
-    "build:test": "dotenv -e .env.test craco build",
-    "build:prod": "dotenv -e .env.production craco build",
-    "lint": "eslint -c .eslintrc.js src --ext .ts,.tsx,.js,.jsx --fix",
-    "clean": "rimraf node_modules"
-  },
+  {
+    // ...
+    "scripts": {
+        "start": "craco start",
+        "build": "craco build",
+        "test": "craco test",
+        "eject": "react-scripts eject"
+    },
+    // ...
+}
 ```
+# 加载开发、测试、生产不同环境的环境变量
+使用`dotenv-cli`
+> npm i dotenv-cli -D
 
-<h2 id="jvR17"></h2>
-
+```typescript
+  {
+    // ...
+    "scripts": {
+        "prod": "dotenv -e .env.production craco start",
+        "build:dev": "dotenv -e .env.development craco build",
+        "build:test": "dotenv -e .env.test craco build",
+        "build:prod": "dotenv -e .env.production craco build",
+        "lint": "eslint -c .eslintrc.js src --ext .ts,.tsx,.js,.jsx --fix",
+        "clean": "rimraf node_modules"
+    },
+    // ...
+}
+```
 

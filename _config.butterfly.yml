@@ -78,7 +78,7 @@ code_blocks:
   shrink: false
   fullpage: false
 
-highlight_theme: mac #  darker / pale night / light / ocean / mac / mac light / false
+highlight_theme: night eighties #  darker / pale night / light / ocean / mac / mac light / false
 highlight_copy: true # copy button
 highlight_lang: true # show the code language
 highlight_shrink: false # true: shrink the code blocks / false: expand the code blocks | none: expand code blocks and hide the button
@@ -463,7 +463,7 @@ darkmode:
 
 YAMLruntimeshow:
   enable: true
-  start_date: 2025/05/09 21:58:01
+  start_date: 09/05/2025 21:58:01
   ##网页开通时间
   #格式: 月/日/年 时间
   #也可以写成 年/月/日 时间
@@ -587,7 +587,7 @@ search:
     # Show top n results per article, show all results by setting to -1
     top_n_per_article: 1
     # Unescape html strings to the readable one.
-    unescape: false
+    unescape: true
     CDN:
 
   # Docsearch
@@ -901,13 +901,13 @@ display_mode: light
 
 # Configuration for beautifying the content of the article
 beautify:
-  enable: false
+  enable: true
   # Specify the field to beautify (site or post)
   field: post
   # Specify the icon to be used as a prefix for the title, such as '\f0c1'
-  title_prefix_icon:
+  title_prefix_icon: '\f863'
   # Specify the color of the title prefix icon, such as '#F47466'
-  title_prefix_icon_color:
+  title_prefix_icon_color: "#ff7849"
 
 # Global font settings
 # Don't modify the following settings unless you know how they work
@@ -1140,7 +1140,8 @@ css_prefix: true
 # Insert the code to head (before '</head>' tag) and the bottom (before '</body>' tag)
 inject:
   head:
-    # - <link rel="stylesheet" href="/xxx.css">
+    - <link rel="stylesheet" href="/css/custom.less">
+  # - <link rel="stylesheet" href="/xxx.css">
   bottom:
     # - <script src="xxxx"></script>
 
@@ -1152,7 +1153,7 @@ CDN:
   # Note: Dev version can only use 'local' for internal scripts
   # Note: When setting third-party scripts to 'local', you need to install hexo-butterfly-extjs
   internal_provider: local
-  third_party_provider: jsdelivr
+#  third_party_provider: local
 
   # Add version number to url, true or false
   version: false
