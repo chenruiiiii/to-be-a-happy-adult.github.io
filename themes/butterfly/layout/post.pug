@@ -1,0 +1,49 @@
+extends includes/layout.pug
+
+block content
+  #post
+    if top_img === false
+      include includes/header/post-info.pug
+
+    //- 添加二級目錄 start
+    if page.series
+      div.post-series
+        h3 #{page.series}-系列：
+        - let list = site.posts.sort('date', -1)
+        - list.each(function(article){
+          if article.series == page.series
+            - let link = article.link || article.path
+            - let title = article.title || _p('no_title')
+            li
+              a.title(href=url_for(link) title=title)= title
+        - })
+    //- 添加二級目錄 end
+
+    article#article-container.container.post-content
+      if theme.noticeOutdate.enable && page.noticeOutdate !== false
+        include includes/post/outdate-notice.pug
+      else
+        !=page.content
+    include includes/post/post-copyright.pug
+    .tag_share
+      if (page.tags.length > 0 && theme.post_meta.post.tags)
+        .post-meta__tag-list
+          each item, index in page.tags.data
+            a(href=url_for(item.path)).post-meta__tags #[=item.name]
+      include includes/third-party/share/index.pug
+
+    if theme.reward.enable && theme.reward.QR_code
+      !=partial('includes/post/reward', {}, {cache: true})
+
+    //- ad
+    if theme.ad && theme.ad.post
+      .ads-wrap!=theme.ad.post
+
+    if theme.post_pagination
+      include includes/pagination.pug
+    if theme.related_post && theme.related_post.enable
+      != related_posts(page,site.posts)
+
+    if page.comments !== false && theme.comments.use
+      - var commentsJsLoad = true
+      !=partial('includes/third-party/comments/index', {}, {cache: true})
