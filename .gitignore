@@ -48,4 +48,4 @@ pnpm-debug.log*
 # Hexo theme (optional)
 # 如果你把主题当子模块管理，就不要忽略
 # =========================
-# themes/
+themes/
